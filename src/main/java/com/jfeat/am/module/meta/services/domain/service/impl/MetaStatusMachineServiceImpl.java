@@ -3,6 +3,7 @@ package com.jfeat.am.module.meta.services.domain.service.impl;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao;
 import com.jfeat.am.module.meta.services.domain.model.EntityCurrentStatus;
 import com.jfeat.am.module.meta.services.domain.service.MetaStatusMachineService;
+import com.jfeat.am.module.meta.services.domain.utils.MetaUtils;
 import com.jfeat.am.module.meta.services.gen.crud.service.impl.CRUDMetaStatusMachineServiceImpl;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaStatusMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -10,6 +11,7 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -29,7 +31,14 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
 
     @Resource
     private QueryMetaStatusMachineDao queryMetaStatusMachineDao;
+
     @Override
+    public List<MetaStatusMachine> findMetaStatusMachine(MetaStatusMachine queryEntity) {
+        return queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity);
+    }
+
+    @Override
+    @Transactional
     public Integer changeEntityStatus(String entity, Long id, String status) {
 
         List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity, status);
@@ -43,22 +52,10 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
     }
 
     @Override
+    @Transactional
     public BulkResult bulkChangeEntityStatus(String entity, List<Long> ids, String status) {
-        // 成功
-        BulkMessage success = new BulkMessage(200, 0, "更新成功");
 
-        // 失败
-        BulkMessage fail = new BulkMessage(
-                BusinessCode.CRUD_UPDATE_FAILURE.getCode(), 0, "更新失败");
-
-        // 禁止
-        BulkMessage forbidden = new BulkMessage(
-                BusinessCode.CRUD_UPDATE_FAILURE.getCode(),
-                0,
-                "不允许更新，不允许跳转到状态:["+status+"]");
-
-        List<BulkMessage> failure = Arrays.asList(fail, forbidden);
-        BulkResult bulkResult = new BulkResult(success, failure);
+        int forbidden = 0;
 
         // 获取可以到达该状态的状态机
         List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity, status);
@@ -73,14 +70,18 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
             if (isInMetaStatusMachineList(entityCurrentStatus.getStatus(), metaStatusMachineList)) {
                 canUpdateIds.add(entityCurrentStatus.getId());
             } else {
-                forbidden.setCount(forbidden.getCount()+1);
+                forbidden ++;
             }
         }
 
-        Integer affected = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
-        success.setCount(affected);
-        fail.setCount(canUpdateIds.size() - affected);
-        return bulkResult;
+        int success = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
+        int fail = canUpdateIds.size() - success;
+        return MetaUtils.createBulkResult(new BulkMessage(200, success, "改变状态成功"),
+                fail > 0 ? new BulkMessage(
+                        BusinessCode.DatabaseUpdateError.getCode(), fail, "更新失败，数据库错误") : null,
+                forbidden > 0 ? new BulkMessage(
+                        BusinessCode.CRUD_UPDATE_FAILURE.getCode(), forbidden,
+                        "不允许更新，不允许跳转到状态:["+status+"]") : null);
     }
 
     /**

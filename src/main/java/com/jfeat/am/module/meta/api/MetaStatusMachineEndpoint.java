@@ -56,7 +56,7 @@ public class MetaStatusMachineEndpoint {
         queryEntity.setEntity(entity);
         queryEntity.setFromStatus(fromStatus);
         queryEntity.setToStatus(toStatus);
-        return SuccessTip.create(queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity));
+        return SuccessTip.create(metaStatusMachineService.findMetaStatusMachine(queryEntity));
     }
 
 
