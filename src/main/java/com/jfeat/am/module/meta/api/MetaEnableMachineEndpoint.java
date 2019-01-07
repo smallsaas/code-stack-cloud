@@ -2,7 +2,6 @@ package com.jfeat.am.module.meta.api;
 
 
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.module.meta.services.domain.dao.QueryMetaEnableMachineDao;
 import com.jfeat.am.module.meta.services.domain.model.BulkMetaEnable;
 import com.jfeat.am.module.meta.services.domain.service.MetaEnableMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEnableMachine;
@@ -43,11 +42,8 @@ public class MetaEnableMachineEndpoint {
     @Resource
     MetaEnableMachineService metaEnableMachineService;
 
-    @Resource
-    QueryMetaEnableMachineDao queryMetaEnableMachineDao;
-
     @BusinessLog(name = "MetaEnableMachine", value = "查看 有效机")
-    @GetMapping("/entity/{entity}/enable")
+    @GetMapping("/validation/config/records/{entity}")
     @ApiOperation(value = "查看有效机")
     public Tip getMetaEnableMachine(@PathVariable(name = "entity") String entity,
                                     @RequestParam(name = "entityTableName", required = false) String entityTableName,
@@ -60,11 +56,9 @@ public class MetaEnableMachineEndpoint {
     }
 
     @BusinessLog(name = "MetaEnableMachine", value = "add 有效机")
-    @PostMapping("/entity/{entity}/enable")
+    @PostMapping("/validation/config/records")
     @ApiOperation(value = "增加有效机配置")
-    public Tip createMetaEnableMachine(@PathVariable(name = "entity") String entity,
-                                       @RequestBody MetaEnableMachine metaEnableMachine) {
-        metaEnableMachine.setEntity(entity);
+    public Tip createMetaEnableMachine(@RequestBody MetaEnableMachine metaEnableMachine) {
         return SuccessTip.create(metaEnableMachineService.createMaster(metaEnableMachine));
     }
 
