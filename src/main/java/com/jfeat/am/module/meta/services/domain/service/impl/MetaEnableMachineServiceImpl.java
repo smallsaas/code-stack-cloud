@@ -133,7 +133,9 @@ public class MetaEnableMachineServiceImpl extends CRUDMetaEnableMachineServiceIm
         queryParams.setEntity(entity);
         List<MetaEnableMachine> metaEnableMachineList = findMetaEnableMachine(queryParams);
         if (CollectionUtils.isEmpty(metaEnableMachineList)) {
-            throw new BusinessException(BusinessCode.ErrorStatus.getCode(), "获取有效机失败，缺失配置：entity="+entity);
+            throw new BusinessException(
+                    BusinessCode.ErrorStatus.getCode(),
+                    "获取meta enable配置失败，entity="+entity+"。请联系相关人员配置。");
         }
         return metaEnableMachineList.get(0);
     }

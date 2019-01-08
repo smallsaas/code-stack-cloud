@@ -95,7 +95,8 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         List<MetaStatusMachine> metaStatusMachineList = queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity);
         if (null == metaStatusMachineList || metaStatusMachineList.isEmpty()) {
             throw new BusinessException(
-                    BusinessCode.ErrorStatus.getCode(), "获取状态机失败：entity=" + entity + ",toStatus=" + status);
+                    BusinessCode.ErrorStatus.getCode(),
+                    "获取meta status失败：entity=" + entity + ",toStatus=" + status);
         }
         return metaStatusMachineList;
     }

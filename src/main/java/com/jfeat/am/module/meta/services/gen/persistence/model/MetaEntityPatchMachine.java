@@ -14,10 +14,10 @@ import java.io.Serializable;
  * </p>
  *
  * @author Code Generator
- * @since 2019-01-05
+ * @since 2019-01-07
  */
-@TableName("meta_enable_machine")
-public class MetaEnableMachine extends Model<MetaEnableMachine> {
+@TableName("meta_entity_patch_machine")
+public class MetaEntityPatchMachine extends Model<MetaEntityPatchMachine> {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
      */
     private String entity;
     /**
-     * 实体对应的表名
+     * 实体对应表名
      */
     @TableField("entity_table_name")
     private String entityTableName;
@@ -38,19 +38,20 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
     @TableField("entity_field_name")
     private String entityFieldName;
     /**
-     * 选取范围下限
+     * 实体字段类型
      */
-    @TableField("range_min")
-    private Integer rangeMin;
+    @TableField("entity_field_type")
+    private String entityFieldType;
     /**
-     * 选取范围上限
+     * 数字类型字段的范围下限
      */
-    @TableField("range_max")
-    private Integer rangeMax;
+    @TableField("number_range_min")
+    private Long numberRangeMin;
     /**
-     * 有效位是否需要取反
+     * 数字类型字段的范围上限
      */
-    private Integer negative;
+    @TableField("number_range_max")
+    private Long numberRangeMax;
     /**
      * 操作权限控制
      */
@@ -61,7 +62,7 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
         return id;
     }
 
-    public MetaEnableMachine setId(Long id) {
+    public MetaEntityPatchMachine setId(Long id) {
         this.id = id;
         return this;
     }
@@ -70,7 +71,7 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
         return entity;
     }
 
-    public MetaEnableMachine setEntity(String entity) {
+    public MetaEntityPatchMachine setEntity(String entity) {
         this.entity = entity;
         return this;
     }
@@ -79,7 +80,7 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
         return entityTableName;
     }
 
-    public MetaEnableMachine setEntityTableName(String entityTableName) {
+    public MetaEntityPatchMachine setEntityTableName(String entityTableName) {
         this.entityTableName = entityTableName;
         return this;
     }
@@ -88,42 +89,43 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
         return entityFieldName;
     }
 
-    public MetaEnableMachine setEntityFieldName(String entityFieldName) {
+    public MetaEntityPatchMachine setEntityFieldName(String entityFieldName) {
         this.entityFieldName = entityFieldName;
         return this;
     }
 
-    public Integer getRangeMin() {
-        return rangeMin;
+    public String getEntityFieldType() {
+        return entityFieldType;
     }
 
-    public MetaEnableMachine setRangeMin(Integer rangeMin) {
-        this.rangeMin = rangeMin;
+    public MetaEntityPatchMachine setEntityFieldType(String entityFieldType) {
+        this.entityFieldType = entityFieldType;
         return this;
     }
 
-    public Integer getRangeMax() {
-        return rangeMax;
+    public Long getNumberRangeMin() {
+        return numberRangeMin;
     }
 
-    public MetaEnableMachine setRangeMax(Integer rangeMax) {
-        this.rangeMax = rangeMax;
+    public MetaEntityPatchMachine setNumberRangeMin(Long numberRangeMin) {
+        this.numberRangeMin = numberRangeMin;
         return this;
     }
 
-    public Integer getNegative() {
-        return negative;
+    public Long getNumberRangeMax() {
+        return numberRangeMax;
     }
 
-    public void setNegative(Integer negative) {
-        this.negative = negative;
+    public MetaEntityPatchMachine setNumberRangeMax(Long numberRangeMax) {
+        this.numberRangeMax = numberRangeMax;
+        return this;
     }
 
     public String getPermission() {
         return permission;
     }
 
-    public MetaEnableMachine setPermission(String permission) {
+    public MetaEntityPatchMachine setPermission(String permission) {
         this.permission = permission;
         return this;
     }
@@ -136,11 +138,11 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
 
     public static final String ENTITY_FIELD_NAME = "entity_field_name";
 
-    public static final String RANGE_MIN = "range_min";
+    public static final String ENTITY_FIELD_TYPE = "entity_field_type";
 
-    public static final String RANGE_MAX = "range_max";
+    public static final String NUMBER_RANGE_MIN = "number_range_min";
 
-    public static final String NEGATIVE = "negative";
+    public static final String NUMBER_RANGE_MAX = "number_range_max";
 
     public static final String PERMISSION = "permission";
 
@@ -151,14 +153,14 @@ public class MetaEnableMachine extends Model<MetaEnableMachine> {
 
     @Override
     public String toString() {
-        return "MetaEnableMachine{" +
+        return "MetaEntityPatchMachine{" +
                 "id=" + id +
                 ", entity='" + entity + '\'' +
                 ", entityTableName='" + entityTableName + '\'' +
                 ", entityFieldName='" + entityFieldName + '\'' +
-                ", rangeMin=" + rangeMin +
-                ", rangeMax=" + rangeMax +
-                ", negative=" + negative +
+                ", entityFieldType='" + entityFieldType + '\'' +
+                ", numberRangeMin=" + numberRangeMin +
+                ", numberRangeMax=" + numberRangeMax +
                 ", permission='" + permission + '\'' +
                 '}';
     }
