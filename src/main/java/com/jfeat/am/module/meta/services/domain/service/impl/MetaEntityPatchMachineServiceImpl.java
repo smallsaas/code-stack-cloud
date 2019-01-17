@@ -320,7 +320,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                 if (originRecord.getSortNum() == 0) {
                     throw new BusinessException(
                             BusinessCode.BadRequest.getCode(),
-                            "当前排序号为0，下移失败，请对其他实体进行上移操作进行上移操作");
+                            "当前排序号为0，下移失败，请对其他实体进行上移操作");
                 }
                 // 当前row 中的 sort_num - 1
                 originRecord.setSortNum(originRecord.getSortNum() - 1);
