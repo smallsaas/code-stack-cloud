@@ -100,4 +100,22 @@ public class MetaEntityPatchMachineEndpoint {
         }
         return SuccessTip.create(metaEntityPatchMachineService.bulkDeleteEntity(entity, params.get("ids")));
     }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "move up entity")
+    @PostMapping("/entity/{entity}/action/moveup/row/{id}/row/{nextId}")
+    @ApiOperation(value = "上移实体排序")
+    public Tip moveUpEntity(@PathVariable(name = "entity") String entity,
+                            @PathVariable(name = "id") Long id,
+                            @PathVariable(name = "nextId") Long nextId) {
+        return SuccessTip.create(metaEntityPatchMachineService.moveUpEntity(entity, id, nextId));
+    }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "move up entity")
+    @PostMapping("/entity/{entity}/action/movedown/row/{id}/row/{nextId}")
+    @ApiOperation(value = "下移实体排序")
+    public Tip moveDownEntity(@PathVariable(name = "entity") String entity,
+                            @PathVariable(name = "id") Long id,
+                            @PathVariable(name = "nextId") Long nextId) {
+        return SuccessTip.create(metaEntityPatchMachineService.moveDownEntity(entity, id, nextId));
+    }
 }

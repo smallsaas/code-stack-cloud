@@ -29,6 +29,15 @@
         </if>
     </select>
 
+    <select id="findSortNumberRecord" resultType="SortNumberRecord">
+        SELECT id, ${entityFieldName} AS sortNum
+        FROM ${entityTableName}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
     <update id="updateEntity">
         UPDATE ${entityTableName}
         SET

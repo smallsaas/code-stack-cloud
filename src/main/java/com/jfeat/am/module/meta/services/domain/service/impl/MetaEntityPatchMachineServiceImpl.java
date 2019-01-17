@@ -3,6 +3,7 @@ package com.jfeat.am.module.meta.services.domain.service.impl;
 import com.google.common.base.CaseFormat;
 import com.jfeat.am.module.meta.constant.EntityFieldType;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaEntityPatchMachineDao;
+import com.jfeat.am.module.meta.services.domain.model.SortNumberRecord;
 import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.domain.utils.MetaUtils;
 import com.jfeat.am.module.meta.services.gen.crud.service.impl.CRUDMetaEntityPatchMachineServiceImpl;
@@ -115,6 +116,18 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         int fail = ids.size() - success;
         return MetaUtils.createBulkResult(new BulkMessage(200, success, "删除成功"),
                 fail > 0 ? new BulkMessage(BusinessCode.DatabaseDeleteError.getCode(), fail, "删除失败，数据库错误") : null);
+    }
+
+    @Override
+    @Transactional
+    public Integer moveUpEntity(String entity, Long id, Long nextId) {
+        return moveEntity(entity, id, nextId, true);
+    }
+
+    @Override
+    @Transactional
+    public Integer moveDownEntity(String entity, Long id, Long nextId) {
+        return moveEntity(entity, id, nextId, false);
     }
 
     /**
@@ -237,5 +250,97 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                         "[id:"+id+"]参数："+param.getKey() +"日期无效，请仔细检查");
             }
         }
+    }
+
+    /**
+     * 移动实体排序
+     * @param entity 实体
+     * @param id 主动移动实体id
+     * @param nextId 被迫移动实体id
+     * @param isMoveUp 是否为上移（true，false）
+     * @return
+     */
+    private Integer moveEntity(String entity, Long id, Long nextId, boolean isMoveUp) {
+        // 获取实体所有配置
+        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(findMetaList(entity));
+        // 获取排序配置，兼容蛇形、驼峰两种命名规范
+        MetaEntityPatchMachine sortMeta = metaMap.get("sort_num");
+        if (null == sortMeta) {
+            sortMeta = metaMap.get("sortNum");
+        }
+        // 获取配置失败
+        if (null == sortMeta) {
+            throw new BusinessException(BusinessCode.CodeBase.getCode(),
+                    "["+entity+"]缺失字段配置：sort_num或sortNum");
+        }
+        // 表名
+        String entityTableName = sortMeta.getEntityTableName();
+        // 字段名
+        String entityFieldName = sortMeta.getEntityFieldName();
+        // 获取实体排序
+        List<SortNumberRecord> records = queryMetaEntityPatchMachineDao.findSortNumberRecord(
+                entityTableName, entityFieldName, Arrays.asList(id, nextId));
+        if (null == records || records.size() < 2) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "获取实体失败，id in ("+id+","+nextId+")");
+        }
+        // 原排序
+        SortNumberRecord originRecord = null;
+        // 目标排序
+        SortNumberRecord nextRecord = null;
+        // 获取原排序、目标排序
+        for (SortNumberRecord record : records) {
+            // 实体没有排序
+            if (null == record.getSortNum()) {
+                throw new BusinessException(
+                        BusinessCode.CodeBase.getCode(), "["+sortMeta.getEntity()+"]获取排序失败：id="+record.getId());
+            }
+            if (record.getId().equals(id)) {
+                originRecord = record;
+                continue;
+            }
+            if (record.getId().equals(nextId)) {
+                nextRecord = record;
+                continue;
+            }
+        }
+        int affected = 0;
+        // 如果两行 row data 中的 sort_num字段不同， 即互换num 值
+        if (!originRecord.getSortNum().equals(nextRecord.getSortNum())) {
+            Integer temp = nextRecord.getSortNum();
+            nextRecord.setSortNum(originRecord.getSortNum());
+            originRecord.setSortNum(temp);
+            // 更新被迫移动实体排序
+            affected += updateEntityField(entityTableName, entityFieldName, nextRecord.getSortNum().toString(), nextId);
+        } else { // 如果相同
+            // 如果是上移，即当前row 中的 sort_num + 1
+            if (isMoveUp) {
+                originRecord.setSortNum(originRecord.getSortNum() + 1);
+            } else { // 如果是下移
+                // 如果当前实体的排序为0，禁止下移
+                if (originRecord.getSortNum() == 0) {
+                    throw new BusinessException(
+                            BusinessCode.BadRequest.getCode(),
+                            "当前排序号为0，下移失败，请对其他实体进行上移操作进行上移操作");
+                }
+                // 当前row 中的 sort_num - 1
+                originRecord.setSortNum(originRecord.getSortNum() - 1);
+            }
+        }
+        // 更新主动移动实体排序
+        affected += updateEntityField(entityTableName, entityFieldName, originRecord.getSortNum().toString(), id);
+        return affected;
+    }
+
+    /**
+     * 更新实体字段
+     * @param entityTableName 实体表名
+     * @param entityFieldName 实体字段名
+     * @param value 值
+     * @param id 实体id
+     */
+    private Integer updateEntityField(String entityTableName, String entityFieldName, String value, Long id) {
+        Map<String, String> params = new HashMap<>();
+        params.put(entityFieldName, value);
+        return queryMetaEntityPatchMachineDao.updateEntity(entityTableName, params, id);
     }
 }

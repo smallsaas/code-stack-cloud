@@ -45,4 +45,22 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      * @return
      */
     BulkResult bulkDeleteEntity(String entity, List<Long> ids);
+
+    /**
+     * 将entity排序上移
+     * @param entity 实体
+     * @param id 被移动实体id
+     * @param nextId 需移动到下一个位置实体的id
+     * @return
+     */
+    Integer moveUpEntity(String entity, Long id, Long nextId);
+
+    /**
+     * 将entity排序下移
+     * @param entity 实体
+     * @param id 被移动实体id
+     * @param nextId 需移动到下一个位置实体的id
+     * @return
+     */
+    Integer moveDownEntity(String entity, Long id, Long nextId);
 }
