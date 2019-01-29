@@ -1,6 +1,7 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
 import com.google.common.base.CaseFormat;
+import com.jfeat.am.module.meta.constant.EntityFieldName;
 import com.jfeat.am.module.meta.constant.EntityFieldType;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaEntityPatchMachineDao;
 import com.jfeat.am.module.meta.services.domain.model.SortNumberRecord;
@@ -100,22 +101,24 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         }
         int fail = paramsList.size() - success;
         return MetaUtils.createBulkResult(new BulkMessage(200, success, "更新成功"),
-                fail > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), fail, "更新失败，数据库错误") : null);
+                fail > 0
+                        ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(),
+                        fail, "更新失败，数据库错误")
+                        : null);
     }
 
     @Override
     @Transactional
     public BulkResult bulkDeleteEntity(String entity, List<Long> ids) {
         // 获取id配置
-        MetaEntityPatchMachine meta = createMetaMap(findMetaList(entity)).get("id");
-        if (null == meta) {
-            throw new BusinessException(BusinessCode.CodeBase.getCode(),
-                    "["+entity+"]缺失字段配置：entityFieldName=id");
-        }
+        MetaEntityPatchMachine meta = getFieldMeta(entity, EntityFieldName.ID, createMetaMap(findMetaList(entity)));
         int success = queryMetaEntityPatchMachineDao.bulkDeleteEntity(meta.getEntityTableName(), ids);
         int fail = ids.size() - success;
         return MetaUtils.createBulkResult(new BulkMessage(200, success, "删除成功"),
-                fail > 0 ? new BulkMessage(BusinessCode.DatabaseDeleteError.getCode(), fail, "删除失败，数据库错误") : null);
+                fail > 0
+                        ? new BulkMessage(BusinessCode.DatabaseDeleteError.getCode(),
+                        fail, "删除失败，数据库错误")
+                        : null);
     }
 
     @Override
@@ -130,6 +133,39 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         return moveEntity(entity, id, nextId, false);
     }
 
+    @Override
+    @Transactional
+    public Integer handleLogicDelete(String entity, Long id, boolean isReverse) {
+        int value = isReverse ? 0 : 1;
+        // 获取配置
+        MetaEntityPatchMachine meta =
+                getFieldMeta(entity, EntityFieldName.IS_DELETED, createMetaMap(findMetaList(entity)));
+        // 设置参数
+        Map<String, String> params = new HashMap(){{put(meta.getEntityFieldName(), value);}};
+        return queryMetaEntityPatchMachineDao.updateEntity(meta.getEntityTableName(), params, id);
+    }
+
+    @Override
+    @Transactional
+    public BulkResult handleBulkLogicDelete(String entity, List<Long> ids, boolean isReverse) {
+        int value = isReverse ? 0 : 1;
+        // 获取配置
+        MetaEntityPatchMachine meta =
+                getFieldMeta(entity, EntityFieldName.IS_DELETED, createMetaMap(findMetaList(entity)));
+        // 设置参数
+        Map<String, String> params = new HashMap(){{put(meta.getEntityFieldName(), value);}};
+        // 成功条数
+        int successCount =
+                queryMetaEntityPatchMachineDao.bulkUpdateEntityBySameParams(meta.getEntityTableName(), params, ids);
+        // 失败条数
+        int fail = ids.size() - successCount;
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "操作成功"),
+                fail > 0
+                        ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), fail, "操作失败")
+                        : null);
+    }
+
     /**
      * 获取meta Map
      * @param entity 实体
@@ -139,7 +175,8 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         // 获取meta配置列表
         MetaEntityPatchMachine queryEntity = new MetaEntityPatchMachine();
         queryEntity.setEntity(entity);
-        List<MetaEntityPatchMachine> metaList = findMetaEntityPatchMachines(queryEntity);
+        List<MetaEntityPatchMachine> metaList =
+                queryMetaEntityPatchMachineDao.findMetaEntityPatchMachines(queryEntity);
         if (CollectionUtils.isEmpty(metaList)) {
             throw new BusinessException(
                     BusinessCode.CodeBase.getCode(),
@@ -171,25 +208,43 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
      */
     private Integer update(Long id, String entity, String entityTableName, Map<String, String> params, Map<String, MetaEntityPatchMachine> metaMap) {
         // 用于将驼峰命名的参数转换为蛇形命名
-        Map<String, String> queryMap = new HashMap<>();
+        Map<String, String> updateMap = new HashMap<>();
         // 校验参数
         for (Map.Entry<String, String> param : params.entrySet()) {
-
-            // 通过查询参数获取配置，这里处理了一下，web请求参数是驼峰命名法，但数据库里存的字段可能是：驼峰或蛇形命名
-            String camelCaseKey = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE,param.getKey());
-            MetaEntityPatchMachine meta = metaMap.get(param.getKey());
-            if (null == meta) {
-                meta = metaMap.get(camelCaseKey);
-            }
-            if (null == meta) {
-                throw new BusinessException(BusinessCode.CodeBase.getCode(),
-                        "[id:"+id+"]缺失字段配置：entity="+entity+"，entityFieldName="+param.getKey());
-            }
-            queryMap.put(meta.getEntityFieldName(), param.getValue());
+            // 获取字段配置
+            MetaEntityPatchMachine meta = getFieldMeta(entity, param.getKey(), metaMap);
+            updateMap.put(meta.getEntityFieldName(), param.getValue());
             // 检查参数
             check(id, meta, param);
         }
-        return queryMetaEntityPatchMachineDao.updateEntity(entityTableName, queryMap, id);
+        return queryMetaEntityPatchMachineDao.updateEntity(entityTableName, updateMap, id);
+    }
+
+    /**
+     * 获取字段配置
+     * @param entity 实体
+     * @param fieldName 字段名
+     * @param metaMap 配置map
+     * @return
+     */
+    private MetaEntityPatchMachine getFieldMeta(String entity, String fieldName,
+                                                Map<String ,MetaEntityPatchMachine> metaMap) {
+        // 通过查询参数获取配置，这里处理了一下，web请求参数是驼峰命名法，但数据库里存的字段可能是：驼峰或蛇形命名
+        MetaEntityPatchMachine meta = metaMap.get(fieldName);
+        if (null == meta) {
+            meta = metaMap.get(CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE,fieldName));
+        }
+        if (null == meta) {
+            meta = metaMap.get(CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, fieldName));
+        }
+        if (null == meta) {
+            throw new BusinessException(BusinessCode.CodeBase.getCode(),
+                    new StringBuilder()
+                            .append("[").append(entity).append("]缺失字段配置：")
+                            .append("entityFieldName=").append(fieldName)
+                            .toString());
+        }
+        return meta;
     }
 
     /**
@@ -261,18 +316,9 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
      * @return
      */
     private Integer moveEntity(String entity, Long id, Long nextId, boolean isMoveUp) {
-        // 获取实体所有配置
-        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(findMetaList(entity));
-        // 获取排序配置，兼容蛇形、驼峰两种命名规范
-        MetaEntityPatchMachine sortMeta = metaMap.get("sort_num");
-        if (null == sortMeta) {
-            sortMeta = metaMap.get("sortNum");
-        }
-        // 获取配置失败
-        if (null == sortMeta) {
-            throw new BusinessException(BusinessCode.CodeBase.getCode(),
-                    "["+entity+"]缺失字段配置：sort_num或sortNum");
-        }
+        // 获取实体sort_num字段配置
+        MetaEntityPatchMachine sortMeta =
+                getFieldMeta(entity, EntityFieldName.SORT_NUM, createMetaMap(findMetaList(entity)));
         // 表名
         String entityTableName = sortMeta.getEntityTableName();
         // 字段名
@@ -312,11 +358,9 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
             // 更新被迫移动实体排序
             affected += updateEntityField(entityTableName, entityFieldName, nextRecord.getSortNum().toString(), nextId);
         } else { // 如果相同
-            // 如果是上移，即当前row 中的 sort_num + 1
+            // 如果是上移
             if (isMoveUp) {
-                originRecord.setSortNum(originRecord.getSortNum() + 1);
-            } else { // 如果是下移
-                // 如果当前实体的排序为0，禁止下移
+                // 如果当前实体的排序为0，禁止上移
                 if (originRecord.getSortNum() == 0) {
                     throw new BusinessException(
                             BusinessCode.BadRequest.getCode(),
@@ -324,6 +368,9 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                 }
                 // 当前row 中的 sort_num - 1
                 originRecord.setSortNum(originRecord.getSortNum() - 1);
+            } else {
+                // 如果是下移，即当前row 中的 sort_num + 1
+                originRecord.setSortNum(originRecord.getSortNum() + 1);
             }
         }
         // 更新主动移动实体排序

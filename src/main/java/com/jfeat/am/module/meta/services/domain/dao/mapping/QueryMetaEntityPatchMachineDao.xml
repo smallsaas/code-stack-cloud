@@ -47,6 +47,18 @@
         WHERE id = #{id}
     </update>
 
+    <update id="bulkUpdateEntityBySameParams">
+        UPDATE ${entityTableName}
+        SET
+        <foreach collection="params.keys" item="key" separator=",">
+            ${key} = #{params[${key}]}
+        </foreach>
+        WHERE id in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            ${id}
+        </foreach>
+    </update>
+
     <delete id="bulkDeleteEntity">
         DELETE FROM ${entityTableName}
         WHERE id IN

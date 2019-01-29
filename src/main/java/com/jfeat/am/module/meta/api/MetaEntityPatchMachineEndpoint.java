@@ -118,4 +118,44 @@ public class MetaEntityPatchMachineEndpoint {
                             @PathVariable(name = "nextId") Long nextId) {
         return SuccessTip.create(metaEntityPatchMachineService.moveDownEntity(entity, id, nextId));
     }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "逻辑删除实体")
+    @PostMapping("/entity/{entity}/entities/{id}/action/logicDelete")
+    @ApiOperation(value = "逻辑删除实体")
+    public Tip logicDeleteEntity(@PathVariable(name = "id") Long id,
+                            @PathVariable(name = "entity") String entity) {
+        return SuccessTip.create(metaEntityPatchMachineService.handleLogicDelete(entity, id, false));
+    }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "恢复逻辑删除的实体")
+    @PostMapping("/entity/{entity}/entities/{id}/action/logicDelete/recovery")
+    @ApiOperation(value = "恢复逻辑删除的实体")
+    public Tip recoveryLogicDeleteEntity(@PathVariable(name = "id") Long id,
+                                 @PathVariable(name = "entity") String entity) {
+        return SuccessTip.create(metaEntityPatchMachineService.handleLogicDelete(entity, id, true));
+    }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "批量逻辑删除的实体")
+    @PostMapping("/entity/{entity}/entities/action/bulk/logicDelete")
+    @ApiOperation(value = "批量逻辑删除的实体")
+    public Tip bulkLogicDeleteEntity(@PathVariable(name = "entity") String entity,
+                                             @RequestBody Map<String, List<Long>> params) {
+        if (null == params || null == params.get("ids") || CollectionUtils.isEmpty(params.get("ids"))) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
+        }
+        return SuccessTip.create(
+                metaEntityPatchMachineService.handleBulkLogicDelete(entity, params.get("ids"), false));
+    }
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "批量恢复逻辑删除的实体")
+    @PostMapping("/entity/{entity}/entities/action/bulk/logicDelete/recovery")
+    @ApiOperation(value = "批量恢复逻辑删除的实体")
+    public Tip bulkRecoveryLogicDeleteEntity(@PathVariable(name = "entity") String entity,
+                                     @RequestBody Map<String, List<Long>> params) {
+        if (null == params || null == params.get("ids") || CollectionUtils.isEmpty(params.get("ids"))) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
+        }
+        return SuccessTip.create(
+                metaEntityPatchMachineService.handleBulkLogicDelete(entity, params.get("ids"), true));
+    }
 }

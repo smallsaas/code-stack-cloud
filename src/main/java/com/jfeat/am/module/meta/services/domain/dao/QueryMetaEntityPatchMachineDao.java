@@ -21,6 +21,17 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                          @Param("params") Map<String, String> params,
                          @Param("id") Long id);
 
+    /**
+     * 批量更新多个实体相同字段为某个值
+     * @param entityTableName 表名
+     * @param params 参数
+     * @param ids id列表
+     * @return
+     */
+    Integer bulkUpdateEntityBySameParams(@Param("entityTableName") String entityTableName,
+                             @Param("params") Map<String, String> params,
+                             @Param("ids") List<Long> ids);
+
     Integer bulkDeleteEntity(@Param("entityTableName") String entityTableName,
                              @Param("ids") List<Long> ids);
 

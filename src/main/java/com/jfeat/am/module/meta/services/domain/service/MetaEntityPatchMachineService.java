@@ -63,4 +63,22 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      * @return
      */
     Integer moveDownEntity(String entity, Long id, Long nextId);
+
+    /**
+     * 逻辑删除单个实体
+     * @param entity 实体
+     * @param id 实体id
+     * @param isReverse 是否为反向操作
+     * @return
+     */
+    Integer handleLogicDelete(String entity, Long id, boolean isReverse);
+
+    /**
+     * 逻辑批量删除实体
+     * @param entity 实体
+     * @param ids 实体id列表
+     * @param isReverse 是否为反向操作
+     * @return
+     */
+    BulkResult handleBulkLogicDelete(String entity, List<Long> ids, boolean isReverse);
 }
