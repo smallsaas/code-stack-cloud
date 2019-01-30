@@ -118,14 +118,14 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
                         .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(targetList)) {
             throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(), "[Meta]未获取到非退回toStatus，fromStatus："+fromStatus);
+                    BusinessCode.CodeBase.getCode(), "[Meta]未获取到toStatus，fromStatus："+fromStatus);
         }
         if (targetList.size() > 1) {
             // 获取非退回toStatus List
             List<String> toStatusList =
                     targetList.stream().map(MetaStatusMachine::getToStatus).collect(Collectors.toList());
             throw new BusinessException(BusinessCode.CodeBase.getCode(),
-                    new StringBuilder("[Meta]获取到多个非退回toStatus：").append(toStatusList)
+                    new StringBuilder("[Meta]获取到多个toStatus：").append(toStatusList)
                             .append("，fromStatus：").append(fromStatus).toString());
         }
         return targetList.get(0);
