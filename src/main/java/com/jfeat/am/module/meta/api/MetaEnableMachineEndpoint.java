@@ -13,6 +13,7 @@ import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -95,7 +96,7 @@ public class MetaEnableMachineEndpoint {
     @ApiOperation(value = "批量更新为有效")
     public Tip bulkEnableEntity(@PathVariable(name = "entity") String entity,
                                 @RequestBody Ids ids) {
-        if (null == ids || null == ids.getIds()) {
+        if (null == ids || CollectionUtils.isEmpty(ids.getIds())) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺失ids[]参数");
         }
         return SuccessTip.create(metaEnableMachineService.bulkEnableEntity(ids.getIds(), entity));
@@ -106,7 +107,7 @@ public class MetaEnableMachineEndpoint {
     @ApiOperation(value = "批量更新为无效")
     public Tip bulkDisableEntity(@PathVariable(name = "entity") String entity,
                                  @RequestBody Ids ids) {
-        if (null == ids || null == ids.getIds()) {
+        if (null == ids || CollectionUtils.isEmpty(ids.getIds())) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺失ids[]参数");
         }
         return SuccessTip.create(metaEnableMachineService.bulkDisableEntity(ids.getIds(), entity));
