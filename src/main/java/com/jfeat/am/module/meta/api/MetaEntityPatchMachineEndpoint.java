@@ -6,6 +6,7 @@ import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineSe
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.tips.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
@@ -94,11 +95,11 @@ public class MetaEntityPatchMachineEndpoint {
     @PostMapping("/entity/{entity}/entities/bulk/delete")
     @ApiOperation(value = "批量删除实体")
     public Tip bulkDeleteEntity(@PathVariable(name = "entity") String entity,
-                                @RequestBody Map<String, List<Long>> params) {
-        if (null == params || null == params.get("ids") || CollectionUtils.isEmpty(params.get("ids"))) {
+                                @RequestBody Ids ids) {
+        if (null == ids || CollectionUtils.isEmpty(ids.getIds())) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
         }
-        return SuccessTip.create(metaEntityPatchMachineService.bulkDeleteEntity(entity, params.get("ids")));
+        return SuccessTip.create(metaEntityPatchMachineService.bulkDeleteEntity(entity, ids.getIds()));
     }
 
     @BusinessLog(name = "MetaEntityPatchMachine", value = "move up entity")
@@ -139,23 +140,23 @@ public class MetaEntityPatchMachineEndpoint {
     @PostMapping("/entity/{entity}/entities/action/bulk/logicDelete")
     @ApiOperation(value = "批量逻辑删除的实体")
     public Tip bulkLogicDeleteEntity(@PathVariable(name = "entity") String entity,
-                                             @RequestBody Map<String, List<Long>> params) {
-        if (null == params || null == params.get("ids") || CollectionUtils.isEmpty(params.get("ids"))) {
+                                             @RequestBody Ids ids) {
+        if (null == ids|| CollectionUtils.isEmpty(ids.getIds())) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
         }
         return SuccessTip.create(
-                metaEntityPatchMachineService.handleBulkLogicDelete(entity, params.get("ids"), false));
+                metaEntityPatchMachineService.handleBulkLogicDelete(entity, ids.getIds(), false));
     }
 
     @BusinessLog(name = "MetaEntityPatchMachine", value = "批量恢复逻辑删除的实体")
     @PostMapping("/entity/{entity}/entities/action/bulk/logicDelete/recovery")
     @ApiOperation(value = "批量恢复逻辑删除的实体")
     public Tip bulkRecoveryLogicDeleteEntity(@PathVariable(name = "entity") String entity,
-                                     @RequestBody Map<String, List<Long>> params) {
-        if (null == params || null == params.get("ids") || CollectionUtils.isEmpty(params.get("ids"))) {
+                                     @RequestBody Ids ids) {
+        if (null == ids|| CollectionUtils.isEmpty(ids.getIds())) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
         }
         return SuccessTip.create(
-                metaEntityPatchMachineService.handleBulkLogicDelete(entity, params.get("ids"), true));
+                metaEntityPatchMachineService.handleBulkLogicDelete(entity, ids.getIds(), true));
     }
 }

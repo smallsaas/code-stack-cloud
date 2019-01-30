@@ -11,7 +11,6 @@ import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -131,13 +130,14 @@ public class MetaEnableMachineServiceImpl extends CRUDMetaEnableMachineServiceIm
         // 查询参数
         MetaEnableMachine queryParams = new MetaEnableMachine();
         queryParams.setEntity(entity);
-        List<MetaEnableMachine> metaEnableMachineList = findMetaEnableMachine(queryParams);
-        if (CollectionUtils.isEmpty(metaEnableMachineList)) {
+        // 查找目标配置
+        MetaEnableMachine targetMeta = queryMetaEnableMachineDao.selectOne(queryParams);
+        if (null == targetMeta) {
             throw new BusinessException(
                     BusinessCode.ErrorStatus.getCode(),
                     "获取meta enable配置失败，entity="+entity+"。请联系相关人员配置。");
         }
-        return metaEnableMachineList.get(0);
+        return targetMeta;
     }
 
     /**

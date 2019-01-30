@@ -1,7 +1,5 @@
 package com.jfeat.am.module.meta.services.domain.dao;
 
-import com.jfeat.am.module.meta.services.domain.model.MetaEntityPatchMachineRecord;
-
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.jfeat.am.module.meta.services.domain.model.SortNumberRecord;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
@@ -13,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Code Generator on 2019-01-07
  */
-public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPatchMachineRecord> {
+public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPatchMachine> {
 
     List<MetaEntityPatchMachine> findMetaEntityPatchMachines(MetaEntityPatchMachine metaEntityPatchMachine);
 

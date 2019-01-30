@@ -19,4 +19,14 @@ public class EntityFieldName {
      * delete字段
      */
     public static final String IS_DELETED = "is_deleted";
+
+    /**
+     * 状态字段
+     */
+    public static final String STATUS = "status";
+
+    /**
+     * 意见、备注
+     */
+    public static final String NOTE = "note";
 }

@@ -1,11 +1,8 @@
 package com.jfeat.am.module.meta.services.domain.model;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class BulkChangStatusModel implements Serializable {
-
-    private List<Long> ids;
+public class ChangeStatusModel implements Serializable{
 
     private String status;
 
@@ -13,14 +10,6 @@ public class BulkChangStatusModel implements Serializable {
      * 意见、备注
      */
     private String note;
-
-    public List<Long> getIds() {
-        return ids;
-    }
-
-    public void setIds(List<Long> ids) {
-        this.ids = ids;
-    }
 
     public String getStatus() {
         return status;
@@ -40,9 +29,8 @@ public class BulkChangStatusModel implements Serializable {
 
     @Override
     public String toString() {
-        return "BulkChangStatusModel{" +
-                "ids=" + ids +
-                ", status='" + status + '\'' +
+        return "ChangeStatusModel{" +
+                "status='" + status + '\'' +
                 ", note='" + note + '\'' +
                 '}';
     }
