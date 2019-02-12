@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -51,14 +52,14 @@ public class MetaStatusMachineEndpoint {
         queryEntity.setEntity(entity);
         queryEntity.setFromStatus(fromStatus);
         queryEntity.setToStatus(toStatus);
-        return SuccessTip.create(metaStatusMachineService.findMetaStatusMachine(queryEntity));
+        return SuccessTip.create(filterTableName(metaStatusMachineService.findMetaStatusMachine(queryEntity)));
     }
 
-    @BusinessLog(name = "MetaStatusMachine", value = "获取实体完成状态流")
+    @BusinessLog(name = "MetaStatusMachine", value = "获取链式状态流")
     @GetMapping("/entity/{entity}/status/linked")
-    @ApiOperation("获取实体完成状态流")
+    @ApiOperation("获取链式状态流")
     public Tip getLinkedEntityStatusList(@PathVariable(name = "entity") String entity) {
-        return SuccessTip.create(metaStatusMachineService.getLinkedEntityStatusList(entity));
+        return SuccessTip.create(filterTableName(metaStatusMachineService.getLinkedEntityStatusList(entity)));
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "add 状态")
@@ -133,5 +134,15 @@ public class MetaStatusMachineEndpoint {
     public Tip bulkCancel(@PathVariable(name = "entity") String entity,
                         @RequestBody BulkApprovalModel model) {
         return SuccessTip.create(metaStatusMachineService.bulkCancel(entity, model));
+    }
+
+    /**
+     * 过滤掉entityTableName字段数据
+     * @param metaList 配置列表
+     * @return
+     */
+    private List<MetaStatusMachine> filterTableName(List<MetaStatusMachine> metaList) {
+        metaList.forEach(meta -> meta.setEntityTableName(null));
+        return metaList;
     }
 }
