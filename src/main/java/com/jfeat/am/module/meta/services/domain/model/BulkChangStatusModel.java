@@ -9,11 +9,6 @@ public class BulkChangStatusModel implements Serializable {
 
     private String status;
 
-    /**
-     * 意见、备注
-     */
-    private String note;
-
     public List<Long> getIds() {
         return ids;
     }
@@ -30,20 +25,11 @@ public class BulkChangStatusModel implements Serializable {
         this.status = status;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
     @Override
     public String toString() {
         return "BulkChangStatusModel{" +
                 "ids=" + ids +
                 ", status='" + status + '\'' +
-                ", note='" + note + '\'' +
                 '}';
     }
 }

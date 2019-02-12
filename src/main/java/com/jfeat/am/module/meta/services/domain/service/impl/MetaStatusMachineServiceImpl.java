@@ -3,6 +3,8 @@ package com.jfeat.am.module.meta.services.domain.service.impl;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.meta.constant.StatusConstant;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao;
+import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
+import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.EntityCurrentStatus;
@@ -24,10 +26,9 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -55,27 +56,22 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
 
     @Override
     public List<MetaStatusMachine> getLinkedEntityStatusList(String entity) {
-        // 查询参数
-        MetaStatusMachine queryParams = new MetaStatusMachine();
-        queryParams.setEntity(entity);
         // 根据entity查询列表
-        List<MetaStatusMachine> metaList = queryMetaStatusMachineDao.findMetaStatusMachine(queryParams);
-        if (CollectionUtils.isEmpty(metaList)) {
-            throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(), "[Meta]未配置状态流，请检查：entity="+entity);
-        }
-        String fromStatus = StatusConstant.START;
-        String handledToStatus = null;
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        Set<String> handledStatus = new HashSet<>();
+        handledStatus.add(StatusConstant.CANCEL);
+        MetaStatusMachine startMeta = getLinkedByFromStatus(StatusConstant.START, handledStatus, metaList);
+        String fromStatus = startMeta.getToStatus();
         List<MetaStatusMachine> linkedList = new ArrayList<>();
         while (true) {
-            MetaStatusMachine next = getByFromStatus(fromStatus, handledToStatus, metaList);
-            linkedList.add(next);
+            MetaStatusMachine next = getLinkedByFromStatus(fromStatus, handledStatus, metaList);
             // 如果状态流toStatus为“end”，跳出循环
             if (next.getToStatus().equals(StatusConstant.END)) {
                 break;
             }
+            handledStatus.add(next.getFromStatus());
+            linkedList.add(next);
             fromStatus = next.getToStatus();
-            handledToStatus = next.getFromStatus();
         }
         return linkedList;
     }
@@ -83,171 +79,313 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
     @Override
     @Transactional
     public Integer changeEntityStatus(String entity, Long id, ChangeStatusModel model) {
-        return doChangeEntityStatus(entity, id ,model, false);
+        if (null == model || StringUtils.isBlank(model.getStatus())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]缺失参数：status");
+        }
+        String toStatus = model.getStatus();
+        // 加载状态流
+        List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity);
+        String entityTableName = metaStatusMachineList.get(0).getEntityTableName();
+        // 获取实体当前状态
+        String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        // 不允许状态跳转
+        if (!canMatchMeta(entityCurrentStatus, toStatus, metaStatusMachineList)) {
+            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
+                    new StringBuilder()
+                            .append("[Meta]不允许状态跳转：")
+                            .append("From ").append(entityCurrentStatus)
+                            .append(" To ").append(toStatus)
+                            .toString());
+        }
+        // 更新实体
+        return queryMetaStatusMachineDao.updateEntityStatus(entityTableName, id, toStatus);
     }
 
     @Override
-    public Integer changeEntityStatusWithLog(String entity, Long id, ChangeStatusModel model) {
-        return doChangeEntityStatus(entity, id, model, true);
+    @Transactional
+    public Integer pass(String entity, Long id, AdditionModel additionModel) {
+        List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
+        return doPass(entity, id, linkedMetaList, additionModel);
+    }
+
+    @Override
+    @Transactional
+    public Integer reject(String entity, Long id, AdditionModel additionModel) {
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
+        return doReject(entity, id, metaList, linkedMetaList, additionModel);
+    }
+
+    @Override
+    @Transactional
+    public Integer cancel(String entity, Long id, AdditionModel additionModel) {
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        return doCancel(entity, id, metaList, additionModel);
     }
 
     @Override
     @Transactional
     public BulkResult bulkChangeEntityStatus(String entity, BulkChangStatusModel model) {
-        return doBulkChangeEntityStatus(entity, model, false);
+        // 参数校验
+        if (null == model || null == model.getIds() || model.getIds().isEmpty()
+                || StringUtils.isBlank(model.getStatus())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        List<Long> ids = model.getIds();
+        String status = model.getStatus();
+        int forbiddenCount = 0;
+
+        // 获取可以到达该状态的状态机
+        List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity);
+        // 获取表名
+        String entityTableName = metaStatusMachineList.get(0).getEntityTableName();
+        List<EntityCurrentStatus> entityCurrentStatuses =
+                queryMetaStatusMachineDao.getEntitiesCurrentStatus(ids, entityTableName);
+        // 可以更新的id列表
+        List<Long> canUpdateIds = new ArrayList<>();
+        for (EntityCurrentStatus entityCurrentStatus : entityCurrentStatuses) {
+            if (!canMatchMeta(entityCurrentStatus.getStatus(), status, metaStatusMachineList)) {
+                forbiddenCount++;
+                continue;
+            }
+            canUpdateIds.add(entityCurrentStatus.getId());
+        }
+        // 成功个数
+        int successCount = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
+        // 失败个数
+        int failCount = canUpdateIds.size() - successCount;
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]更改状态成功"),
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]更新失败，数据库错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]不允许更新，不允许跳转到状态:["+status+"]") : null);
     }
 
     @Override
     @Transactional
-    public BulkResult bulkChangeEntityStatusWithLog(String entity, BulkChangStatusModel model) {
-        return doBulkChangeEntityStatus(entity, model, true);
+    public BulkResult bulkPass(String entity, BulkApprovalModel bulkApprovalModel) {
+        if (null == bulkApprovalModel || CollectionUtils.isEmpty(bulkApprovalModel.getIds())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        int successCount = 0;
+        int failCount = 0;
+        int forbiddenCount = 0;
+        List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
+        for (Long id : bulkApprovalModel.getIds()) {
+            try {
+                // 执行通过操作
+                int result = doPass(entity, id, linkedMetaList, bulkApprovalModel.getAddition());
+                if (result > 0) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+            } catch (BusinessException e) {
+                forbiddenCount++;
+            }
+        }
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]操作成功"),
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]操作失败，数据库更新错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
+    }
+
+    @Override
+    @Transactional
+    public BulkResult bulkReject(String entity, BulkApprovalModel bulkApprovalModel) {
+        if (null == bulkApprovalModel || CollectionUtils.isEmpty(bulkApprovalModel.getIds())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        int successCount = 0;
+        int failCount = 0;
+        int forbiddenCount = 0;
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
+        for (Long id : bulkApprovalModel.getIds()) {
+            try {
+                // 执行拒绝操作
+                int result = doReject(entity, id, metaList, linkedMetaList, bulkApprovalModel.getAddition());
+                if (result > 0) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+            } catch (BusinessException e) {
+                forbiddenCount++;
+            }
+        }
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]操作成功"),
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]操作失败，数据库更新错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
+    }
+
+    @Override
+    @Transactional
+    public BulkResult bulkCancel(String entity, BulkApprovalModel bulkApprovalModel) {
+        if (null == bulkApprovalModel || CollectionUtils.isEmpty(bulkApprovalModel.getIds())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        int successCount = 0;
+        int failCount = 0;
+        int forbiddenCount = 0;
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        for (Long id : bulkApprovalModel.getIds()) {
+            try {
+                // 执行关闭操作
+                int result = doCancel(entity, id, metaList, bulkApprovalModel.getAddition());
+                if (result > 0) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+            } catch (BusinessException e) {
+                forbiddenCount++;
+            }
+        }
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]操作成功"),
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]操作失败，数据库更新错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
+    }
+
+    private int doPass(String entity, Long id, List<MetaStatusMachine> linkedMetaList,
+                       AdditionModel additionModel) {
+        String entityTableName = linkedMetaList.get(0).getEntityTableName();
+        // 获取实体当前状态
+        String fromStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        // 获取目标配置
+        List<MetaStatusMachine> targetMetaList = linkedMetaList.stream()
+                .filter(meta -> meta.getFromStatus().equals(fromStatus)).collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(targetMetaList)) {
+            throw new BusinessException(BusinessCode.CodeBase,
+                    "[Meta]通过审批操作失败，缺失配置，fromStatus="+fromStatus);
+        }
+        String toStatus = targetMetaList.get(0).getToStatus();
+        // 更新实体
+        int result = queryMetaStatusMachineDao.updateEntityStatus(entityTableName, id, toStatus);
+        // 更新成功，保存工作流
+        if (result > 0) {
+            saveWorkflow(entity, id, fromStatus, toStatus, additionModel);
+        }
+        return result;
+    }
+
+    private int doReject(String entity, Long id, List<MetaStatusMachine> metaList,
+                         List<MetaStatusMachine> linkedMetaList, AdditionModel additionModel) {
+        String entityTableName = metaList.get(0).getEntityTableName();
+        // 获取实体当前状态
+        String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        List<MetaStatusMachine> targetMetaList = metaList.stream()
+                .filter(meta -> meta.getFromStatus().equals(entityCurrentStatus)
+                        && !canMatchMeta(meta.getFromStatus(), meta.getToStatus(), linkedMetaList)
+                        && !meta.getToStatus().equals(StatusConstant.END)
+                        && !meta.getToStatus().equals(StatusConstant.CANCEL))
+                .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(targetMetaList)) {
+            throw new BusinessException(BusinessCode.CodeBase,
+                    "[Meta]不通过审批操作失败，缺失配置，fromStatus="+entityCurrentStatus);
+        }
+        if (targetMetaList.size() > 1) {
+            // 获取toStatus List
+            List<String> toStatusList =
+                    targetMetaList.stream().map(MetaStatusMachine::getToStatus).collect(Collectors.toList());
+            throw new BusinessException(BusinessCode.CodeBase.getCode(),
+                    new StringBuilder("[Meta]获取到多个不通过审批状态：").append(toStatusList)
+                            .append("，fromStatus=").append(entityCurrentStatus).toString());
+        }
+        String toStatus = targetMetaList.get(0).getToStatus();
+        // 更新实体
+        int result = queryMetaStatusMachineDao.updateEntityStatus(entityTableName, id, toStatus);
+        // 更新成功，保存工作流
+        if (result > 0) {
+            saveWorkflow(entity, id, entityCurrentStatus, toStatus, additionModel);
+        }
+        return result;
+    }
+
+    private int doCancel(String entity, Long id, List<MetaStatusMachine> metaList, AdditionModel additionModel) {
+        String entityTableName = metaList.get(0).getEntityTableName();
+        // 获取实体当前状态
+        String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        if (!canMatchMeta(entityCurrentStatus, StatusConstant.CANCEL, metaList)) {
+            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
+                    "[Meta]关闭操作失败，未配置状态跳转：fromStatus="+entityCurrentStatus);
+        }
+        // 更新实体
+        int result = queryMetaStatusMachineDao.updateEntityStatus(entityTableName, id, StatusConstant.CANCEL);
+        // 更新成功，保存工作流
+        if (result > 0) {
+            saveWorkflow(entity, id, entityCurrentStatus, StatusConstant.CANCEL, additionModel);
+        }
+        return result;
     }
 
     /**
      * 根据fromStatus从列表中获取下一个未被处理的meta配置
      * @param fromStatus
-     * @param handledToStatus
+     * @param handledStatus
      * @param metaList
      * @return
      */
-    private MetaStatusMachine getByFromStatus(String fromStatus, String handledToStatus, List<MetaStatusMachine> metaList) {
+    private MetaStatusMachine getLinkedByFromStatus(String fromStatus, Set<String> handledStatus,
+                                                    List<MetaStatusMachine> metaList) {
         List<MetaStatusMachine> targetList =
-                metaList.stream().filter(meta -> StringUtils.isBlank(handledToStatus)
-                ? meta.getFromStatus().equals(fromStatus)
-                : meta.getFromStatus().equals(fromStatus) && !meta.getToStatus().equals(handledToStatus))
+                metaList.stream()
+                        .filter(meta -> meta.getFromStatus().equals(fromStatus)
+                                && !handledStatus.contains(meta.getToStatus()))
                         .collect(Collectors.toList());
         if (CollectionUtils.isEmpty(targetList)) {
             throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(), "[Meta]未获取到toStatus，fromStatus="+fromStatus);
+                    BusinessCode.CodeBase.getCode(),
+                    "[Meta]构建链式状态流失败：缺失配置，未找到对应的toStatus，fromStatus="+fromStatus);
         }
         if (targetList.size() > 1) {
             // 获取非退回toStatus List
             List<String> toStatusList =
                     targetList.stream().map(MetaStatusMachine::getToStatus).collect(Collectors.toList());
             throw new BusinessException(BusinessCode.CodeBase.getCode(),
-                    new StringBuilder("[Meta]获取到多个toStatus=").append(toStatusList)
+                    new StringBuilder("[Meta]构建链式状态流失败：获取到多个toStatus=").append(toStatusList)
                             .append("，fromStatus=").append(fromStatus).toString());
         }
         return targetList.get(0);
     }
 
     /**
-     * 更改实体状态
-     * @param entity 实体
-     * @param id 实体id
-     * @param model 参数
-     * @param shouldSaveLog 是否需要保存日志（true，false）
-     * @return
-     */
-    private Integer doChangeEntityStatus(String entity, Long id, ChangeStatusModel model, boolean shouldSaveLog) {
-        if (null == model || StringUtils.isBlank(model.getStatus())) {
-            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]缺失参数：status");
-        }
-        String status = model.getStatus();
-        List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity, status);
-        String entityTableName = metaStatusMachineList.get(0).getEntityTableName();
-        // 获取实体当前状态
-        String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
-        // 不允许状态跳转
-        if (!isInMetaStatusMachineList(entityCurrentStatus, metaStatusMachineList)) {
-            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
-                    new StringBuilder().append("[Meta]不允许状态跳转：")
-                            .append("From ").append(entityCurrentStatus).append(" To ").append(status)
-                            .toString());
-        }
-        // 更新实体
-        int affected = queryMetaStatusMachineDao.updateEntityStatus(entityTableName, id, status);
-        // 需要保存日志
-        if (shouldSaveLog) {
-            saveWorkflow(entity, id, entityCurrentStatus, status, model.getNote());
-        }
-        return affected;
-    }
-
-    /**
-     * 批量改变实体状态
-     * @param entity 实体
-     * @param model 参数
-     * @param shouldSaveLog 是否需要保存日志（true，false）
-     * @return
-     */
-    private BulkResult doBulkChangeEntityStatus(String entity, BulkChangStatusModel model, boolean shouldSaveLog) {
-        // 参数校验
-        if (null == model || null == model.getIds() || model.getIds().isEmpty()
-                || StringUtils.isBlank(model.getStatus())) {
-            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]缺失参数");
-        }
-        List<Long> ids = model.getIds();
-        String status = model.getStatus();
-        int forbiddenCount = 0;
-        int successCount = 0;
-        int failCount = 0;
-
-        // 获取可以到达该状态的状态机
-        List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity, status);
-        // 获取表名
-        String entityTableName = metaStatusMachineList.get(0).getEntityTableName();
-        List<EntityCurrentStatus> entityCurrentStatuses =
-                queryMetaStatusMachineDao.getEntitiesCurrentStatus(ids, entityTableName);
-        // 能更新的实体id
-        List<Long> canUpdateIds = new ArrayList<>();
-
-        for (EntityCurrentStatus entityCurrentStatus : entityCurrentStatuses) {
-            if (!isInMetaStatusMachineList(entityCurrentStatus.getStatus(), metaStatusMachineList)) {
-                forbiddenCount++;
-                continue;
-            }
-            // 更新实体
-            int result = queryMetaStatusMachineDao.updateEntityStatus(
-                    entityTableName, entityCurrentStatus.getId(), status);
-            // 更新失败
-            if (result < 0) {
-                failCount++;
-                continue;
-            }
-            successCount++;
-            // 需要保存日志
-            if (shouldSaveLog) {
-                saveWorkflow(entity, entityCurrentStatus.getId(), entityCurrentStatus.getStatus(), status,
-                        model.getNote());
-            }
-        }
-        // 构建返回
-        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]更改状态成功"),
-                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
-                        "[Meta]更新失败，数据库错误") : null,
-                forbiddenCount > 0 ? new BulkMessage(BusinessCode.CRUD_UPDATE_FAILURE.getCode(), forbiddenCount,
-                        "[Meta]不允许更新，不允许跳转到状态:["+status+"]") : null);
-    }
-
-
-    /**
      * 获取可以更新的状态机
      * @param entity 实体
-     * @param status 目的状态
      * @return
      */
-    private List<MetaStatusMachine> getMetaStatusMachineList(String entity, String status) {
+    private List<MetaStatusMachine> getMetaStatusMachineList(String entity) {
         MetaStatusMachine queryEntity = new MetaStatusMachine();
         queryEntity.setEntity(entity);
-        queryEntity.setToStatus(status);
         List<MetaStatusMachine> metaStatusMachineList = queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity);
-        if (null == metaStatusMachineList || metaStatusMachineList.isEmpty()) {
-            throw new BusinessException(
-                    BusinessCode.ErrorStatus.getCode(),
-                    new StringBuilder()
-                            .append("[Meta]没有配置状态流：")
-                            .append("entity=").append(entity)
-                            .append(",toStatus=").append(status)
-                            .toString());
+        if (CollectionUtils.isEmpty(metaStatusMachineList)) {
+            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
+                    "[Meta]未配置状态流，请检查：entity=" + entity);
         }
         return metaStatusMachineList;
     }
 
-    private boolean isInMetaStatusMachineList(String status, List<MetaStatusMachine> metaStatusMachineList) {
+    /**
+     * 能匹配到配置
+     * @param fromStatus from status
+     * @param toStatus to status
+     * @param metaStatusMachineList 状态配置列表
+     * @return
+     */
+    private boolean canMatchMeta(String fromStatus, String toStatus,
+                                 List<MetaStatusMachine> metaStatusMachineList) {
         for (MetaStatusMachine e : metaStatusMachineList) {
             // 判断能不能更新
-            if (e.getFromStatus().equals(status)) {
+            if (e.getFromStatus().equals(fromStatus) && e.getToStatus().equals(toStatus)) {
                 return Boolean.TRUE;
             }
         }
@@ -260,20 +398,16 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
      * @param entityId 实体id
      * @param fromStatus from status
      * @param toStatus to status
-     * @param note 意见、备注
+     * @param additionModel 附加信息
      * @return
      */
     private int saveWorkflow(String entity, Long entityId, String fromStatus, String toStatus,
-                             String note) {
+                             AdditionModel additionModel) {
         MetaWorkflowLiteActivity activity = new MetaWorkflowLiteActivity();
         // 设置实体
         activity.setEntity(entity);
         // 设置实体id
         activity.setEntityId(entityId);
-        // 有意见、备注，保存
-        if (StringUtils.isNotBlank(note)) {
-            activity.setNote(note);
-        }
         // 设置 from status
         activity.setFromStatus(fromStatus);
         // 设置 to status
@@ -284,9 +418,17 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         activity.setCreatedBy(JWTKit.getAccount());
         // 设置创建时间
         activity.setCreatedTime(new Date());
+        // 有附加条件
+        if (null != additionModel) {
+            // 有意见、备注，保存
+            if (StringUtils.isNotBlank(additionModel.getNote())) {
+                activity.setNote(additionModel.getNote());
+            }
+        }
         int result = metaWorkflowLiteActivityService.createMaster(activity);
         if (result < 0) {
-            throw new BusinessException(BusinessCode.DatabaseInsertError.getCode(), "[Meta]保留工作流活动失败");
+            throw new BusinessException(BusinessCode.DatabaseInsertError.getCode(),
+                    "[Meta]保留工作流活动失败，entityId="+entityId);
         }
         return result;
     }

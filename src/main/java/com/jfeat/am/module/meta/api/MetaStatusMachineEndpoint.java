@@ -2,7 +2,8 @@ package com.jfeat.am.module.meta.api;
 
 
 import com.jfeat.am.module.log.annotation.BusinessLog;
-import com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao;
+import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
+import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
 import com.jfeat.am.module.meta.services.domain.service.MetaStatusMachineService;
@@ -39,9 +40,6 @@ public class MetaStatusMachineEndpoint {
 
     @Resource
     MetaStatusMachineService metaStatusMachineService;
-
-    @Resource
-    QueryMetaStatusMachineDao queryMetaStatusMachineDao;
 
     @BusinessLog(name = "MetaStatusMachine", value = "get 状态")
     @GetMapping("/entity/{entity}/status")
@@ -81,15 +79,6 @@ public class MetaStatusMachineEndpoint {
         return SuccessTip.create(metaStatusMachineService.changeEntityStatus(entity, id, model));
     }
 
-    @BusinessLog(name = "MetaStatusMachine", value = "更新状态，并创建日志")
-    @PostMapping("/entity/{entity}/entities/{id}/action/updateStatus/withLog")
-    @ApiOperation("更新状态，并创建日志")
-    public Tip changeEntityStatusWithLog(@PathVariable(name = "entity") String entity,
-                                         @PathVariable(name = "id") Long id,
-                                         @RequestBody ChangeStatusModel model) {
-        return SuccessTip.create(metaStatusMachineService.changeEntityStatusWithLog(entity, id, model));
-    }
-
     @BusinessLog(name = "MetaStatusMachine", value = "批量更新状态")
     @PostMapping("/entity/{entity}/entities/action/bulk/updateStatus")
     @ApiOperation("批量更新状态")
@@ -98,11 +87,51 @@ public class MetaStatusMachineEndpoint {
         return SuccessTip.create(metaStatusMachineService.bulkChangeEntityStatus(entity, model));
     }
 
-    @BusinessLog(name = "MetaStatusMachine", value = "批量更新状态，并创建日志")
-    @PostMapping("/entity/{entity}/entities/action/bulk/updateStatus/withLog")
-    @ApiOperation("批量更新状态，并创建日志")
-    public Tip bulkChangeEntityStatusWithLog(@PathVariable(name = "entity") String entity,
-                                      @RequestBody BulkChangStatusModel model) {
-        return SuccessTip.create(metaStatusMachineService.bulkChangeEntityStatusWithLog(entity, model));
+    @BusinessLog(name = "MetaStatusMachine", value = "审批通过，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/{id}/action/pass")
+    @ApiOperation("审批通过，创建日志保存工作流")
+    public Tip pass(@PathVariable(name = "entity") String entity, @PathVariable(name = "id") Long id,
+                    @RequestBody AdditionModel model) {
+        return SuccessTip.create(metaStatusMachineService.pass(entity, id, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "审批不通过，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/{id}/action/reject")
+    @ApiOperation("审批不通过，创建日志保存工作流")
+    public Tip reject(@PathVariable(name = "entity") String entity, @PathVariable(name = "id") Long id,
+                      @RequestBody AdditionModel model) {
+        return SuccessTip.create(metaStatusMachineService.reject(entity, id, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "关闭，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/{id}/action/cancel")
+    @ApiOperation("关闭，创建日志保存工作流")
+    public Tip cancel(@PathVariable(name = "entity") String entity, @PathVariable(name = "id") Long id,
+                      @RequestBody AdditionModel model) {
+        return SuccessTip.create(metaStatusMachineService.cancel(entity, id, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "批量审批通过，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/action/bulk/pass")
+    @ApiOperation("批量审批通过，创建日志保存工作流")
+    public Tip bulkPass(@PathVariable(name = "entity") String entity,
+                                      @RequestBody BulkApprovalModel model) {
+        return SuccessTip.create(metaStatusMachineService.bulkPass(entity, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "批量审批不通过，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/action/bulk/reject")
+    @ApiOperation("批量审批不通过，创建日志保存工作流")
+    public Tip bulkReject(@PathVariable(name = "entity") String entity,
+                        @RequestBody BulkApprovalModel model) {
+        return SuccessTip.create(metaStatusMachineService.bulkReject(entity, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "批量关闭，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/action/bulk/cancel")
+    @ApiOperation("批量关闭，创建日志保存工作流")
+    public Tip bulkCancel(@PathVariable(name = "entity") String entity,
+                        @RequestBody BulkApprovalModel model) {
+        return SuccessTip.create(metaStatusMachineService.bulkCancel(entity, model));
     }
 }
