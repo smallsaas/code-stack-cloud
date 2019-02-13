@@ -1,11 +1,14 @@
 package com.jfeat.am.module.meta.api;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
+import com.jfeat.am.module.meta.services.domain.model.ResponseMetaStatusModel;
 import com.jfeat.am.module.meta.services.domain.service.MetaStatusMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaStatusMachine;
 import com.jfeat.crud.base.tips.SuccessTip;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -52,14 +56,14 @@ public class MetaStatusMachineEndpoint {
         queryEntity.setEntity(entity);
         queryEntity.setFromStatus(fromStatus);
         queryEntity.setToStatus(toStatus);
-        return SuccessTip.create(filterTableName(metaStatusMachineService.findMetaStatusMachine(queryEntity)));
+        return SuccessTip.create(filterList(metaStatusMachineService.findMetaStatusMachine(queryEntity)));
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "获取链式状态流")
     @GetMapping("/entity/{entity}/status/linked")
     @ApiOperation("获取链式状态流")
     public Tip getLinkedEntityStatusList(@PathVariable(name = "entity") String entity) {
-        return SuccessTip.create(filterTableName(metaStatusMachineService.getLinkedEntityStatusList(entity)));
+        return SuccessTip.create(filterList(metaStatusMachineService.getLinkedEntityStatusList(entity)));
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "add 状态")
@@ -137,12 +141,16 @@ public class MetaStatusMachineEndpoint {
     }
 
     /**
+     * 过滤列表，构建返回
      * 过滤掉entityTableName字段数据
      * @param metaList 配置列表
      * @return
      */
-    private List<MetaStatusMachine> filterTableName(List<MetaStatusMachine> metaList) {
-        metaList.forEach(meta -> meta.setEntityTableName(null));
-        return metaList;
+    private List<ResponseMetaStatusModel> filterList(List<MetaStatusMachine> metaList) {
+        List<ResponseMetaStatusModel> responseList = new ArrayList<>();
+        for (MetaStatusMachine meta : metaList) {
+            responseList.add(JSONObject.parseObject(JSON.toJSONString(meta), ResponseMetaStatusModel.class));
+        }
+        return responseList;
     }
 }

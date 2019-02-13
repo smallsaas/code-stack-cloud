@@ -65,12 +65,12 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         List<MetaStatusMachine> linkedList = new ArrayList<>();
         while (true) {
             MetaStatusMachine next = getLinkedByFromStatus(fromStatus, handledStatus, metaList);
+            linkedList.add(next);
             // 如果状态流toStatus为“end”，跳出循环
             if (next.getToStatus().equals(StatusConstant.END)) {
                 break;
             }
             handledStatus.add(next.getFromStatus());
-            linkedList.add(next);
             fromStatus = next.getToStatus();
         }
         return linkedList;
