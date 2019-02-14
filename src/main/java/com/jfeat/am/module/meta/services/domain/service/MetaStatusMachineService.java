@@ -29,6 +29,8 @@ public interface MetaStatusMachineService extends CRUDMetaStatusMachineService {
 
     Integer reject(String entity, Long id, AdditionModel additionModel);
 
+    Integer back(String entity, Long id, AdditionModel additionModel);
+
     Integer cancel(String entity, Long id, AdditionModel additionModel);
 
     BulkResult bulkChangeEntityStatus(String entity, BulkChangStatusModel model);
@@ -36,6 +38,8 @@ public interface MetaStatusMachineService extends CRUDMetaStatusMachineService {
     BulkResult bulkPass(String entity, BulkApprovalModel bulkApprovalModel);
 
     BulkResult bulkReject(String entity, BulkApprovalModel bulkApprovalModel);
+
+    BulkResult bulkBack(String entity, BulkApprovalModel bulkApprovalModel);
 
     BulkResult bulkCancel(String entity, BulkApprovalModel bulkApprovalModel);
 }

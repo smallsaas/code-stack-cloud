@@ -112,8 +112,15 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
     @Transactional
     public Integer reject(String entity, Long id, AdditionModel additionModel) {
         List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        return doReject(entity, id, metaList, additionModel);
+    }
+
+    @Override
+    @Transactional
+    public Integer back(String entity, Long id, AdditionModel additionModel) {
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
         List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
-        return doReject(entity, id, metaList, linkedMetaList, additionModel);
+        return doBack(entity, id, metaList, linkedMetaList, additionModel);
     }
 
     @Override
@@ -208,11 +215,42 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         int failCount = 0;
         int forbiddenCount = 0;
         List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
+        for (Long id : bulkApprovalModel.getIds()) {
+            try {
+                // 执行通过操作
+                int result = doReject(entity, id, metaList, bulkApprovalModel.getAddition());
+                if (result > 0) {
+                    successCount++;
+                } else {
+                    failCount++;
+                }
+            } catch (BusinessException e) {
+                forbiddenCount++;
+            }
+        }
+        // 构建返回
+        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]操作成功"),
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]操作失败，数据库更新错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
+    }
+
+    @Override
+    @Transactional
+    public BulkResult bulkBack(String entity, BulkApprovalModel bulkApprovalModel) {
+        if (null == bulkApprovalModel || CollectionUtils.isEmpty(bulkApprovalModel.getIds())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        int successCount = 0;
+        int failCount = 0;
+        int forbiddenCount = 0;
+        List<MetaStatusMachine> metaList = getMetaStatusMachineList(entity);
         List<MetaStatusMachine> linkedMetaList = getLinkedEntityStatusList(entity);
         for (Long id : bulkApprovalModel.getIds()) {
             try {
                 // 执行拒绝操作
-                int result = doReject(entity, id, metaList, linkedMetaList, bulkApprovalModel.getAddition());
+                int result = doBack(entity, id, metaList, linkedMetaList, bulkApprovalModel.getAddition());
                 if (result > 0) {
                     successCount++;
                 } else {
@@ -261,6 +299,14 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
                         "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
     }
 
+    /**
+     * 通过审批
+     * @param entity
+     * @param id
+     * @param linkedMetaList
+     * @param additionModel
+     * @return
+     */
     private int doPass(String entity, Long id, List<MetaStatusMachine> linkedMetaList,
                        AdditionModel additionModel) {
         String entityTableName = linkedMetaList.get(0).getEntityTableName();
@@ -283,8 +329,32 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         return result;
     }
 
-    private int doReject(String entity, Long id, List<MetaStatusMachine> metaList,
-                         List<MetaStatusMachine> linkedMetaList, AdditionModel additionModel) {
+    /**
+     * 不通过审批
+     * @param entity
+     * @param id
+     * @param metaList
+     * @param additionModel
+     * @return
+     */
+    private int doReject(String entity, Long id, List<MetaStatusMachine> metaList, AdditionModel additionModel) {
+        String entityTableName = metaList.get(0).getEntityTableName();
+        // 获取实体当前状态
+        String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        return saveWorkflow(entity, id, entityCurrentStatus, entityCurrentStatus, additionModel);
+    }
+
+    /**
+     * 回退
+     * @param entity
+     * @param id
+     * @param metaList
+     * @param linkedMetaList
+     * @param additionModel
+     * @return
+     */
+    private int doBack(String entity, Long id, List<MetaStatusMachine> metaList,
+                       List<MetaStatusMachine> linkedMetaList, AdditionModel additionModel) {
         String entityTableName = metaList.get(0).getEntityTableName();
         // 获取实体当前状态
         String entityCurrentStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
@@ -316,6 +386,14 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         return result;
     }
 
+    /**
+     * 关闭
+     * @param entity
+     * @param id
+     * @param metaList
+     * @param additionModel
+     * @return
+     */
     private int doCancel(String entity, Long id, List<MetaStatusMachine> metaList, AdditionModel additionModel) {
         String entityTableName = metaList.get(0).getEntityTableName();
         // 获取实体当前状态

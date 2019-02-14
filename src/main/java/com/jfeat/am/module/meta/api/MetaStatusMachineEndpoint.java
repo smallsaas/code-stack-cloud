@@ -108,6 +108,14 @@ public class MetaStatusMachineEndpoint {
         return SuccessTip.create(metaStatusMachineService.reject(entity, id, model));
     }
 
+    @BusinessLog(name = "MetaStatusMachine", value = "审批退回，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/{id}/action/back")
+    @ApiOperation("审批退回，创建日志保存工作流")
+    public Tip back(@PathVariable(name = "entity") String entity, @PathVariable(name = "id") Long id,
+                      @RequestBody AdditionModel model) {
+        return SuccessTip.create(metaStatusMachineService.back(entity, id, model));
+    }
+
     @BusinessLog(name = "MetaStatusMachine", value = "关闭，创建日志保存工作流")
     @PostMapping("/entity/{entity}/entities/{id}/action/cancel")
     @ApiOperation("关闭，创建日志保存工作流")
@@ -130,6 +138,14 @@ public class MetaStatusMachineEndpoint {
     public Tip bulkReject(@PathVariable(name = "entity") String entity,
                         @RequestBody BulkApprovalModel model) {
         return SuccessTip.create(metaStatusMachineService.bulkReject(entity, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "批量审批退回，创建日志保存工作流")
+    @PostMapping("/entity/{entity}/entities/action/bulk/back")
+    @ApiOperation("批量审批退回，创建日志保存工作流")
+    public Tip bulkBack(@PathVariable(name = "entity") String entity,
+                          @RequestBody BulkApprovalModel model) {
+        return SuccessTip.create(metaStatusMachineService.bulkBack(entity, model));
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "批量关闭，创建日志保存工作流")
