@@ -151,11 +151,16 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
             canUpdateIds.add(entityCurrentStatus.getId());
         }
         // 成功个数
-        int successCount = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
+        int successCount = 0;
         // 失败个数
-        int failCount = canUpdateIds.size() - successCount;
+        int failCount = 0;
+        if (!CollectionUtils.isEmpty(canUpdateIds)) {
+            successCount = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
+            failCount = canUpdateIds.size() - successCount;
+        }
         // 构建返回
-        return MetaUtils.createBulkResult(new BulkMessage(200, successCount, "[Meta]更改状态成功"),
+        return MetaUtils.createBulkResult(
+                successCount > 0 ? new BulkMessage(200, successCount, "[Meta]更改状态成功") : null,
                 failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
                         "[Meta]更新失败，数据库错误") : null,
                 forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
