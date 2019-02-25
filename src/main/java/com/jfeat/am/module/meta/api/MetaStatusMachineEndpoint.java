@@ -72,7 +72,7 @@ public class MetaStatusMachineEndpoint {
     public Tip createEntityStatus(@PathVariable(name = "entity") String entity,
                                   @RequestBody MetaStatusMachine metaStatusMachine) {
         metaStatusMachine.setEntity(entity);
-        return SuccessTip.create(metaStatusMachineService.createMaster(metaStatusMachine));
+        return SuccessTip.create(metaStatusMachineService.addMetaStatus(metaStatusMachine));
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "change 状态")

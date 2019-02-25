@@ -19,6 +19,9 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -40,6 +43,7 @@ import java.util.stream.Collectors;
  * @since 2017-10-16
  */
 @Service("metaStatusMachineService")
+@CacheConfig(cacheNames = "CONSTANT")
 public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceImpl
         implements MetaStatusMachineService {
 
@@ -74,6 +78,13 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
             fromStatus = next.getToStatus();
         }
         return linkedList;
+    }
+
+    @Override
+    @Transactional
+    @CacheEvict(key = "'entity' + #metaStatusMachine.entity")
+    public Integer addMetaStatus(MetaStatusMachine metaStatusMachine) {
+        return createMaster(metaStatusMachine);
     }
 
     @Override
@@ -299,6 +310,24 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
                         "[Meta]操作被禁止，状态不允许跳转或配置缺失") : null);
     }
 
+
+    /**
+     * 获取可以更新的状态机
+     * @param entity 实体
+     * @return
+     */
+    @Cacheable(key = "#entity")
+    public List<MetaStatusMachine> getMetaStatusMachineList(String entity) {
+        MetaStatusMachine queryEntity = new MetaStatusMachine();
+        queryEntity.setEntity(entity);
+        List<MetaStatusMachine> metaStatusMachineList = queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity);
+        if (CollectionUtils.isEmpty(metaStatusMachineList)) {
+            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
+                    "[Meta]未配置状态流，请检查：entity=" + entity);
+        }
+        return metaStatusMachineList;
+    }
+
     /**
      * 通过审批
      * @param entity
@@ -439,22 +468,6 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
                             .append("，fromStatus=").append(fromStatus).toString());
         }
         return targetList.get(0);
-    }
-
-    /**
-     * 获取可以更新的状态机
-     * @param entity 实体
-     * @return
-     */
-    private List<MetaStatusMachine> getMetaStatusMachineList(String entity) {
-        MetaStatusMachine queryEntity = new MetaStatusMachine();
-        queryEntity.setEntity(entity);
-        List<MetaStatusMachine> metaStatusMachineList = queryMetaStatusMachineDao.findMetaStatusMachine(queryEntity);
-        if (CollectionUtils.isEmpty(metaStatusMachineList)) {
-            throw new BusinessException(BusinessCode.ErrorStatus.getCode(),
-                    "[Meta]未配置状态流，请检查：entity=" + entity);
-        }
-        return metaStatusMachineList;
     }
 
     /**

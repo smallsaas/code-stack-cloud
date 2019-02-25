@@ -23,6 +23,8 @@ public interface MetaStatusMachineService extends CRUDMetaStatusMachineService {
      */
     List<MetaStatusMachine> getLinkedEntityStatusList(String entity);
 
+    Integer addMetaStatus(MetaStatusMachine metaStatusMachine);
+
     Integer changeEntityStatus(String entity, Long id, ChangeStatusModel model);
 
     Integer pass(String entity, Long id, AdditionModel additionModel);

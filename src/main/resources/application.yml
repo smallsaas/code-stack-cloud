@@ -19,7 +19,7 @@ jwt:
 
 ###################  项目启动端口  ###################
 server:
-  port: 8080
+  port: 8088
   ssl:
     enabled: false
     key-store: classpath:sb.keystore
@@ -47,6 +47,11 @@ spring:
   http:
     converters:
       preferred-json-mapper: fastjson
+  cache:
+    type: ehcache
+    encache:
+      config: classpath:ehcache.xml
+
 
 
 ###################  mybatis-plus配置  ###################
