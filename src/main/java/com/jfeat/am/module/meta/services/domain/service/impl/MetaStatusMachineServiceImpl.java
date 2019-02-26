@@ -145,9 +145,11 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
     @Transactional
     public BulkResult bulkChangeEntityStatus(String entity, BulkChangStatusModel model) {
         // 参数校验
-        if (null == model || null == model.getIds() || model.getIds().isEmpty()
-                || StringUtils.isBlank(model.getStatus())) {
+        if (null == model || null == model.getIds() || model.getIds().isEmpty()) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        if (StringUtils.isBlank(model.getStatus())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，status不能为空");
         }
         List<Long> ids = model.getIds();
         String status = model.getStatus();
