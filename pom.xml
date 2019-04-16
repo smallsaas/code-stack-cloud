@@ -20,7 +20,7 @@
 
     <properties>
         <crud-log.version>0.0.1</crud-log.version>
-        <crud-plus.version>0.0.4</crud-plus.version>
+        <crud-plus.version>0.0.5</crud-plus.version>
         <skipStandalone>true</skipStandalone>
     </properties>
 
@@ -29,11 +29,23 @@
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>${crud-plus.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jfeat</groupId>
+                    <artifactId>jwt-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-log</artifactId>
             <version>${crud-log.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.jfeat</groupId>
+                    <artifactId>jwt-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--spring boot依赖-->
