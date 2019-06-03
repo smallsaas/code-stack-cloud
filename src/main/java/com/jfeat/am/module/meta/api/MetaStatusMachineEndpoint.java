@@ -94,7 +94,7 @@ public class MetaStatusMachineEndpoint {
     }
 
     @BusinessLog(name = "MetaStatusMachine", value = "批量更新状态")
-    @PostMapping("/entity/{entity}/entities/action/bulk/updateStatus")
+    @PostMapping("/entity/{entity}/entities/action/bulk/updateStatus/withVersion")
     @ApiOperation("批量更新状态，校验数据的版本号")
     public Tip bulkChangeEntityStatus(@PathVariable(name = "entity") String entity,
                                       @RequestBody BulkChangeStatusWithVersionModel model) {
