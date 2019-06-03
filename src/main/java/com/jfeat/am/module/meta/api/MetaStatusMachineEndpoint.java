@@ -7,6 +7,7 @@ import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
+import com.jfeat.am.module.meta.services.domain.model.BulkChangeStatusWithVersionModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.ResponseMetaStatusModel;
 import com.jfeat.am.module.meta.services.domain.service.MetaStatusMachineService;
@@ -89,6 +90,14 @@ public class MetaStatusMachineEndpoint {
     @ApiOperation("批量更新状态")
     public Tip bulkChangeEntityStatus(@PathVariable(name = "entity") String entity,
                                       @RequestBody BulkChangStatusModel model) {
+        return SuccessTip.create(metaStatusMachineService.bulkChangeEntityStatus(entity, model));
+    }
+
+    @BusinessLog(name = "MetaStatusMachine", value = "批量更新状态")
+    @PostMapping("/entity/{entity}/entities/action/bulk/updateStatus")
+    @ApiOperation("批量更新状态，校验数据的版本号")
+    public Tip bulkChangeEntityStatus(@PathVariable(name = "entity") String entity,
+                                      @RequestBody BulkChangeStatusWithVersionModel model) {
         return SuccessTip.create(metaStatusMachineService.bulkChangeEntityStatus(entity, model));
     }
 

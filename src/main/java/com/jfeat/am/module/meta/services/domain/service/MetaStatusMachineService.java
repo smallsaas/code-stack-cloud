@@ -3,6 +3,7 @@ package com.jfeat.am.module.meta.services.domain.service;
 import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
+import com.jfeat.am.module.meta.services.domain.model.BulkChangeStatusWithVersionModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
 import com.jfeat.am.module.meta.services.gen.crud.service.CRUDMetaStatusMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaStatusMachine;
@@ -36,6 +37,8 @@ public interface MetaStatusMachineService extends CRUDMetaStatusMachineService {
     Integer cancel(String entity, Long id, AdditionModel additionModel);
 
     BulkResult bulkChangeEntityStatus(String entity, BulkChangStatusModel model);
+
+    BulkResult bulkChangeEntityStatus(String entity, BulkChangeStatusWithVersionModel model);
 
     BulkResult bulkPass(String entity, BulkApprovalModel bulkApprovalModel);
 

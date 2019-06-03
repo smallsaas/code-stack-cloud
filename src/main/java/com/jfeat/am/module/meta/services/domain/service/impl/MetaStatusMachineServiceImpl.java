@@ -6,8 +6,10 @@ import com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao;
 import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;
+import com.jfeat.am.module.meta.services.domain.model.BulkChangeStatusWithVersionModel;
 import com.jfeat.am.module.meta.services.domain.model.ChangeStatusModel;
 import com.jfeat.am.module.meta.services.domain.model.EntityCurrentStatus;
+import com.jfeat.am.module.meta.services.domain.model.EntityCurrentVersionAndStatus;
 import com.jfeat.am.module.meta.services.domain.service.MetaStatusMachineService;
 import com.jfeat.am.module.meta.services.domain.service.MetaWorkflowLiteActivityService;
 import com.jfeat.am.module.meta.services.domain.utils.MetaUtils;
@@ -29,8 +31,10 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -185,6 +189,61 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
                         "[Meta]更新失败，数据库错误") : null,
                 forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
                         "[Meta]不允许更新，不允许跳转到状态:["+status+"]") : null);
+    }
+
+    @Override
+    @Transactional
+    public BulkResult bulkChangeEntityStatus(String entity, BulkChangeStatusWithVersionModel model) {
+        // 参数校验
+        if (null == model || null == model.getIds() || model.getIds().isEmpty()) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，ids不能为空");
+        }
+        if (StringUtils.isBlank(model.getStatus())) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "[Meta]参数缺失，status不能为空");
+        }
+
+        Map<Long, Integer> idVersions = new HashMap<>();
+        model.getIds().forEach(idVersion -> idVersions.put(idVersion.getId(), idVersion.getVersion()));
+        String status = model.getStatus();
+        int forbiddenCount = 0;
+        int statusErrorCount = 0;
+
+        // 获取可以到达该状态的状态机
+        List<MetaStatusMachine> metaStatusMachineList = getMetaStatusMachineList(entity);
+        // 获取表名
+        String entityTableName = metaStatusMachineList.get(0).getEntityTableName();
+        List<EntityCurrentVersionAndStatus> entityCurrentVersionAndStatus =
+                queryMetaStatusMachineDao.getEntityCurrentVersionAndStatus(new ArrayList<>(idVersions.keySet()), entityTableName);
+        // 可以更新的id列表
+        List<Long> canUpdateIds = new ArrayList<>();
+        for (EntityCurrentVersionAndStatus row : entityCurrentVersionAndStatus) {
+            if (!canMatchMeta(row.getStatus(), status, metaStatusMachineList)) {
+                forbiddenCount++;
+                continue;
+            }
+            if (idVersions.get(row.getId()).intValue() != row.getVersion().intValue()) {
+                statusErrorCount++;
+                continue;
+            }
+            canUpdateIds.add(row.getId());
+        }
+        // 成功个数
+        int successCount = 0;
+        // 失败个数
+        int failCount = 0;
+        if (!CollectionUtils.isEmpty(canUpdateIds)) {
+            successCount = queryMetaStatusMachineDao.batchUpdateEntityStatus(entityTableName, canUpdateIds, status);
+            failCount = canUpdateIds.size() - successCount;
+        }
+        // 构建返回
+        return MetaUtils.createBulkResult(
+                successCount > 0 ? new BulkMessage(200, successCount, "[Meta]更改状态成功") : null,
+                failCount > 0 ? new BulkMessage(BusinessCode.DatabaseUpdateError.getCode(), failCount,
+                        "[Meta]更新失败，数据库错误") : null,
+                forbiddenCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), forbiddenCount,
+                        "[Meta]不允许更新，不允许跳转到状态:["+status+"]") : null,
+                statusErrorCount > 0 ? new BulkMessage(BusinessCode.ErrorStatus.getCode(), statusErrorCount,
+                        "[Meta]数据版本不一致") : null);
     }
 
     @Override

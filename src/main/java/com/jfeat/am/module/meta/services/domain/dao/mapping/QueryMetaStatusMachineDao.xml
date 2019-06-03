@@ -39,6 +39,15 @@
         </foreach>
     </select>
 
+    <select id="getEntityCurrentVersionAndStatus" resultType="EntityCurrentVersionAndStatus">
+        SELECT id, status, version
+        FROM ${entityTableName}
+        WHERE id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
 
     <update id="updateEntityStatus">
         UPDATE ${entityTableName}
