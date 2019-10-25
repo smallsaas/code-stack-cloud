@@ -8,7 +8,7 @@ import com.jfeat.am.module.meta.services.domain.service.MetaEnableMachineService
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEnableMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
-import com.jfeat.crud.base.tips.Ids;
+import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
