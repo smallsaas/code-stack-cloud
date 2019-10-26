@@ -20,7 +20,7 @@
 
     <properties>
         <crud-plus.version>0.0.6</crud-plus.version>
-        <crud-core.version>0.0.1</crud-core.version>
+        <crud-core.version>0.0.2</crud-core.version>
         <!--<jwt-core.version>0.0.1</jwt-core.version>-->
         <crud-dev.version>0.0.1</crud-dev.version>
         <skipStandalone>true</skipStandalone>
