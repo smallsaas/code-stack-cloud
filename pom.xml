@@ -19,11 +19,10 @@
     </parent>
 
     <properties>
+        <skipStandalone>true</skipStandalone>
         <crud-plus.version>0.0.6</crud-plus.version>
         <crud-core.version>0.0.2</crud-core.version>
-        <!--<jwt-core.version>0.0.1</jwt-core.version>-->
         <crud-dev.version>0.0.1</crud-dev.version>
-        <skipStandalone>false</skipStandalone>
         <commons-lang3.version>3.9</commons-lang3.version>
     </properties>
 
@@ -34,12 +33,12 @@
             <version>${crud-plus.version}</version>
 <!--            <scope>provided</scope>-->
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>com.jfeat</groupId>
-            <artifactId>jwt-core</artifactId>
-            <version>${jwt-core.version}</version>
-            <scope>provided</scope>
-        </dependency>-->
+            <artifactId>crud-core</artifactId>
+            <version>${crud-core.version}</version>
+<!--            <scope>provided</scope>-->
+        </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-dev</artifactId>
@@ -47,17 +46,23 @@
 <!--            <scope>provided</scope>-->
         </dependency>
 
-        <dependency>
-            <groupId>com.jfeat</groupId>
-            <artifactId>crud-core</artifactId>
-            <version>${crud-core.version}</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+
+        <!-- springboot cache -->
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache.version}</version>
         </dependency>
 
         <!--spring boot依赖-->
