@@ -1,17 +1,21 @@
 package com.jfeat.am.module.meta.services.domain.model;
 
-public class EntityCurrentStatus {
+import com.jfeat.crud.plus.model.IdVersion;
 
-    private Long id;
+import java.util.List;
+
+public class BulkChangeStatusWithVersionModel {
+
+    private List<IdVersion> ids;
 
     private String status;
 
-    public Long getId() {
-        return id;
+    public List<IdVersion> getIds() {
+        return ids;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIds(List<IdVersion> ids) {
+        this.ids = ids;
     }
 
     public String getStatus() {
@@ -24,8 +28,8 @@ public class EntityCurrentStatus {
 
     @Override
     public String toString() {
-        return "EntityCurrentStatus{" +
-                "id=" + id +
+        return "BulkChangStatusModel{" +
+                "ids=" + ids +
                 ", status='" + status + '\'' +
                 '}';
     }

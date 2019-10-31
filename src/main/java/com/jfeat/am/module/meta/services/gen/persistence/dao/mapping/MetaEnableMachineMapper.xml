@@ -11,11 +11,12 @@
         <result column="range_min" property="rangeMin"/>
         <result column="range_max" property="rangeMax"/>
         <result column="negative" property="negative"/>
+        <result column="permission" property="permission"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, entity, entity_table_name AS entityTableName, entity_field_name AS entityFieldName, range_min AS rangeMin, range_max AS rangeMax, negative
+        id, entity, entity_table_name AS entityTableName, entity_field_name AS entityFieldName, range_min AS rangeMin, range_max AS rangeMax, negative, permission
     </sql>
 
 </mapper>

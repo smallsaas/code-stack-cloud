@@ -1,18 +1,10 @@
 package com.jfeat.am.module.meta.services.domain.model;
 
-public class EntityCurrentStatus {
+import java.io.Serializable;
 
-    private Long id;
+public class ChangeStatusModel implements Serializable{
 
     private String status;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getStatus() {
         return status;
@@ -24,9 +16,8 @@ public class EntityCurrentStatus {
 
     @Override
     public String toString() {
-        return "EntityCurrentStatus{" +
-                "id=" + id +
-                ", status='" + status + '\'' +
+        return "ChangeStatusModel{" +
+                "status='" + status + '\'' +
                 '}';
     }
 }

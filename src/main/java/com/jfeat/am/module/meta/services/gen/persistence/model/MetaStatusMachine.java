@@ -42,6 +42,10 @@ public class MetaStatusMachine extends Model<MetaStatusMachine> {
      */
 	@TableField("to_status")
 	private String toStatus;
+	/**
+	 * 操作权限控制
+	 */
+	private String permission;
 
 
 	public Long getId() {
@@ -89,6 +93,15 @@ public class MetaStatusMachine extends Model<MetaStatusMachine> {
 		return this;
 	}
 
+	public String getPermission() {
+		return permission;
+	}
+
+	public MetaStatusMachine setPermission(String permission) {
+		this.permission = permission;
+		return this;
+	}
+
 	public static final String ID = "id";
 
 	public static final String ENTITY = "entity";
@@ -99,6 +112,8 @@ public class MetaStatusMachine extends Model<MetaStatusMachine> {
 
 	public static final String CHANGING_STATUS = "changing_status";
 
+	public static final String PERMISSION = "permission";
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -107,11 +122,12 @@ public class MetaStatusMachine extends Model<MetaStatusMachine> {
 	@Override
 	public String toString() {
 		return "MetaStatusMachine{" +
-			"id=" + id +
-			", entity=" + entity +
-			", entityTableName=" + entityTableName +
-			", fromStatus=" + fromStatus +
-			", toStatus=" + toStatus +
-			"}";
+				"id=" + id +
+				", entity='" + entity + '\'' +
+				", entityTableName='" + entityTableName + '\'' +
+				", fromStatus='" + fromStatus + '\'' +
+				", toStatus='" + toStatus + '\'' +
+				", permission='" + permission + '\'' +
+				'}';
 	}
 }

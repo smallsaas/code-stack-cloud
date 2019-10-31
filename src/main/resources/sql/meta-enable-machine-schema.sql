@@ -8,6 +8,7 @@ CREATE TABLE `meta_enable_machine` (
   `range_min` smallint(6) NOT NULL COMMENT '选取范围下限',
   `range_max` smallint(6) NOT NULL COMMENT '选取范围上限',
   `negative` smallint(6) DEFAULT 0 COMMENT '有效位是否需要取反',
+  `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity` (`entity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
