@@ -26,7 +26,7 @@ public interface QueryMetaEnableMachineDao extends BaseMapper<MetaEnableMachine>
                            @Param("id") Long id);
 
     Integer bulkValidateEntity(@Param("entityTableName") String entityTableName,
-                           @Param("entityFieldName") String entityFieldName,
-                           @Param("value") Integer value,
-                           @Param("ids") List<Long> ids);
+                               @Param("entityFieldName") String entityFieldName,
+                               @Param("value") Integer value,
+                               @Param("ids") List<Long> ids);
 }

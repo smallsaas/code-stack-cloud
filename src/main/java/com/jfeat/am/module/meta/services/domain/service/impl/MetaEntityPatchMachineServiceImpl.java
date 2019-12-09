@@ -367,10 +367,10 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                             "当前排序号为0，下移失败，请对其他实体进行上移操作");
                 }
                 // 当前row 中的 sort_num - 1
-                originRecord.setSortNum(originRecord.getSortNum() - 1);
+                originRecord.setSortNum(originRecord.getSortNum() + 1);
             } else {
                 // 如果是下移，即当前row 中的 sort_num + 1
-                originRecord.setSortNum(originRecord.getSortNum() + 1);
+                originRecord.setSortNum(originRecord.getSortNum() - 1);
             }
         }
         // 更新主动移动实体排序

@@ -11,4 +11,5 @@ CREATE TABLE `meta_entity_patch_machine` (
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity` (`entity`,`entity_field_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

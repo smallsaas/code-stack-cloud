@@ -13,3 +13,4 @@ CREATE TABLE `meta_workflow_lite_activity` (
   `field2` varchar(128) DEFAULT NULL COMMENT '保留字段2',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流记录表';
+
