@@ -360,16 +360,16 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         } else { // 如果相同
             // 如果是上移
             if (isMoveUp) {
-                // 如果当前实体的排序为0，禁止上移
+                // 当前row 中的 sort_num + 1
+                originRecord.setSortNum(originRecord.getSortNum() + 1);
+            } else {
+                // 如果当前实体的排序为0，禁止下移
                 if (originRecord.getSortNum() == 0) {
                     throw new BusinessException(
                             BusinessCode.BadRequest.getCode(),
-                            "当前排序号为0，下移失败，请对其他实体进行上移操作");
+                            "当前排序号为0，下移失败，请对其他实体进行下移操作");
                 }
-                // 当前row 中的 sort_num - 1
-                originRecord.setSortNum(originRecord.getSortNum() + 1);
-            } else {
-                // 如果是下移，即当前row 中的 sort_num + 1
+                // 如果是下移，即当前row 中的 sort_num - 1
                 originRecord.setSortNum(originRecord.getSortNum() - 1);
             }
         }
