@@ -9,4 +9,4 @@ CREATE TABLE `meta_status_machine` (
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
   UNIQUE KEY `entity` (`entity`,`from_status`,`to_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

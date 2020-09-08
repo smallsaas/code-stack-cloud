@@ -3,7 +3,7 @@ package com.jfeat.am.module.meta.api;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.am.common.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.model.AdditionModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkApprovalModel;
 import com.jfeat.am.module.meta.services.domain.model.BulkChangStatusModel;

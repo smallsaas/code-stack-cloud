@@ -1,6 +1,6 @@
 package com.jfeat.am.module.meta.services.gen.crud.service.impl;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.am.module.meta.services.gen.persistence.dao.MetaEntityPatchMachineMapper;
 

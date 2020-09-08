@@ -1,5 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaEnableMachineDao;
 import com.jfeat.am.module.meta.services.domain.service.MetaEnableMachineService;
 import com.jfeat.am.module.meta.services.domain.utils.MetaUtils;
@@ -128,10 +129,10 @@ public class MetaEnableMachineServiceImpl extends CRUDMetaEnableMachineServiceIm
      */
     private MetaEnableMachine getMetaEnableMachine(String entity) {
         // 查询参数
-        MetaEnableMachine queryParams = new MetaEnableMachine();
-        queryParams.setEntity(entity);
+/*        MetaEnableMachine queryParams = new MetaEnableMachine();
+        queryParams.setEntity(entity);*/
         // 查找目标配置
-        MetaEnableMachine targetMeta = queryMetaEnableMachineDao.selectOne(queryParams);
+        MetaEnableMachine targetMeta = queryMetaEnableMachineDao.selectOne(new QueryWrapper<MetaEnableMachine>().eq("entity",entity));
         if (null == targetMeta) {
             throw new BusinessException(
                     BusinessCode.ErrorStatus.getCode(),

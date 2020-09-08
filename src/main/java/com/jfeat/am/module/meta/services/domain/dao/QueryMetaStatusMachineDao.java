@@ -1,6 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.dao;
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.meta.services.domain.model.EntityCurrentStatus;
 import com.jfeat.am.module.meta.services.domain.model.EntityCurrentVersionAndStatus;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaStatusMachine;

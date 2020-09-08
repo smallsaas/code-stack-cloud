@@ -1,8 +1,8 @@
 package com.jfeat.am.module.meta.services.domain.dao;
 
 
-import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jfeat.am.module.meta.services.domain.model.MetaEnableMachineRecord;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEnableMachine;
 import org.apache.ibatis.annotations.Param;
