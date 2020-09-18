@@ -1,6 +1,6 @@
 version: "3"
 services:
-  zero-io:
+  mbcs:
     image: zelejs/allin-web:jdk11
     privileged: true
     container_name: mbcs
