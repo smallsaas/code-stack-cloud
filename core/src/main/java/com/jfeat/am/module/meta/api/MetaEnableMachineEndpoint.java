@@ -1,7 +1,8 @@
 package com.jfeat.am.module.meta.api;
 
 
-import com.jfeat.am.common.annotation.BusinessLog;
+
+import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.model.BulkMetaEnable;
 import com.jfeat.am.module.meta.services.domain.model.ValueModel;
 import com.jfeat.am.module.meta.services.domain.service.MetaEnableMachineService;

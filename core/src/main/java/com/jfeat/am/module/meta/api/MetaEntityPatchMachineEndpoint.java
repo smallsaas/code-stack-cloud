@@ -1,7 +1,7 @@
 package com.jfeat.am.module.meta.api;
 
 
-import com.jfeat.am.common.annotation.BusinessLog;
+import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;

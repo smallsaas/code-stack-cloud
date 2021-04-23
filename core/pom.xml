@@ -22,7 +22,7 @@
         <skipStandalone>true</skipStandalone>
         <crud-plus.version>0.1.0</crud-plus.version>
         <crud-core.version>0.0.5</crud-core.version>
-        <crud-dev.version>0.0.1</crud-dev.version>
+        <crud-dev.version>0.0.2</crud-dev.version>
         <commons-lang3.version>3.9</commons-lang3.version>
     </properties>
 
@@ -43,7 +43,7 @@
             <groupId>com.jfeat</groupId>
             <artifactId>crud-dev</artifactId>
             <version>${crud-dev.version}</version>
-<!--            <scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
