@@ -1,9 +1,9 @@
-target/*
-build/*
+target/
+build/
 /gen/
-.idea/*
-.gradle/*
-.svn/*
+.idea/
+.gradle/
+.svn/
 *.iml
 *.swp
 *.log
@@ -11,3 +11,7 @@ build/*
 .DS_Store
 logs/*
 obsel/
+.project
+.settings/
+.vscode/
+.classpath
