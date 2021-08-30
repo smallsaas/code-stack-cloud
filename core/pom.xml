@@ -13,54 +13,38 @@
 
     <parent>
         <groupId>com.jfeat</groupId>
-        <artifactId>sb-parent</artifactId>
+        <artifactId>pom-parent</artifactId>
         <version>1.0.0</version>
         <relativePath/>
     </parent>
 
     <properties>
         <skipStandalone>true</skipStandalone>
-        <crud-plus.version>0.1.0</crud-plus.version>
-        <crud-core.version>0.0.5</crud-core.version>
-        <crud-dev.version>0.0.2</crud-dev.version>
-        <commons-lang3.version>3.9</commons-lang3.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>30.1.1-jre</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>jwt-core</artifactId>
-            <version>0.1.0</version>
-            <scope>provided</scope>
+            <version>${jwt-core.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-log</artifactId>
-            <version>0.0.2</version>
-            <scope>provided</scope>
+            <version>${crud-log.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-plus</artifactId>
             <version>${crud-plus.version}</version>
-           <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>crud-core</artifactId>
             <version>${crud-core.version}</version>
-           <scope>provided</scope>
         </dependency>
 
-        <!--    io.swagger    -->
+        <!-- io.swagger    -->
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -74,7 +58,6 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
