@@ -25,11 +25,6 @@
     <dependencies>
         <dependency>
             <groupId>com.jfeat</groupId>
-            <artifactId>jwt-core</artifactId>
-            <version>${jwt-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.jfeat</groupId>
             <artifactId>crud-log</artifactId>
             <version>${crud-log.version}</version>
         </dependency>
@@ -43,6 +38,11 @@
             <artifactId>crud-core</artifactId>
             <version>${crud-core.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>jwt-core</artifactId>
+            <version>${jwt-core.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,8 +51,9 @@
         <!-- https://mvnrepository.com/artifact/net.sf.ehcache/ehcache -->
         <dependency>
             <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache</artifactId>
-            <version>2.10.6</version>
+            <artifactId>ehcache-core</artifactId>
+            <version>2.6.11</version>
+            <scope>provided</scope>
         </dependency>
 
 
