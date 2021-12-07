@@ -8,5 +8,5 @@ CREATE TABLE `meta_status_machine` (
   `to_status` varchar(64) NOT NULL COMMENT '下一个状态',
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `entity` (`entity`,`from_status`,`to_status`)
+  UNIQUE KEY `uk_meta_status_entity` (`entity`,`from_status`,`to_status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

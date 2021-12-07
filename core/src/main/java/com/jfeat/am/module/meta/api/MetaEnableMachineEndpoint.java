@@ -2,11 +2,11 @@ package com.jfeat.am.module.meta.api;
 
 
 
-import com.jfeat.am.module.log.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.model.BulkMetaEnable;
 import com.jfeat.am.module.meta.services.domain.model.ValueModel;
 import com.jfeat.am.module.meta.services.domain.service.MetaEnableMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEnableMachine;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.request.Ids;

@@ -8,8 +8,9 @@ am:
   kaptcha-open: false #是否开启登录时验证码 (true/false)
   #file-upload-path: d:/tmp  #文件上传目录(不配置的话为java.io.tmpdir目录)
   worker-id: 0 # id gen service machine id 0~1023
-  redis-host: 127.0.0.1
-  redis-port: 6379
+  # redis-host: 127.0.0.1
+  # redis-port: 6379
+  shiro-cache-redis: false
 
 ###################  jwt配置  ###################
 jwt:
@@ -28,12 +29,12 @@ server:
     key-alias: sbkey
 #https://my.oschina.net/kingchen8080/blog/994367
 
-###################  beetl配置  ###################
-beetl:
-  delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
-  delimiter-statement-end: null
-  resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
-  resource-tagsuffix: tag
+# ###################  beetl配置  ###################
+# beetl:
+#   delimiter-statement-start: \@   #开始结束标签(yaml不允许@开头)
+#   delimiter-statement-end: null
+#   resource-tagroot: common/tags   #自定义标签文件Root目录和后缀
+#   resource-tagsuffix: tag
 
 
 ###################  spring配置  ###################
@@ -90,10 +91,7 @@ spring:
 
 logging:
   level: debug
-  file: logs/trace.log
-
-am:
-  shiro-cache-redis: false
+  file: logs/access.log
 ---
 
 ##########################################################
@@ -112,26 +110,8 @@ spring:
 
 logging:
   level: debug
-  file: logs/trace.log
+  file: logs/access.log
 
 am:
   shiro-cache-redis: false
----
 
-##########################################################
-###################  正式环境的profile  ###################
-##########################################################
-spring:
-  profiles: produce
-  datasource:
-      url: jdbc:mysql://127.0.0.1:3306/power?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: root
-      filters: log4j,wall,mergeStat
-      initialize: false
-logging:
-  level: warn
-  file: logs/trace.log
-
-am:
-  shiro-cache-redis: true

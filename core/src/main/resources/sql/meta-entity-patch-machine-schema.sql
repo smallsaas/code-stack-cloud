@@ -10,6 +10,6 @@ CREATE TABLE `meta_entity_patch_machine` (
   `number_range_max` bigint(20) DEFAULT NULL COMMENT '数字类型字段的范围上限',
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `entity` (`entity`,`entity_field_name`)
+  UNIQUE KEY `uk_meta_patch_entity` (`entity`,`entity_field_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -10,5 +10,5 @@ CREATE TABLE `meta_enable_machine` (
   `negative` smallint(6) DEFAULT 0 COMMENT '有效位是否需要取反',
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `entity` (`entity`)
+  UNIQUE KEY `uk_meta_entity` (`entity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8

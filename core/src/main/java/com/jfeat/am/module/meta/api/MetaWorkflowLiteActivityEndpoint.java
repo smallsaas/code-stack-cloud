@@ -1,7 +1,7 @@
 package com.jfeat.am.module.meta.api;
 
 
-import com.jfeat.am.module.log.annotation.BusinessLog;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaWorkflowLiteActivityDao;
 import com.jfeat.am.module.meta.services.domain.service.MetaWorkflowLiteActivityService;
 import com.jfeat.crud.base.tips.SuccessTip;
