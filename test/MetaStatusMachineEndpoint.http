@@ -1,0 +1,125 @@
+@endpoint = http://localhost:8088
+
+### 批量审批退回，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/back
+
+{
+  "addition": {
+    "note": "string"
+  },
+  "ids": [
+    0
+  ]
+}
+
+### 批量关闭，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/cancel
+
+{
+  "addition": {
+    "note": "string"
+  },
+  "ids": [
+    0
+  ]
+}
+
+### 批量审批通过，创建日志保存工作流
+POST /api/meta/entity/{entity}/entities/action/bulk/pass
+
+{
+  "addition": {
+    "note": "string"
+  },
+  "ids": [
+    0
+  ]
+}
+
+### 批量审批不通过，创建日志保存工作流
+POST /api/meta/entity/{entity}/entities/action/bulk/reject
+
+{
+  "addition": {
+    "note": "string"
+  },
+  "ids": [
+    0
+  ]
+}
+
+### 批量更新状态
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/updateStatus
+
+{
+  "ids": [
+    0
+  ],
+  "status": "string"
+}
+
+### 批量更新状态，校验数据的版本号
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/updateStatus/withVersion
+
+{
+  "ids": [
+    {
+      "id": 0,
+      "version": 0
+    }
+  ],
+  "status": "string"
+}
+
+### 审批退回，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/back
+
+{
+  "note": "string"
+}
+
+### 关闭，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/cancel
+
+{
+  "note": "string"
+}
+
+### 审批通过，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/pass
+
+{
+  "note": "string"
+}
+
+### 审批不通过，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/reject
+
+{
+  "note": "string"
+}
+
+### 改变状态
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/updateStatus
+
+{
+  "status": "string"
+}
+
+### 查看实体状态流
+# fromStatus  toStatus
+GET {{endpoint}}/api/meta/entity/{entity}/status
+
+### 增加状态配置
+POST {{endpoint}}/api/meta/entity/{entity}/status
+
+{
+  "entity": "string",
+  "entityTableName": "string",
+  "fromStatus": "string",
+  "permission": "string",
+  "toStatus": "string"
+}
+
+### 获取链式状态流
+GET {{endpoint}}/api/meta/entity/{entity}/status/linked

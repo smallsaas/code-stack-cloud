@@ -1,0 +1,7 @@
+@endpoint = http://localhost:8088
+
+### 获取工作流
+GET {{endpoint}}/api/meta/workflow/entity/{entity}/entities/{entityId}
+
+### 删除 MetaWorkflowLiteActivity
+DELETE {{endpoint}}/api/meta/workflow/{id}

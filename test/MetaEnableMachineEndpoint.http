@@ -1,0 +1,55 @@
+@endpoint = http://localhost:8088
+
+### 查看有效机
+# "entity":"实体",
+# "entityTableName":"实体对应表名",
+# "entityFieldName":"实体字段名"
+GET {{endpoint}}/api/meta/validation/config/records/实体
+
+### 增加有效机配置
+# 上限rangeMax，下限rangeMin，是否取反negative
+# "entity":"实体",
+# "entityTableName":"实体对应表名",
+# "entityFieldName":"实体字段名",
+# "permission":"操作权限控制"
+POST {{endpoint}}/api/meta/validation/config/records
+
+{
+    "entity":"实体",
+    "entityTableName":"实体对应表名",
+    "entityFieldName":"实体字段名",
+    "rangeMin": 1,
+    "rangeMax": 2,
+    "negative": 0,
+    "permission":"操作权限控制"
+}
+
+### 更新为有效状态
+# update entity_table_name set entity_table_name.entity_field_name = ? where id =?
+POST {{endpoint}}/api/meta/entity/name/entities/1/action/enable
+
+### 更新为无效状态
+POST {{endpoint}}/api/meta/entity/{name}/entities/{1}/action/disable
+
+### 更新为其他状态
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/validate
+
+{
+    "value":1
+}
+
+### 批量更新为有效状态
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/enable
+
+### 批量更新为无效
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/disable
+
+### 批量更新为其他状态
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/validate
+
+{
+  "ids": [
+    0
+  ],
+  "value": 0
+}

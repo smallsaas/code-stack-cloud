@@ -11,4 +11,4 @@ CREATE TABLE `meta_enable_machine` (
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_meta_entity` (`entity`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
