@@ -1,14 +1,14 @@
 @endpoint = http://localhost:8088
 
 ### 批量审批退回，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/back
+POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/back
 
 {
   "addition": {
-    "note": "string"
+    "note": "回退工作流"
   },
   "ids": [
-    0
+    1
   ]
 }
 
@@ -25,14 +25,14 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/cancel
 }
 
 ### 批量审批通过，创建日志保存工作流
-POST /api/meta/entity/{entity}/entities/action/bulk/pass
+POST /api/meta/entity/status/entities/action/bulk/pass
 
 {
   "addition": {
     "note": "string"
   },
   "ids": [
-    0
+    1
   ]
 }
 
@@ -72,7 +72,7 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/updateStatus/wit
 }
 
 ### 审批退回，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/back
+POST {{endpoint}}/api/meta/entity/status/entities/1/action/back
 
 {
   "note": "string"
@@ -86,14 +86,15 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/cancel
 }
 
 ### 审批通过，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/pass
+POST {{endpoint}}/api/meta/entity/status/entities/1/action/pass
 
 {
   "note": "string"
 }
 
-### 审批不通过，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/reject
+### 审批不通过，创建日志保存工作流(NOT CHANGE)
+# fromstatus=tostatus -> todo change 
+POST {{endpoint}}/api/meta/entity/status/entities/1/action/reject
 
 {
   "note": "string"

@@ -1,49 +1,51 @@
 @endpoint = http://localhost:8088
 
 ### 查看meta entity patch配置
-POST {{endpoint}}/api/meta/patch/config/records/{entity}
+GET {{endpoint}}/api/meta/patch/config/records/status
 
 ### 添加meta entity patch配置
 POST {{endpoint}}/api/meta/patch/config/records
 
 {
-  "entity": "string",
-  "entityFieldName": "string",
-  "entityFieldType": "string",
-  "entityTableName": "string",
-  "numberRangeMax": 0,
-  "numberRangeMin": 0,
-  "permission": "string"
+  "entity": "delete_flag",
+  "entityFieldName": "delete_flag",
+  "entityFieldType": "int",
+  "entityTableName": "nft_player",
+  "numberRangeMax": 1,
+  "numberRangeMin": 1000,
+  "permission": "null"
 }
 
-### 更新实体
-POST {{endpoint}}/api/meta/patch
+### 逻辑删除实体
+POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/2/action/logicDelete
 
-### 下移实体排序
-POST {{endpoint}}/api/meta/patch/entity/{entity}/action/movedown/row/{id}/row/{nextId}
+### 恢复逻辑删除的实体
+POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/2/action/logicDelete/recovery
 
-### 上移实体排序
-POST {{endpoint}}/api/meta/patch/entity/{entity}/action/moveup/row/{id}/row/{nextId}
 
 ### 批量逻辑删除的实体
-POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/action/bulk/logicDelete
+POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDelete
 
 {
   "ids":
    [
-    0
+    1,2
   ]
 }
 
 ### 批量恢复逻辑删除的实体
-POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/action/bulk/logicDelete/recovery
+POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDelete/recovery
 
 {
   "ids": [
-    0
+    1,2
   ]
 }
 
+
+
+
+### 以下测试不通过 pending todo
 ### 批量更新实体
 POST {{endpoint}}/api/meta/patch/entity/1/entities/bulk
 
@@ -60,13 +62,20 @@ POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/bulk/delete
   ]
 }
 
+### 下移实体排序
+POST {{endpoint}}/api/meta/patch/entity/nftPlayer/action/movedown/row/2/row/1
+
+### 上移实体排序
+POST {{endpoint}}/api/meta/patch/entity/{entity}/action/moveup/row/{id}/row/{nextId}
+
+### 更新实体(没有返回操作)
+POST {{endpoint}}/api/meta/patch/entity/name/entities/1
+
+{
+ 
+}
+
 ### 更新实体
 POST {{endpoint}}/api/meta/patch/entity/1/entities/1
 
 {}
-
-### 逻辑删除实体
-POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/{id}/action/logicDelete
-
-### 恢复逻辑删除的实体
-POST /api/meta/patch/entity/{entity}/entities/{id}/action/logicDelete/recovery

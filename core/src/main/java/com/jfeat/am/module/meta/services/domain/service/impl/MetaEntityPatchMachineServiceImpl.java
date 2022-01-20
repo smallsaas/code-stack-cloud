@@ -139,7 +139,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         int value = isReverse ? 0 : 1;
         // 获取配置
         MetaEntityPatchMachine meta =
-                getFieldMeta(entity, EntityFieldName.IS_DELETED, createMetaMap(findMetaList(entity)));
+                getFieldMeta(entity, EntityFieldName.DELETE_FLAG, createMetaMap(findMetaList(entity)));
         // 设置参数
         Map<String, String> params = new HashMap(){{put(meta.getEntityFieldName(), value);}};
         return queryMetaEntityPatchMachineDao.updateEntity(meta.getEntityTableName(), params, id);
@@ -151,7 +151,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         int value = isReverse ? 0 : 1;
         // 获取配置
         MetaEntityPatchMachine meta =
-                getFieldMeta(entity, EntityFieldName.IS_DELETED, createMetaMap(findMetaList(entity)));
+                getFieldMeta(entity, EntityFieldName.DELETE_FLAG, createMetaMap(findMetaList(entity)));
         // 设置参数
         Map<String, String> params = new HashMap(){{put(meta.getEntityFieldName(), value);}};
         // 成功条数

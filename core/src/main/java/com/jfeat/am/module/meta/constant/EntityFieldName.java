@@ -18,7 +18,9 @@ public class EntityFieldName {
     /**
      * delete字段
      */
-    public static final String IS_DELETED = "is_deleted";
+//    2022.1.19 change field to delete_flag
+//    public static final String IS_DELETED = "is_deleted";
+    public static final String DELETE_FLAG = "delete_flag";
 
     /**
      * 状态字段
