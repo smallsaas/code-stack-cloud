@@ -1,39 +1,54 @@
-@endpoint = http://localhost:8088
+@endpoint = http://localhost:8080
+@manage = Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjEiLCJ1c2VySWQiOiIxIiwidGVuYW50T3JnSWQiOjEsImFjY291bnQiOiJhZG1pbiIsInVzZXJUeXBlIjoxMDAsImRldlVzZXJUeXBlIjoyLCJiVXNlclR5cGUiOiJTWVNURU0iLCJpYXQiOjE2NDI2NTI4NTMsImp0aSI6IjEiLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY0MjkxMjA1M30._zoaYaPO5Zb_7KzdKSLpsg7RmR6YeiFUYaxkwOkdIqGRK2wW-k7niWpPh4b-ADFuv3TyM6gAshUhPnADn0Xuvw
 
-### 批量审批退回，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/back
+### 增加状态配置
+POST {{endpoint}}/api/meta/entity/{entity}/status
+Authorization: {{manage}}
 
 {
-  "addition": {
-    "note": "回退工作流"
-  },
-  "ids": [
-    1
-  ]
+  "entity": "status",
+  "entityTableName": "nft_player",
+  "fromStatus": "START",
+  "permission": "null",
+  "toStatus": "OPEN"
 }
 
-### 批量关闭，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/cancel
+### 查看实体状态流
+# fromStatus  toStatus
+GET {{endpoint}}/api/meta/entity/status/status
+Authorization: {{manage}}
+
+### 获取链式状态流
+GET {{endpoint}}/api/meta/entity/status/status/linked
+
+### 审批通过，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/status/entities/444/action/pass
+Authorization: {{manage}}
 
 {
-  "addition": {
-    "note": "string"
-  },
-  "ids": [
-    0
-  ]
+  "note": "test1"
 }
 
 ### 批量审批通过，创建日志保存工作流
-POST /api/meta/entity/status/entities/action/bulk/pass
+POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/pass
 
 {
   "addition": {
     "note": "string"
   },
   "ids": [
-    1
+    1,2
   ]
+}
+
+
+### 审批不通过，创建日志保存工作流(NOT CHANGE)
+# fromstatus=tostatus -> todo change 
+POST {{endpoint}}/api/meta/entity/reject/entities/1/action/reject
+Authorization: {{manage}}
+
+{
+  "note": "string"
 }
 
 ### 批量审批不通过，创建日志保存工作流
@@ -46,6 +61,13 @@ POST /api/meta/entity/{entity}/entities/action/bulk/reject
   "ids": [
     0
   ]
+}
+
+### 改变状态
+POST {{endpoint}}/api/meta/entity/status/entities/1/action/updateStatus
+
+{
+  "status": "submitted"
 }
 
 ### 批量更新状态
@@ -71,56 +93,41 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/updateStatus/wit
   "status": "string"
 }
 
+
 ### 审批退回，创建日志保存工作流
 POST {{endpoint}}/api/meta/entity/status/entities/1/action/back
 
 {
-  "note": "string"
+  "note": ""
 }
 
 ### 关闭，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/cancel
+POST {{endpoint}}/api/meta/entity/status/entities/1/action/cancel
 
 {
   "note": "string"
 }
 
-### 审批通过，创建日志保存工作流
-POST {{endpoint}}/api/meta/entity/status/entities/1/action/pass
+### 批量审批退回，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/back
 
 {
-  "note": "string"
+  "addition": {
+    "note": "回退工作流"
+  },
+  "ids": [
+    1
+  ]
 }
 
-### 审批不通过，创建日志保存工作流(NOT CHANGE)
-# fromstatus=tostatus -> todo change 
-POST {{endpoint}}/api/meta/entity/status/entities/1/action/reject
+### 批量关闭，创建日志保存工作流
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/cancel
 
 {
-  "note": "string"
+  "addition": {
+    "note": "string"
+  },
+  "ids": [
+    0
+  ]
 }
-
-### 改变状态
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/updateStatus
-
-{
-  "status": "string"
-}
-
-### 查看实体状态流
-# fromStatus  toStatus
-GET {{endpoint}}/api/meta/entity/{entity}/status
-
-### 增加状态配置
-POST {{endpoint}}/api/meta/entity/{entity}/status
-
-{
-  "entity": "string",
-  "entityTableName": "string",
-  "fromStatus": "string",
-  "permission": "string",
-  "toStatus": "string"
-}
-
-### 获取链式状态流
-GET {{endpoint}}/api/meta/entity/{entity}/status/linked

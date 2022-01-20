@@ -563,10 +563,10 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
         activity.setFromStatus(fromStatus);
         // 设置 to status
         activity.setToStatus(toStatus);
-        // 设置创建者id  todo:JWTKit.getUserId()
-        activity.setCreatedById(entityId);
-        // 设置创建者  todo:JWTKit.getAccount()
-        activity.setCreatedBy(UUID.randomUUID().toString().substring(0,1));
+        // 设置创建者id
+        activity.setCreatedById(JWTKit.getUserId());
+        // 设置创建者
+        activity.setCreatedBy(JWTKit.getAccount());
         // 设置创建时间
         activity.setCreatedTime(new Date());
         // 有附加条件
