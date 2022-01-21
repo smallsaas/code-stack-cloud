@@ -393,9 +393,14 @@ public class MetaStatusMachineServiceImpl extends CRUDMetaStatusMachineServiceIm
      */
     private int doPass(String entity, Long id, List<MetaStatusMachine> linkedMetaList,
                        AdditionModel additionModel) {
+        String NORMAL = "NORMAL";
+        String FROZEN = "FROZEN";
         String entityTableName = linkedMetaList.get(0).getEntityTableName();
         // 获取实体当前状态
         String fromStatus = queryMetaStatusMachineDao.getEntityCurrentStatus(id, entityTableName);
+        if (fromStatus.equals(NORMAL)||fromStatus.equals(FROZEN)){
+            throw new BusinessException(BusinessCode.BadRequest,"该状态下无需审核");
+        }
         // 获取目标配置
         List<MetaStatusMachine> targetMetaList = linkedMetaList.stream()
                 .filter(meta -> meta.getFromStatus().equals(fromStatus)).collect(Collectors.toList());
