@@ -1,0 +1,43 @@
+###
+@Endpoint = http://localhost:8088
+
+
+### 图标列表
+GET {{Endpoint}}/change/setting
+
+
+### 修改字段
+PUT {{Endpoint}}/change/meta_test/avatar?id=1
+content-type: application/json
+
+{
+    "value":"[{value}]"
+}
+
+
+### 字段追加
+POST {{Endpoint}}/change/meta_test/avatar?id=1
+content-type: application/json
+
+{
+    "value":"56456465645"
+}
+
+
+
+### 修改字段(数字类型)
+PUT {{Endpoint}}/change/meta_test/number?id=1
+content-type: application/json
+
+{
+    "value": 1221
+}
+
+
+### 字段追加(数字类型)
+POST {{Endpoint}}/change/meta_test/number?id=2
+content-type: application/json
+
+{
+    "value":121
+}

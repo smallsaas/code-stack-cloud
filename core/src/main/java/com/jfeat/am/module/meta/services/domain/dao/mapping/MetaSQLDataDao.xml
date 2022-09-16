@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.am.module.meta.services.domain.dao.MetaSQLDataEditDao">
+
+
+    <update id="putField">
+        update ${table} set ${field} = #{value}
+        where
+        <foreach collection="items" item="condition" separator=" and ">
+            ${condition.field} = #{condition.value}
+        </foreach>
+    </update>
+
+<!--    <update id="postField">-->
+<!--        update ${table} set ${field} = concat(${field},#{value})-->
+<!--        where-->
+<!--        <foreach collection="items" item="condition" separator=" and ">-->
+<!--            ${condition.field} = #{condition.value}-->
+<!--        </foreach>-->
+<!--    </update>-->
+
+    <select id="getOldValueString" resultType="String">
+        select ${field} from ${table}
+        where
+        <foreach collection="items" item="condition" separator=" and ">
+            ${condition.field} = #{condition.value}
+        </foreach>
+    </select>
+
+    <select id="getOldValueInteger" resultType="Integer">
+        select ${field} from ${table}
+        where
+        <foreach collection="items" item="condition" separator=" and ">
+            ${condition.field} = #{condition.value}
+        </foreach>
+    </select>
+
+
+</mapper>

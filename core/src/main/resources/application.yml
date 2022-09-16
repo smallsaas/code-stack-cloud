@@ -94,24 +94,44 @@ logging:
   file: logs/access.log
 ---
 
+
 ##########################################################
 ###################  开发环境的profile  ###################
 ##########################################################
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://localhost:3306/nft_test?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-      username: root
-      password: 123456
-      filters: log4j,wall,mergeStat
-      schema: classpath*:sql/*-mysql-schema.sql
-      data: classpath*:sql/*-mysql-data.sql
-      initialize: false
+    url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    #url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/unicom?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    #url: jdbc:mysql://localhost:3307/uaas-saas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    username: root
+    # password: root
+    password: zb2014@888
+    #driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: log4j,wall,mergeStat
+    sql-script-encoding: UTF-8
+    schema: classpath*:sql/**/*-schema.sql
+    data: classpath*:sql/**/*-data.sql
+    initialize: false
 
 logging:
   level: debug
-  file: logs/access.log
+  file: logs/trace.log
 
 am:
   shiro-cache-redis: false
+
+sqlDataEdit:
+  tableInfo:
+    - table: meta_test
+      field:
+        - name: avatar
+          postIndex: 1
+          separator: ','
+        - name: number
+          filedType: int
+
+      where:
+        - field: id
+          mapping: id
 
