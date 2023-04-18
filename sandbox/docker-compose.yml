@@ -7,10 +7,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./api:/webapps
-    environment:
-      DL_STANDALONE: "mbcs-1.1.0-standalone.jar"
 
 networks:
   default:
     external:
-      name: ${network}
+      name: ${NETWORK}

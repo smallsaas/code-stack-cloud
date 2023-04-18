@@ -62,12 +62,6 @@ POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/bulk/delete
   ]
 }
 
-### 下移实体排序
-POST {{endpoint}}/api/meta/patch/entity/nftPlayer/action/movedown/row/2/row/1
-
-### 上移实体排序
-POST {{endpoint}}/api/meta/patch/entity/{entity}/action/moveup/row/{id}/row/{nextId}
-
 ### 更新实体(没有返回操作)
 POST {{endpoint}}/api/meta/patch/entity/name/entities/1
 
