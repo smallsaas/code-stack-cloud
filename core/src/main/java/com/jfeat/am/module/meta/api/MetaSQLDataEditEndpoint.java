@@ -12,9 +12,10 @@ import javax.annotation.Resource;
 
 @RestController
 @Api("MetaSQLDataEditEndpoint")
-@RequestMapping("/change")
+@RequestMapping("/api/meta/change")
 public class MetaSQLDataEditEndpoint {
 
+    // 从配置文件 application.yml 中获取
     @Resource
     SQLDataEditSetting sqlDataEditSetting;
 
@@ -23,19 +24,18 @@ public class MetaSQLDataEditEndpoint {
 
     @GetMapping("/setting")
     public Tip getSetting(){
-        SQLDataEditSetting sqlDataEditSetting = this.sqlDataEditSetting;
         return SuccessTip.create(sqlDataEditSetting.getTableInfo());
     }
 
-    @PutMapping("/{table}/{field}")
-    public Tip putMapping(@PathVariable("table")String table,@PathVariable("field")String field,@RequestBody MateFieldBody fieldBody){
-        Integer integer = metaSQLDataEditService.putField(table, field, fieldBody.getValue());
+    @PutMapping("/{entity}/{field}")
+    public Tip putMapping(@PathVariable("entity")String entity, @PathVariable("field")String field, @RequestBody MateFieldBody fieldBody){
+        Integer integer = metaSQLDataEditService.putField(entity, field, fieldBody.getValue());
         return SuccessTip.create(integer);
     }
 
-    @PostMapping("/{table}/{field}")
-    public Tip postMapping(@PathVariable("table")String table,@PathVariable("field")String field,@RequestBody MateFieldBody fieldBody){
-        Integer integer = metaSQLDataEditService.postField(table, field, fieldBody.getValue());
+    @PostMapping("/{entity}/{field}")
+    public Tip postMapping(@PathVariable("entity")String entity, @PathVariable("field")String field, @RequestBody MateFieldBody fieldBody){
+        Integer integer = metaSQLDataEditService.postField(entity, field, fieldBody.getValue());
         return SuccessTip.create(integer);
     }
 

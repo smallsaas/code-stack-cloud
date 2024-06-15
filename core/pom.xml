@@ -5,8 +5,15 @@
 
     <groupId>com.jfeat</groupId>
     <artifactId>mbcs</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
+
+    <!-- change history 
+       version 1.2.0  from 1.1.0
+       @when 2024-06-15
+       @what reconstruct and documentation
+
+    -->
 
     <name>Meta-Based-Common-Service</name>
     <description>CRUD Meta Based Common Service</description>

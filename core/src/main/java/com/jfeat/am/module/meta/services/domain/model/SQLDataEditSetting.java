@@ -9,7 +9,7 @@ import java.util.List;
 
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "sqlDataEdit")
+@ConfigurationProperties(prefix = "mbcs")
 public class SQLDataEditSetting {
 
     private List<MetaTableInfo> tableInfo;

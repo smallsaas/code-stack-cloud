@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `meta_entity_patch_machine`;
 
 CREATE TABLE `meta_entity_patch_machine` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `entity` varchar(64) NOT NULL COMMENT '实体',
+  `entity` varchar(64) NOT NULL COMMENT '实体名称',
   `entity_table_name` varchar(64) NOT NULL COMMENT '实体对应表名',
   `entity_field_name` varchar(64) NOT NULL COMMENT '实体字段名',
   `entity_field_type` varchar(16) NOT NULL DEFAULT 'STRING' COMMENT '实体字段类型',

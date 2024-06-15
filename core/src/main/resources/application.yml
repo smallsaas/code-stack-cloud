@@ -102,8 +102,6 @@ spring:
   profiles: dev
   datasource:
     url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-    #url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/unicom?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-    #url: jdbc:mysql://localhost:3307/uaas-saas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
     # password: root
     password: zb2014@888
@@ -121,9 +119,10 @@ logging:
 am:
   shiro-cache-redis: false
 
-sqlDataEdit:
+mbcs:
   tableInfo:
-    - table: meta_test
+    - name: testme
+      table: meta_test
       field:
         - name: avatar
           postIndex: 1

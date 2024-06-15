@@ -3,6 +3,9 @@ package com.jfeat.am.module.meta.services.domain.model;
 import java.util.List;
 
 public class MetaTableInfo {
+
+    /*数据表信息命名 */
+    private String name;
     private String table;
     private List<MetaField> field;
     private List<MetaWhereColumn> where;
@@ -31,6 +34,16 @@ public class MetaTableInfo {
     public void setTable(String table) {
         this.table = table;
     }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     public List<MetaField> getField() {
         return field;

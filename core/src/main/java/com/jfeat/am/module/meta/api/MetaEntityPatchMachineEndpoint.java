@@ -1,7 +1,6 @@
 package com.jfeat.am.module.meta.api;
 
 
-import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -10,8 +9,6 @@ import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -30,16 +30,19 @@ public class MetaSQLDataEditServiceImpl implements MetaSQLDataEditService {
     public static final String FIELD_TYPE_INT = "int";
 
     @Override
-    public Integer putField(String tableName, String fieldName, String value){
-        MetaTableInfo tableInfo = check(tableName, fieldName);
+    public Integer putField(String entityName, String fieldName, String value){
+        MetaTableInfo tableInfo = check(entityName, fieldName);
+        String tableName = tableInfo.getTable();
         Integer integer = metaSQLDataEditDao.putField(tableName, fieldName, value, tableInfo.getWhere());
         return integer;
     }
 
 
     @Override
-    public Integer postField(String tableName, String fieldName, String value){
-        MetaTableInfo tableInfo = check(tableName, fieldName);
+    public Integer postField(String entityName, String fieldName, String value){
+        MetaTableInfo tableInfo = check(entityName, fieldName);
+        String tableName = tableInfo.getTable();
+
         MetaField field = tableInfo.getFieldByName(fieldName);
 
         if(field == null){
@@ -69,7 +72,6 @@ public class MetaSQLDataEditServiceImpl implements MetaSQLDataEditService {
 
             }else{
                 endBuffer = new StringBuffer(oldValueString);
-
                 endBuffer.append(value);
             }
             return  metaSQLDataEditDao.putField(tableName, fieldName, endBuffer.toString(), tableInfo.getWhere());
@@ -81,17 +83,16 @@ public class MetaSQLDataEditServiceImpl implements MetaSQLDataEditService {
             return  metaSQLDataEditDao.putField(tableName, fieldName, oldValue.toString(), tableInfo.getWhere());
         }
 
-
-
     }
 
 
-    MetaTableInfo check(String tableName,String fieldName) {
-        List<MetaTableInfo> tableInfo = sqlDataEditSetting.getTableInfo();
+    MetaTableInfo check(String entityName, String fieldName) {
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
 
+        List<MetaTableInfo> tableInfo = sqlDataEditSetting.getTableInfo();
+
         for (MetaTableInfo info : tableInfo) {
-            if (info.getTable() != null && info.getTable().equals(tableName)) {
+            if (info.getName() != null && info.getName().equals(entityName)) {
                 if (info.getField() != null) {
                     for (MetaField field : info.getField()) {
                         if (field != null && field.getName().equals(fieldName)) {
@@ -119,12 +120,11 @@ public class MetaSQLDataEditServiceImpl implements MetaSQLDataEditService {
                             return info;
                         }
                     }
-
-
                 }
             }
         }
-            throw new BusinessException(BusinessCode.BadRequest, "未注册：table: " + tableName + " field " + fieldName);
+
+        throw new BusinessException(BusinessCode.BadRequest, "未注册：entity: " + entityName + " field " + fieldName);
     }
 
 }

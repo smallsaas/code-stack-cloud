@@ -2,12 +2,12 @@
 @Endpoint = http://localhost:8088
 
 
-### 图标列表
-GET {{Endpoint}}/change/setting
+### 获取meta配置列表
+GET {{Endpoint}}/api/meta/change/setting
 
 
-### 修改字段
-PUT {{Endpoint}}/change/meta_test/avatar?id=1
+### 修改指定实体名的字段
+PUT {{Endpoint}}/api/meta/change/testme/avatar?id=1
 content-type: application/json
 
 {
@@ -16,7 +16,7 @@ content-type: application/json
 
 
 ### 字段追加
-POST {{Endpoint}}/change/meta_test/avatar?id=1
+POST {{Endpoint}}/api/meta/change/testme/avatar?id=1
 content-type: application/json
 
 {
@@ -26,7 +26,7 @@ content-type: application/json
 
 
 ### 修改字段(数字类型)
-PUT {{Endpoint}}/change/meta_test/number?id=1
+PUT {{Endpoint}}/api/meta/change/testme/number?id=1
 content-type: application/json
 
 {
@@ -35,7 +35,7 @@ content-type: application/json
 
 
 ### 字段追加(数字类型)
-POST {{Endpoint}}/change/meta_test/number?id=2
+POST {{Endpoint}}/api/meta/change/testme/number?id=2
 content-type: application/json
 
 {
