@@ -47,6 +47,25 @@
         WHERE id = #{id}
     </update>
 
+    <insert id="insertEntity">
+        INSERT INTO ${entityTableName}
+        (
+        <trim prefix="" suffixOverrides=",">
+            <foreach collection="params.keys" item="key" separator=",">
+                ${key}
+            </foreach>
+        </trim>
+        )
+        VALUES
+        (
+        <trim prefix="" suffixOverrides=",">
+            <foreach collection="params.keys" item="key" separator=",">
+                #{params[${key}]}
+            </foreach>
+        </trim>
+        )
+    </insert>
+
     <update id="bulkUpdateEntityBySameParams">
         UPDATE ${entityTableName}
         SET

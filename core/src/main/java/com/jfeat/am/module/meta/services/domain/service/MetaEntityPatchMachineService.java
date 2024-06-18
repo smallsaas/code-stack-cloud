@@ -30,6 +30,9 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      */
     Integer updateEntity(String entity, Long id, Map<String, String> params);
 
+
+    Integer insertEntity(String entity, Map<String, String> params);
+
     /**
      * 批量更新实体
      * @param entity 实体模块

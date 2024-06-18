@@ -19,6 +19,9 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                          @Param("params") Map<String, String> params,
                          @Param("id") Long id);
 
+    Integer insertEntity(@Param("entityTableName") String entityTableName,
+                         @Param("params") Map<String, String> params);
+
     /**
      * 批量更新多个实体相同字段为某个值
      * @param entityTableName 表名

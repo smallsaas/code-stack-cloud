@@ -74,6 +74,20 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     }
 
     @Override
+    public Integer insertEntity(String entity, Map<String, String> params) {
+        // 没有参数，不需要更新
+        if (CollectionUtils.isEmpty(params)) {
+            return 0;
+        }
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
+
+        // 更新实体
+        return insert(entity, metaList.get(0).getEntityTableName(), params,  metaMap);
+    }
+
+    @Override
     @Transactional
     public BulkResult bulkUpdateEntity(String entity, List<Map<String, String>> paramsList) {
         // 没有参数，不需要更新
@@ -219,6 +233,21 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         }
         return queryMetaEntityPatchMachineDao.updateEntity(entityTableName, updateMap, id);
     }
+
+    private Integer insert(String entity, String entityTableName, Map<String, String> params, Map<String, MetaEntityPatchMachine> metaMap) {
+        // 用于将驼峰命名的参数转换为蛇形命名
+        Map<String, String> updateMap = new HashMap<>();
+        // 校验参数
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            // 获取字段配置
+            MetaEntityPatchMachine meta = getFieldMeta(entity, param.getKey(), metaMap);
+            updateMap.put(meta.getEntityFieldName(), param.getValue());
+            // 检查参数
+//            check(id, meta, param);
+        }
+        return queryMetaEntityPatchMachineDao.insertEntity(entityTableName, updateMap);
+    }
+
 
     /**
      * 获取字段配置
