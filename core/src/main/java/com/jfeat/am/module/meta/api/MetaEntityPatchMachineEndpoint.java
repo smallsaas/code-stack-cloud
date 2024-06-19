@@ -5,6 +5,7 @@ import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineSe
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.request.Ids;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
@@ -35,17 +36,15 @@ import java.util.Map;
 @RestController
 
 @Api("MetaEntityPatchMachine")
-@RequestMapping("/api/meta/patch")
+@RequestMapping("/api/meta")
 public class MetaEntityPatchMachineEndpoint {
-
 
     @Resource
     MetaEntityPatchMachineService metaEntityPatchMachineService;
 
-    //@BusinessLog(name = "MetaEntityPatchMachine", value = "get MetaEntityPatchMachine")
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "get MetaEntityPatchMachine")
     @ApiOperation(value = "查看meta entity patch配置")
-    @GetMapping("/config/records/{entity}")
-
+    @GetMapping("/patch/config/machines/{entity}")
     public Tip getMetaEntityPatchMachines(@PathVariable(name = "entity") String entity,
                                           @RequestParam(name = "entityTableName", required = false) String entityTableName,
                                           @RequestParam(name = "entityFieldName", required = false) String entityFieldName,
@@ -59,16 +58,18 @@ public class MetaEntityPatchMachineEndpoint {
         return SuccessTip.create(metaEntityPatchMachineService.findMetaEntityPatchMachines(queryEntity));
     }
 
-    //@BusinessLog(name = "MetaEntityPatchMachine", value = "create MetaEntityPatchMachine")
-    @PostMapping("/config/records")
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "create MetaEntityPatchMachine")
+    @PostMapping("/patch/config/machines")
     @ApiOperation(value = "添加meta entity patch配置")
     public Tip createMetaEntityPatchMachine(@RequestBody MetaEntityPatchMachine entity) {
         return SuccessTip.create(metaEntityPatchMachineService.createMeta(entity));
     }
 
-    //@BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
-    @PostMapping("/entity/{entity}/entities/{id}")
-    @ApiOperation(value = "更新实体")
+
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
+    @PostMapping("/entity/{entity}/entities/{id}/action/update")
+    @ApiOperation(value = "更新实体多个字段")
     public Tip updateEntity(@PathVariable(name = "id") Long id,
                             @PathVariable(name = "entity") String entity,
                             @RequestBody Map<String, String> params) {
@@ -76,7 +77,7 @@ public class MetaEntityPatchMachineEndpoint {
     }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk update entity")
-    @PostMapping("/entity/{entity}/entities/bulk")
+    @PostMapping("/entity/{entity}/entities/action/bulk/update")
     @ApiOperation(value = "批量更新实体")
     public Tip bulkUpdateEntity(@PathVariable(name = "entity") String entity,
                                 @RequestBody List<Map<String, String>> params) {
@@ -84,7 +85,7 @@ public class MetaEntityPatchMachineEndpoint {
     }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk delete entity")
-    @PostMapping("/entity/{entity}/entities/bulk/delete")
+    @PostMapping("/entity/{entity}/entities/action/bulk/delete")
     @ApiOperation(value = "批量删除实体")
     public Tip bulkDeleteEntity(@PathVariable(name = "entity") String entity,
                                 @RequestBody Ids ids) {
@@ -92,24 +93,6 @@ public class MetaEntityPatchMachineEndpoint {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "ids[]不能为空");
         }
         return SuccessTip.create(metaEntityPatchMachineService.bulkDeleteEntity(entity, ids.getIds()));
-    }
-
-    //@BusinessLog(name = "排序", value = "列表记录上移内容")
-    @PostMapping("/entity/{entity}/action/moveup/row/{id}/row/{nextId}")
-    @ApiOperation(value = "上移实体排序")
-    public Tip moveUpEntity(@PathVariable(name = "entity") String entity,
-                            @PathVariable(name = "id") Long id,
-                            @PathVariable(name = "nextId") Long nextId) {
-        return SuccessTip.create(metaEntityPatchMachineService.moveUpEntity(entity, id, nextId));
-    }
-
-    //@BusinessLog(name = "排序", value = "列表记录下移内容")
-    @PostMapping("/entity/{entity}/action/movedown/row/{id}/row/{nextId}")
-    @ApiOperation(value = "下移实体排序")
-    public Tip moveDownEntity(@PathVariable(name = "entity") String entity,
-                            @PathVariable(name = "id") Long id,
-                            @PathVariable(name = "nextId") Long nextId) {
-        return SuccessTip.create(metaEntityPatchMachineService.moveDownEntity(entity, id, nextId));
     }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "逻辑删除实体")
@@ -151,4 +134,26 @@ public class MetaEntityPatchMachineEndpoint {
         return SuccessTip.create(
                 metaEntityPatchMachineService.handleBulkLogicDelete(entity, ids.getIds(), true));
     }
+
+
+
+
+    //@BusinessLog(name = "排序", value = "列表记录上移内容")
+    @PostMapping("/entity/{entity}/action/moveup/row/{id}/row/{nextId}")
+    @ApiOperation(value = "上移实体排序")
+    public Tip moveUpEntity(@PathVariable(name = "entity") String entity,
+                            @PathVariable(name = "id") Long id,
+                            @PathVariable(name = "nextId") Long nextId) {
+        return SuccessTip.create(metaEntityPatchMachineService.moveUpEntity(entity, id, nextId));
+    }
+
+    //@BusinessLog(name = "排序", value = "列表记录下移内容")
+    @PostMapping("/entity/{entity}/action/movedown/row/{id}/row/{nextId}")
+    @ApiOperation(value = "下移实体排序")
+    public Tip moveDownEntity(@PathVariable(name = "entity") String entity,
+                            @PathVariable(name = "id") Long id,
+                            @PathVariable(name = "nextId") Long nextId) {
+        return SuccessTip.create(metaEntityPatchMachineService.moveDownEntity(entity, id, nextId));
+    }
+    
 }

@@ -1,5 +1,7 @@
 ## Meta Based Common Service of CRUD
+
 ### 当前项目的测试文档位于：git@github.com:zelejs/saas-test-cases.git 项目的meta文件夹中
+
 <br>
 ## 状态模块说明
 ### 一.使用方式
@@ -15,6 +17,37 @@
 #### 2. 初始化数据库
 
 ```SQL
+DROP TABLE IF EXISTS `meta_enable_machine`;
+
+CREATE TABLE `meta_enable_machine` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `entity` varchar(64) NOT NULL COMMENT '实体',
+  `entity_table_name` varchar(64) NOT NULL COMMENT '实体对应的表名',
+  `entity_field_name` varchar(32) NOT NULL COMMENT '实体字段名',
+  `range_min` smallint(6) NOT NULL COMMENT '选取范围下限',
+  `range_max` smallint(6) NOT NULL COMMENT '选取范围上限',
+  `negative` smallint(6) DEFAULT 0 COMMENT '有效位是否需要取反',
+  `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_meta_entity` (`entity`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `meta_entity_patch_machine`;
+
+CREATE TABLE `meta_entity_patch_machine` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `entity` varchar(64) NOT NULL COMMENT '实体名称',
+  `entity_table_name` varchar(64) NOT NULL COMMENT '实体对应表名',
+  `entity_field_name` varchar(64) NOT NULL COMMENT '实体字段名',
+  `entity_field_type` varchar(16) NOT NULL DEFAULT 'STRING' COMMENT '实体字段类型',
+  `number_range_min` bigint(20) DEFAULT NULL COMMENT '数字类型字段的范围下限',
+  `number_range_max` bigint(20) DEFAULT NULL COMMENT '数字类型字段的范围上限',
+  `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_meta_patch_entity` (`entity`,`entity_field_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS `meta_status_machine`;
 
@@ -47,30 +80,33 @@ CREATE TABLE `meta_workflow_lite_activity` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='工作流记录表';
 
 ```
+
 <br>
 数据库说明
 
-|表名|说明|
-|:--:|:--:|
-|meta_status_machine|表用于存储配置信息|
-|meta_workflow_lite_activity|表用于记录用户的操作|
+|            表名            |             说明             |
+| :-------------------------: | :--------------------------: |
+|     meta_enable_machine     | 此表用于存储有效切换配置信息 |
+|  meta_entity_patch_machine  | 此表用于存储字段更新配置信息 |
+|     meta_status_machine     | 此表用于存储状态转换配置信息 |
+| meta_workflow_lite_activity |    此表用于记录用户的操作    |
 
 <br>
 
-
-#### 3. 对单个实体进行配置
+#### 3. 状态转换对单个实体进行配置
 
 api: POST /api/meta/entity/{entity}/status
 参数说明：
 
-|参数|参数位置|说明|
-|:-:|:--:|:--:|
-|entity|URL|配置标识|
-|entityTableName|请求体|表名|
-|fromStatus|请求体|当前状态|
-|toStatus|请求体|下一个状态|
+|      参数      | 参数位置 |    说明    |
+| :-------------: | :------: | :--------: |
+|     entity     |   URL   |  配置标识  |
+| entityTableName |  请求体  |    表名    |
+|   fromStatus   |  请求体  |  当前状态  |
+|    toStatus    |  请求体  | 下一个状态 |
 
 参数示例：
+
 ```
 
 localhost:8088/api/meta/entity/test/status
@@ -84,13 +120,11 @@ localhost:8088/api/meta/entity/test/status
 
 **内部已定义的3个类型**
 
-|类型|说明|
-|:-:|:--:|
-|START|开始标识，定义第一个状态的时候需要定义 from_status=START to_status={实体第一个状态}|
-|CANCEL|关闭标识 当配置中to_status为CANCEL 则表示当前状态可以关闭|
-|END|结束标识 to_status为END 用于表示流程的结束|
-
-
+|  类型  |                                        说明                                        |
+| :----: | :---------------------------------------------------------------------------------: |
+| START | 开始标识，定义第一个状态的时候需要定义 from_status=START to_status={实体第一个状态} |
+| CANCEL |              关闭标识 当配置中to_status为CANCEL 则表示当前状态可以关闭              |
+|  END  |                     结束标识 to_status为END 用于表示流程的结束                     |
 
 #### 4.开始使用
 
@@ -119,21 +153,23 @@ cond(no)->sub1
 cond2(yes)->op2(right)
 cond2(no)->sub1
 ```
-<br><br><br><br>
+
+`<br><br>``<br><br>`
 
 ##### 2.对于关闭和回退操作的额外说明
 
 **关闭操作：**
 
-` POST /api/meta/entity/{entity}/entities/{id}/action/cancel `
+`POST /api/meta/entity/{entity}/entities/{id}/action/cancel`
 
-|参数|参数位置|说明|
-|:-:|:--:|:--:|
-|entity|URL|配置的entity 用于搜索配置|
-|id|URL|实体的id|
-|note|请求体|备注|
+|  参数  | 参数位置 |           说明           |
+| :----: | :------: | :-----------------------: |
+| entity |   URL   | 配置的entity 用于搜索配置 |
+|   id   |   URL   |         实体的id         |
+|  note  |  请求体  |           备注           |
 
 参数示例：
+
 ```
 http://localhost:8088/api/meta/entity/test/entities/1/action/cancel
 body:
@@ -141,26 +177,23 @@ body:
   "note": "备注"
 }
 ```
-
 
 根据entity实体当前的状态 找到当前状态配置汇总to_status为CANCEL的配置
 未找到则会报错
 有配置则会将对应实体的状态改为CANCEL
 
-
 **回退操作:**
 
-` POST /api/meta/entity/{entity}/entities/{id}/action/back `
+`POST /api/meta/entity/{entity}/entities/{id}/action/back`
 
-|参数|参数位置|说明|
-|:-:|:--:|:--:|
-|entity|URL|配置的entity 用于搜索配置|
-|id|URL|实体的id|
-|note|请求体|备注|
-
-
+|  参数  | 参数位置 |           说明           |
+| :----: | :------: | :-----------------------: |
+| entity |   URL   | 配置的entity 用于搜索配置 |
+|   id   |   URL   |         实体的id         |
+|  note  |  请求体  |           备注           |
 
 参数示例：
+
 ```
 http://localhost:8088/api/meta/entity/test/entities/1/action/cancel
 body:
@@ -169,29 +202,5 @@ body:
 }
 ```
 
-
 根据entity找到from_status为END 或 CANCEL的配置 然后将目标实体的状态改为对应的to_status的配置
 目前只支持对于END和CANCEL状态下的回退
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

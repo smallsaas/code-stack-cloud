@@ -15,9 +15,11 @@ import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +37,6 @@ import javax.annotation.Resource;
  * @since 2019-01-05
  */
 @RestController
-
 @Api("MetaEnableMachine")
 @RequestMapping("/api/meta")
 public class MetaEnableMachineEndpoint {
@@ -44,9 +45,9 @@ public class MetaEnableMachineEndpoint {
     @Resource
     MetaEnableMachineService metaEnableMachineService;
 
-    @BusinessLog(name = "MetaEnableMachine", value = "查看 有效机")
-    @GetMapping("/validation/config/records/{entity}")
-    @ApiOperation(value = "查看有效机")
+    @BusinessLog(name = "MetaEnableMachine", value = "查询 有效机")
+    @GetMapping("/validation/config/machines/{entity}")
+    @ApiOperation(value = "查询有效机配置")
     public Tip getMetaEnableMachine(@PathVariable(name = "entity") String entity,
                                     @RequestParam(name = "entityTableName", required = false) String entityTableName,
                                     @RequestParam(name = "entityFieldName", required = false) String entityFieldName) {
@@ -57,12 +58,42 @@ public class MetaEnableMachineEndpoint {
         return SuccessTip.create(metaEnableMachineService.findMetaEnableMachine(queryEntity));
     }
 
-    @BusinessLog(name = "MetaEnableMachine", value = "add 有效机")
-    @PostMapping("/validation/config/records")
+
+    @BusinessLog(name = "MetaEnableMachine", value = "增加 有效机")
+    @PostMapping("/validation/config/machines")
     @ApiOperation(value = "增加有效机配置")
     public Tip createMetaEnableMachine(@RequestBody MetaEnableMachine metaEnableMachine) {
         return SuccessTip.create(metaEnableMachineService.createMaster(metaEnableMachine));
     }
+
+    @BusinessLog(name = "MetaEnableMachine", value = "查看 有效机")
+    @GetMapping("/validation/config/machines/{id}")
+    @ApiOperation(value = "查看有效机配置")
+    public MetaEnableMachine retrieveMetaEnableMachine(@PathVariable(name = "id") Long id) {
+        return metaEnableMachineService.retrieveMaster(id);
+    }
+    
+    @BusinessLog(name = "MetaEnableMachine", value = "更新 有效机")
+    @PutMapping("/validation/config/machines/{id}")
+    @ApiOperation(value = "更新有效机配置")
+    public Tip updateMetaEnableMachine(@PathVariable(name = "id") Long id, 
+                                        @RequestBody MetaEnableMachine metaEnableMachine) {
+        metaEnableMachine.setId(id);
+        return SuccessTip.create(metaEnableMachineService.updateMaster(metaEnableMachine));
+    }
+
+    @BusinessLog(name = "MetaEnableMachine", value = "删除 有效机")
+    @DeleteMapping("/validation/config/machines/{id}")
+    @ApiOperation(value = "删除有效机配置")
+    public Tip deleteMetaEnableMachine( @PathVariable(name = "id") Long id) {
+        return SuccessTip.create(metaEnableMachineService.deleteMaster(id));
+    }
+
+
+
+
+
+
 
     @BusinessLog(name = "MetaEnableMachine", value = "更新为有效状态")
     @PostMapping("/entity/{entity}/entities/{id}/action/enable")

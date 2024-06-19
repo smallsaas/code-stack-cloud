@@ -43,7 +43,6 @@ import java.util.List;
 @RequestMapping("/api/meta")
 public class MetaStatusMachineEndpoint {
 
-
     @Resource
     MetaStatusMachineService metaStatusMachineService;
 
@@ -178,4 +177,5 @@ public class MetaStatusMachineEndpoint {
         }
         return responseList;
     }
+    
 }

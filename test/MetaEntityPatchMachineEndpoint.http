@@ -1,13 +1,13 @@
 @endpoint = http://localhost:8088
 
 ### 查看meta entity patch配置
-GET {{endpoint}}/api/meta/patch/config/records/status
+GET {{endpoint}}/api/meta/patch/config/machines/{entity}
 
 ### 添加meta entity patch配置
-POST {{endpoint}}/api/meta/patch/config/records
+POST {{endpoint}}/api/meta/patch/config/machines
 
 {
-  "entity": "delete_flag",
+  "entity": "delplayer",
   "entityFieldName": "delete_flag",
   "entityFieldType": "int",
   "entityTableName": "nft_player",
@@ -16,15 +16,24 @@ POST {{endpoint}}/api/meta/patch/config/records
   "permission": "null"
 }
 
+
+
+### 更新实体
+POST {{endpoint}}/api/meta/entity/{entity}/entities/1/action/patch
+
+{
+ 
+}
+
+
 ### 逻辑删除实体
-POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/2/action/logicDelete
+POST {{endpoint}}/api/meta/entity/delplayer/entities/2/action/logicDelete
 
 ### 恢复逻辑删除的实体
-POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/2/action/logicDelete/recovery
-
+POST {{endpoint}}/api/meta/entity/delplayer/entities/2/action/logicDelete/recovery
 
 ### 批量逻辑删除的实体
-POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDelete
+POST {{endpoint}}/api/meta/entity/delplayer/entities/action/bulk/logicDelete
 
 {
   "ids":
@@ -34,7 +43,7 @@ POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDe
 }
 
 ### 批量恢复逻辑删除的实体
-POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDelete/recovery
+POST {{endpoint}}/api/meta/entity/delplayer/entities/action/bulk/logicDelete/recovery
 
 {
   "ids": [
@@ -46,30 +55,18 @@ POST {{endpoint}}/api/meta/patch/entity/delete_flag/entities/action/bulk/logicDe
 
 
 ### 以下测试不通过 pending todo
-### 批量更新实体
-POST {{endpoint}}/api/meta/patch/entity/1/entities/bulk
+### 批量更新实体字段
+POST {{endpoint}}/api/meta/entity/1/entities/action/bulk/patch
 
 [
   {}
 ]
 
 ### 批量删除实体
-POST {{endpoint}}/api/meta/patch/entity/{entity}/entities/bulk/delete
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/delete
 
 {
   "ids": [
     0
   ]
 }
-
-### 更新实体(没有返回操作)
-POST {{endpoint}}/api/meta/patch/entity/name/entities/1
-
-{
- 
-}
-
-### 更新实体
-POST {{endpoint}}/api/meta/patch/entity/1/entities/1
-
-{}

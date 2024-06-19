@@ -1,10 +1,13 @@
 @endpoint = http://localhost:8088
 
+
+### 变更实体表有效状态,  0 - 无效, 1 - 有效
+
 ### 查看有效机
 # "entity":"实体",
 # "entityTableName":"实体对应表名",
 # "entityFieldName":"实体字段名"
-GET {{endpoint}}/api/meta/validation/config/records/实体
+GET {{endpoint}}/api/meta/validation/config/machines/{entity}
 
 ### 增加有效机配置
 # 上限rangeMax，下限rangeMin，是否取反negative
@@ -12,10 +15,10 @@ GET {{endpoint}}/api/meta/validation/config/records/实体
 # "entityTableName":"实体对应表名",
 # "entityFieldName":"实体字段名",
 # "permission":"操作权限控制"
-POST {{endpoint}}/api/meta/validation/config/records
+POST {{endpoint}}/api/meta/validation/config/machines
 
 {
-    "entity":"status",
+    "entity":"player",
     "entityTableName":"nft_player",
     "entityFieldName":"status",
     "rangeMin": 1,
@@ -24,22 +27,28 @@ POST {{endpoint}}/api/meta/validation/config/records
     "permission":"操作权限控制"
 }
 
+
+
+
 ### 更新为有效状态
 # update entity_table_name set entity_table_name.entity_field_name = ? where id =?
-POST {{endpoint}}/api/meta/entity/status/entities/1/action/enable
+POST {{endpoint}}/api/meta/entity/{entity}/entities/1/action/enable
 
 ### 更新为无效状态
-POST {{endpoint}}/api/meta/entity/status/entities/1/action/disable
+POST {{endpoint}}/api/meta/entity/{entity}/entities/1/action/disable
 
 ### 更新为其他状态
-POST {{endpoint}}/api/meta/entity/status/entities/1/action/validate
+POST {{endpoint}}/api/meta/entity/{entity}/entities/1/action/validate
 
 {
     "value":1
 }
 
+
+
+
 ### 批量更新为有效状态
-POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/enable
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/enable
 
 {
   "ids": [
@@ -48,7 +57,7 @@ POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/enable
 }
 
 ### 批量更新为无效
-POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/disable
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/disable
 
 {
   "ids": [
@@ -57,7 +66,7 @@ POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/disable
 }
 
 ### 批量更新为其他状态
-POST {{endpoint}}/api/meta/entity/status/entities/action/bulk/validate
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/validate
 
 {
   "ids": [
