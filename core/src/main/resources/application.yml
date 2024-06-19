@@ -101,10 +101,11 @@ logging:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://localhost:3306/test
+#    url: jdbc:mysql://sh-cdb-q5vnc0iy.sql.tencentcdb.com:59449/smallsaas?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
-    # password: root
-    password: zb2014@888
+    password: root
+#    password: zb2014@888
     #driver-class-name: com.mysql.cj.jdbc.Driver
     filters: log4j,wall,mergeStat
     sql-script-encoding: UTF-8
@@ -121,14 +122,15 @@ am:
 
 mbcs:
   tableInfo:
-    - name: testme
-      table: meta_test
+    - name: device
+      table: t_device
       field:
-        - name: avatar
+        - name: device_id
           postIndex: 1
           separator: ','
-        - name: number
+        - name: delete_flag
           filedType: int
+        - name: status
 
       where:
         - field: id

@@ -1,5 +1,7 @@
 @endpoint = http://localhost:8088
 
+
+
 ### 查看meta entity patch配置
 GET {{endpoint}}/api/meta/patch/config/machines/{entity}
 
@@ -7,9 +9,9 @@ GET {{endpoint}}/api/meta/patch/config/machines/{entity}
 POST {{endpoint}}/api/meta/patch/config/machines
 
 {
-  "entity": "delplayer",
+  "entity": "device",
   "entityFieldName": "delete_flag",
-  "entityFieldType": "int",
+  "entityFieldType": "NUMBER",
   "entityTableName": "nft_player",
   "numberRangeMax": 1,
   "numberRangeMin": 1000,
@@ -19,35 +21,37 @@ POST {{endpoint}}/api/meta/patch/config/machines
 
 
 ### 更新实体
-POST {{endpoint}}/api/meta/entity/{entity}/entities/1/action/patch
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/update
 
 {
+  "status":"test",
+  "device_id":"test_id"
  
 }
 
 
 ### 逻辑删除实体
-POST {{endpoint}}/api/meta/entity/delplayer/entities/2/action/logicDelete
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/logicDelete
 
 ### 恢复逻辑删除的实体
-POST {{endpoint}}/api/meta/entity/delplayer/entities/2/action/logicDelete/recovery
+POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/logicDelete/recovery
 
 ### 批量逻辑删除的实体
-POST {{endpoint}}/api/meta/entity/delplayer/entities/action/bulk/logicDelete
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/logicDelete
 
 {
   "ids":
    [
-    1,2
+    4,3
   ]
 }
 
 ### 批量恢复逻辑删除的实体
-POST {{endpoint}}/api/meta/entity/delplayer/entities/action/bulk/logicDelete/recovery
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/logicDelete/recovery
 
 {
   "ids": [
-    1,2
+    4,7
   ]
 }
 
@@ -56,10 +60,22 @@ POST {{endpoint}}/api/meta/entity/delplayer/entities/action/bulk/logicDelete/rec
 
 ### 以下测试不通过 pending todo
 ### 批量更新实体字段
-POST {{endpoint}}/api/meta/entity/1/entities/action/bulk/patch
+POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/update
 
 [
-  {}
+  {
+  "id":4,
+  "status":"test4",
+  "device_id":"test_id"
+ 
+},
+{
+  "id":7,
+  "status":"test7",
+  "device_id":"test_id"
+ 
+}
+
 ]
 
 ### 批量删除实体
@@ -67,6 +83,6 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/delete
 
 {
   "ids": [
-    0
+    4,7
   ]
 }
