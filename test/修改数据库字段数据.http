@@ -16,7 +16,7 @@ content-type: application/json
 
 
 ### 字段追加
-POST {{Endpoint}}/api/meta/change/{name}/{fieldName}?id=8
+POST {{Endpoint}}/api/meta/change/{entity}/{fieldName}?id=8
 content-type: application/json
 
 {

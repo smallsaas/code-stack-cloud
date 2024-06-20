@@ -14,12 +14,26 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
 
     List<MetaEntityPatchMachine> findMetaEntityPatchMachines(MetaEntityPatchMachine queryEntity);
 
+    List<Map<String, Object>> selectEntity(String tableName, Map<String, Object> conditions);
+
     /**
      * 新增配置
      * @param meta 配置
      * @return
      */
     Integer createMeta(MetaEntityPatchMachine meta);
+
+    /**
+     * 添加新记录
+     * @param entity 实体模块
+     * @param params 添加参数
+     * @return
+     */
+    Integer insertEntity(String entity, Map<String, String> params);
+
+
+
+    Integer updateEntity(String entityName,Long id, String value);
 
     /**
      * 更新实体
@@ -31,7 +45,8 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     Integer updateEntity(String entity, Long id, Map<String, String> params);
 
 
-    Integer insertEntity(String entity, Map<String, String> params);
+    Integer updateEntity(String entity, Map<String, String> params,Map<String, String> conditions);
+
 
     /**
      * 批量更新实体

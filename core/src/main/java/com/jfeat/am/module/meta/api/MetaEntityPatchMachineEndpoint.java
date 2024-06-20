@@ -1,6 +1,7 @@
 package com.jfeat.am.module.meta.api;
 
 
+import com.jfeat.am.module.meta.services.domain.model.MateFieldBody;
 import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +68,6 @@ public class MetaEntityPatchMachineEndpoint {
     }
 
 
-
     @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
     @PostMapping("/entity/{entity}/entities/{id}/action/update")
     @ApiOperation(value = "更新实体多个字段")
@@ -74,6 +75,16 @@ public class MetaEntityPatchMachineEndpoint {
                             @PathVariable(name = "entity") String entity,
                             @RequestBody Map<String, String> params) {
         return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, id, params));
+    }
+
+
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
+    @PostMapping("/entity/{entity}/onlyEntity/{id}/action/update")
+    @ApiOperation(value = "更新实体一个字段")
+    public Tip updateOnlyEntity(@PathVariable(name = "id") Long id,
+                            @PathVariable(name = "entity") String entity,
+                                @RequestBody MateFieldBody fieldBody) {
+        return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, id, fieldBody.getValue()));
     }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk update entity")

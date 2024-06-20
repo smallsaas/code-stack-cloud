@@ -47,6 +47,18 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     }
 
     @Override
+    public List<Map<String, Object>> selectEntity(String entity, Map<String, Object> conditions) {
+        // 没有参数，不需要更新
+        if (CollectionUtils.isEmpty(conditions)) {
+            return null;
+        }
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        String entityTableName = metaList.get(0).getEntityTableName();
+        return queryMetaEntityPatchMachineDao.selectEntity(entityTableName,conditions);
+    }
+
+    @Override
     public Integer createMeta(MetaEntityPatchMachine meta) {
         if (null == meta) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "meta参数不能为空");
@@ -57,6 +69,43 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         }
         return createMaster(meta);
     }
+    @Override
+    public Integer insertEntity(String entity, Map<String, String> params) {
+        // 没有参数，不需要更新
+        if (CollectionUtils.isEmpty(params)) {
+            return 0;
+        }
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
+
+        // 更新实体
+        return insert(entity, metaList.get(0).getEntityTableName(), params,  metaMap);
+    }
+
+
+    @Override
+    public Integer updateEntity(String entityName,Long id, String value) {
+
+        if (entityName==null || entityName.isEmpty() || value==null || value.isEmpty()){
+            return null;
+        }
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entityName);
+        if (metaList==null || metaList.size()<=0){
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺少实体配置");
+        } else if (metaList.size()>1) {
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
+        }
+        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
+
+        MetaEntityPatchMachine metaEntityPatchMachine = metaList.get(0);
+        String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
+        String entityTableName = metaEntityPatchMachine.getEntityTableName();
+
+        return queryMetaEntityPatchMachineDao.updateOnlyEntity(entityTableName,entityFieldName,value,id);
+    }
+
 
     @Override
     @Transactional
@@ -74,7 +123,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     }
 
     @Override
-    public Integer insertEntity(String entity, Map<String, String> params) {
+    public Integer updateEntity(String entity, Map<String, String> params, Map<String, String> conditions) {
         // 没有参数，不需要更新
         if (CollectionUtils.isEmpty(params)) {
             return 0;
@@ -84,8 +133,9 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
 
         // 更新实体
-        return insert(entity, metaList.get(0).getEntityTableName(), params,  metaMap);
+        return update(entity, metaList.get(0).getEntityTableName(), params,conditions, metaMap);
     }
+
 
     @Override
     @Transactional
@@ -232,6 +282,27 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
             check(id, meta, param);
         }
         return queryMetaEntityPatchMachineDao.updateEntity(entityTableName, updateMap, id);
+    }
+
+    /**
+     * 更新实体
+     * @param entity 实体模块
+     * @param params 更新参数
+     * @param metaMap meta配置
+     * @return
+     */
+    private Integer update(String entity, String entityTableName, Map<String, String> params, Map<String, String> conditions, Map<String, MetaEntityPatchMachine> metaMap) {
+        // 用于将驼峰命名的参数转换为蛇形命名
+        Map<String, String> updateMap = new HashMap<>();
+        // 校验参数
+        for (Map.Entry<String, String> param : params.entrySet()) {
+            // 获取字段配置
+            MetaEntityPatchMachine meta = getFieldMeta(entity, param.getKey(), metaMap);
+            updateMap.put(meta.getEntityFieldName(), param.getValue());
+            // 检查参数
+//            check(id, meta, param);
+        }
+        return queryMetaEntityPatchMachineDao.updateEntityByConditions(entityTableName, updateMap, conditions);
     }
 
     private Integer insert(String entity, String entityTableName, Map<String, String> params, Map<String, MetaEntityPatchMachine> metaMap) {

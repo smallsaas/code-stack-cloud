@@ -30,6 +30,16 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/update
 }
 
 
+
+### 更新单个实体
+POST {{endpoint}}/api/meta/entity/device/onlyEntity/8/action/update
+
+{
+  "value":"test",
+ 
+}
+
+
 ### 逻辑删除实体
 POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/logicDelete
 

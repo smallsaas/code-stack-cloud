@@ -15,9 +15,21 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
 
     List<MetaEntityPatchMachine> findMetaEntityPatchMachines(MetaEntityPatchMachine metaEntityPatchMachine);
 
+    List<Map<String, Object>> selectEntity(@Param("entityTableName") String entityTableName,
+                                           @Param("conditions") Map<String, Object> conditions);
+
     Integer updateEntity(@Param("entityTableName") String entityTableName,
                          @Param("params") Map<String, String> params,
                          @Param("id") Long id);
+
+    Integer updateOnlyEntity(@Param("entityTableName") String entityTableName,
+                         @Param("entityField") String entityField,
+                         @Param("entityValue") String entityValue,
+                         @Param("id") Long id);
+
+    Integer updateEntityByConditions(@Param("entityTableName") String entityTableName,
+                         @Param("params") Map<String, String> params,
+                         @Param("conditions") Map<String, String> conditions);
 
     Integer insertEntity(@Param("entityTableName") String entityTableName,
                          @Param("params") Map<String, String> params);
