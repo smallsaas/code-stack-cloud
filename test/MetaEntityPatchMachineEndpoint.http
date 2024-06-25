@@ -32,7 +32,7 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/update
 
 
 ### 更新单个实体
-POST {{endpoint}}/api/meta/entity/device/onlyEntity/8/action/update
+POST {{endpoint}}/api/meta/entity/device/onlyEntity/0b1wAo1w3OFRV230am3w3wtLR14wAo1d/action/update
 
 {
   "value":"test",
@@ -95,4 +95,41 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/delete
   "ids": [
     4,7
   ]
+}
+
+
+###查询全部条件
+
+GET  {{endpoint}}/api/meta/patch/config/whereFiled/device/select
+
+
+#### 创建条件
+#whereFieldName 需要添加条件字段名
+
+POST {{endpoint}}/api/meta/patch/config/whereFiled/device/create
+
+{
+  "whereFieldName":"device_id"
+}
+
+
+#### 更新条件
+#stusta row 删除整条记录  filed where只设置空
+PUT  {{endpoint}}/api/meta/patch/config/whereFiled/device/update
+
+{
+  "oldWhereFieldName":"device_id",
+  "newWhereFieldName":"device_id_test",
+   "stusta":"row"
+}
+
+
+
+####删除条件
+#stusta row 删除整条记录  filed where只设置空
+POST {{endpoint}}/api/meta/patch/config/whereFiled/device/delete
+
+{
+  "whereFieldName":"device_id",
+  "stusta":"row"
 }

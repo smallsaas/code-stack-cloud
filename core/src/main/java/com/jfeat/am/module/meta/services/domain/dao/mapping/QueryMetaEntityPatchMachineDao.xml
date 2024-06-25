@@ -3,7 +3,7 @@
 <mapper namespace="com.jfeat.am.module.meta.services.domain.dao.QueryMetaEntityPatchMachineDao">
     <sql id="Base_Column_List">
             id, entity, entity_table_name AS entityTableName, entity_field_name AS entityFieldName,
-            entity_field_type AS entityFieldType, number_range_min AS numberRangeMin, number_range_max AS numberRangeMax,
+            entity_field_type AS entityFieldType,where_field_name AS whereFieldName, number_range_min AS numberRangeMin, number_range_max AS numberRangeMax,
             permission
         </sql>
     <select id="findMetaEntityPatchMachines" resultType="MetaEntityPatchMachine"
@@ -116,4 +116,15 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectUniqueWhereFieldNames" resultType="string">
+        SELECT where_field_name
+        FROM meta_entity_patch_machine
+        WHERE where_field_name IS NOT NULL
+        and entity=#{entity}
+        GROUP BY where_field_name
+    </select>
+
+
+
 </mapper>

@@ -3,7 +3,9 @@ package com.jfeat.am.module.meta.services.domain.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.jfeat.am.module.meta.services.domain.model.SortNumberRecord;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +51,17 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                              @Param("ids") List<Long> ids);
 
     List<SortNumberRecord> findSortNumberRecord(@Param("entityTableName") String entityTableName,
-                                                @Param("entityFieldName") String EntityFieldName,
+                                                @Param("entityFieldName") String entityFieldName,
                                                 @Param("ids") List<Long> ids);
+
+    @Delete("DELETE FROM meta_entity_patch_machine WHERE entity=#{entityName} AND entity_field_name=#{entityFieldName}")
+    Integer deleteWhereFiled(@Param("entityName") String entityName,
+                             @Param("entityFieldName") String entityFieldName);
+
+
+    @Update("UPDATE meta_entity_patch_machine SET where_field_name=#{whereFiledName} where entity=#{entityName} AND entity_field_name=#{entityFieldName}")
+    Integer updateWhereFiled(@Param("entityName") String entityName,
+                             @Param("entityFieldName") String entityFieldName,@Param("whereFiledName") String whereFiledName);
+
+    List<String> selectUniqueWhereFieldNames(@Param("entity") String entity);
 }

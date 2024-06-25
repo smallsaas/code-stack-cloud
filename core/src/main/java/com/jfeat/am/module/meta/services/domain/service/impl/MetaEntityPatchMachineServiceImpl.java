@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -85,7 +86,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
 
 
     @Override
-    public Integer updateEntity(String entityName,Long id, String value) {
+    public Integer updateEntity(String entityName,String value,String condition) {
 
         if (entityName==null || entityName.isEmpty() || value==null || value.isEmpty()){
             return null;
@@ -94,16 +95,31 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         List<MetaEntityPatchMachine> metaList = findMetaList(entityName);
         if (metaList==null || metaList.size()<=0){
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺少实体配置");
-        } else if (metaList.size()>1) {
+        } else if (metaList.size()>2) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
         }
-        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
 
-        MetaEntityPatchMachine metaEntityPatchMachine = metaList.get(0);
-        String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
+        Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
+        List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
+        List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+
+        if (CollectionUtils.isEmpty(whereField) || CollectionUtils.isEmpty(noWhereField)){
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
+        }
+
+//        需要更新的字段
+        MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
         String entityTableName = metaEntityPatchMachine.getEntityTableName();
+        String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
+        String whereFiledNme = whereField.get(0).getWhereFieldName();
 
-        return queryMetaEntityPatchMachineDao.updateOnlyEntity(entityTableName,entityFieldName,value,id);
+        Map<String,String> updateFieldMp= new HashMap<>();
+        updateFieldMp.put(entityFieldName,value);
+        Map<String,String> conditionMap = new HashMap<>();
+        conditionMap.put(whereFiledNme,condition);
+
+
+        return queryMetaEntityPatchMachineDao.updateEntityByConditions(entityTableName,updateFieldMp,conditionMap);
     }
 
 
@@ -230,6 +246,74 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                         : null);
     }
 
+    @Override
+    public Integer createWhereFiled(String entity, String filedName) {
+        Integer result = 0;
+
+        if (entity==null || entity.isEmpty()){
+            throw new BusinessException(
+                    BusinessCode.CodeBase.getCode(),
+                    "entity不能为空");
+        }
+        if (filedName==null || filedName.isEmpty()){
+            throw new BusinessException(
+                    BusinessCode.CodeBase.getCode(),
+                    "whereFiled不能为空");
+        }
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        MetaEntityPatchMachine flag = null;
+        for (MetaEntityPatchMachine metaEntityPatchMachine:metaList){
+            if (filedName.equals(metaEntityPatchMachine.getEntityFieldName())){
+                flag=metaEntityPatchMachine;
+                break;
+            }
+        }
+        if (flag==null){
+            MetaEntityPatchMachine metaEntityPatchMachine= new MetaEntityPatchMachine();
+            metaEntityPatchMachine.setEntity(entity);
+            metaEntityPatchMachine.setEntityFieldName(filedName);
+            metaEntityPatchMachine.setEntityTableName(metaList.get(0).getEntityTableName());
+            metaEntityPatchMachine.setWhereFieldName(filedName);
+            createMeta(metaEntityPatchMachine);
+            result=1;
+        }else {
+            result=queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,filedName);
+        }
+        return result;
+    }
+
+    @Override
+    public Integer updateWhereFiled(String entity, String oldFiledName, String newFiledName,String status) {
+        Integer result=0;
+        List<String> conditions = queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
+        if (conditions.contains(oldFiledName)){
+            if ("row".equals(status)){
+                result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,oldFiledName);
+            }else {
+                result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,oldFiledName,null);
+            }
+        }
+        result=createWhereFiled(entity,newFiledName);
+        return result;
+    }
+
+    @Override
+    public List<String> selectWhereFiled(String entity) {
+        return queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
+    }
+
+    @Override
+    public Integer deleteWhereFiled(String entity, String filedName,String status) {
+        Integer result = 0;
+        System.out.println(status);
+        if ("row".equals(status)){
+           result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,filedName);
+        }else {
+            result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,null);
+        }
+        return result;
+    }
+
     /**
      * 获取meta Map
      * @param entity 实体
@@ -248,6 +332,21 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         }
         return metaList;
     }
+
+    /**
+     * 将有wher条件 和没有where 条件分开
+     * @param entityPatchMachineList
+     * @return
+     */
+    private Map<Boolean, List<MetaEntityPatchMachine>> filterWhereField(List<MetaEntityPatchMachine> entityPatchMachineList){
+
+        if (CollectionUtils.isEmpty(entityPatchMachineList)){
+            return null;
+        }
+        return entityPatchMachineList.stream()
+                .collect(Collectors.partitioningBy(entity -> entity.getWhereFieldName() != null && !entity.getWhereFieldName().isEmpty()));
+    }
+
 
     /**
      * 构建meta map，建立键值对关系 entityFieldName：（Object）MetaEntityPatchMachine

@@ -42,6 +42,12 @@ public class MetaEntityPatchMachine extends Model<MetaEntityPatchMachine> {
      */
     @TableField("entity_field_type")
     private String entityFieldType;
+
+    /**
+     * 实体类条件字段
+     */
+    @TableField("where_field_name")
+    private String whereFieldName;
     /**
      * 数字类型字段的范围下限
      */
@@ -101,6 +107,14 @@ public class MetaEntityPatchMachine extends Model<MetaEntityPatchMachine> {
     public MetaEntityPatchMachine setEntityFieldType(String entityFieldType) {
         this.entityFieldType = entityFieldType;
         return this;
+    }
+
+    public String getWhereFieldName() {
+        return whereFieldName;
+    }
+
+    public void setWhereFieldName(String whereFieldName) {
+        this.whereFieldName = whereFieldName;
     }
 
     public Long getNumberRangeMin() {

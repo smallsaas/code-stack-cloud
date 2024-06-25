@@ -12,14 +12,9 @@ import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -81,10 +76,10 @@ public class MetaEntityPatchMachineEndpoint {
     @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
     @PostMapping("/entity/{entity}/onlyEntity/{id}/action/update")
     @ApiOperation(value = "更新实体一个字段")
-    public Tip updateOnlyEntity(@PathVariable(name = "id") Long id,
+    public Tip updateOnlyEntity(@PathVariable(name = "id") String condition,
                             @PathVariable(name = "entity") String entity,
                                 @RequestBody MateFieldBody fieldBody) {
-        return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, id, fieldBody.getValue()));
+        return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, fieldBody.getValue(),condition));
     }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk update entity")
@@ -166,5 +161,33 @@ public class MetaEntityPatchMachineEndpoint {
                             @PathVariable(name = "nextId") Long nextId) {
         return SuccessTip.create(metaEntityPatchMachineService.moveDownEntity(entity, id, nextId));
     }
+
+    @PostMapping("/patch/config/whereFiled/{entity}/create")
+    public Tip createWhereFiled(@PathVariable(name = "entity") String entity,
+                                @RequestParam(name = "whereFieldName") String whereFieldName){
+        return SuccessTip.create(metaEntityPatchMachineService.createWhereFiled(entity,whereFieldName));
+    }
+
+
+    @PutMapping("/patch/config/whereFiled/{entity}/update")
+    public Tip updateWhereFiled(@PathVariable(name = "entity") String entity,
+                                @RequestParam(name = "oldWhereFieldName") String oldWhereFieldName,
+                                @RequestParam(name = "newWhereFieldName") String newWhereFieldName,
+                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
+        return SuccessTip.create(metaEntityPatchMachineService.updateWhereFiled(entity,oldWhereFieldName,newWhereFieldName,status));
+    }
+
+    @GetMapping("/patch/config/whereFiled/{entity}/select")
+    public Tip selectWhereFiled(@PathVariable(name = "entity") String entity){
+        return SuccessTip.create(metaEntityPatchMachineService.selectWhereFiled(entity));
+    }
+
+    @PostMapping("/patch/config/whereFiled/{entity}/delete")
+    public Tip deleteWhereFiled(@PathVariable(name = "entity") String entity,
+                                @RequestParam(name = "whereFieldName") String whereFieldName,
+                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
+        return SuccessTip.create(metaEntityPatchMachineService.deleteWhereFiled(entity,whereFieldName,status));
+    }
+
     
 }

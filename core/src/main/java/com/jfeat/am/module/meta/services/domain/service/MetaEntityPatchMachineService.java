@@ -14,6 +14,12 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
 
     List<MetaEntityPatchMachine> findMetaEntityPatchMachines(MetaEntityPatchMachine queryEntity);
 
+    /**
+     * 根据条件查询
+     * @param tableName
+     * @param conditions
+     * @return
+     */
     List<Map<String, Object>> selectEntity(String tableName, Map<String, Object> conditions);
 
     /**
@@ -32,8 +38,14 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     Integer insertEntity(String entity, Map<String, String> params);
 
 
-
-    Integer updateEntity(String entityName,Long id, String value);
+    /**
+     * 更新单个实体
+     * @param entityName
+     * @param condition
+     * @param value
+     * @return
+     */
+    Integer updateEntity(String entityName, String value,String condition);
 
     /**
      * 更新实体
@@ -45,6 +57,13 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     Integer updateEntity(String entity, Long id, Map<String, String> params);
 
 
+    /**
+     * 根据条件更新实体字段
+     * @param entity
+     * @param params
+     * @param conditions
+     * @return
+     */
     Integer updateEntity(String entity, Map<String, String> params,Map<String, String> conditions);
 
 
@@ -99,4 +118,16 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      * @return
      */
     BulkResult handleBulkLogicDelete(String entity, List<Long> ids, boolean isReverse);
+
+
+
+    Integer createWhereFiled(String entity,String filedName);
+
+    Integer updateWhereFiled(String entity,String oldFiledName,String newFiledName,String status);
+
+    List<String> selectWhereFiled(String entity);
+
+    Integer deleteWhereFiled(String entity,String filedName,String status);
+
+
 }
