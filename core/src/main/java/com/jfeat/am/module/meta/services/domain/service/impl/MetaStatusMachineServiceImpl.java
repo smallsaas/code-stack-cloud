@@ -1,5 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.am.module.meta.constant.StatusConstant;
 import com.jfeat.am.module.meta.services.domain.dao.QueryMetaStatusMachineDao;
@@ -20,7 +21,6 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

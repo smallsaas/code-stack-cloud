@@ -41,6 +41,7 @@ CREATE TABLE `meta_entity_patch_machine` (
   `entity_table_name` varchar(64) NOT NULL COMMENT '实体对应表名',
   `entity_field_name` varchar(64) NOT NULL COMMENT '实体字段名',
   `entity_field_type` varchar(16) NOT NULL DEFAULT 'STRING' COMMENT '实体字段类型',
+  `where_field_name`  varchar(64) DEFAULT NULL COMMENT '指定实体记录查询字段',
   `number_range_min` bigint(20) DEFAULT NULL COMMENT '数字类型字段的范围下限',
   `number_range_max` bigint(20) DEFAULT NULL COMMENT '数字类型字段的范围上限',
   `permission` varchar(64) DEFAULT NULL COMMENT '操作权限控制',

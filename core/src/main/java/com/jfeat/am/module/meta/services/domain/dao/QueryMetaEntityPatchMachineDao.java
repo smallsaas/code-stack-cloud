@@ -34,7 +34,7 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                          @Param("id") Long id);
 
     Integer updateEntityByConditions(@Param("entityTableName") String entityTableName,
-                         @Param("params") Map<String, String> params,
+                         @Param("params") Map<String, Object> params,
                          @Param("conditions") Map<String, String> conditions);
 
     Integer insertEntity(@Param("entityTableName") String entityTableName,

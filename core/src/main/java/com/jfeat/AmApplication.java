@@ -22,6 +22,6 @@ public class AmApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
         SpringApplication.run(AmApplication.class, args);
-        log.info("UAAS-PERM running success!");
+        log.info("MBCS app running success!");
     }
 }
