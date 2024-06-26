@@ -3,7 +3,8 @@
 @entity=message
 
 ### 查看所有meta entity patch配置
-GET {{endpoint}}/api/meta/patch/config/machines?whereFieldName={{entity}}
+# GET {{endpoint}}/api/meta/patch/config/machines?whereFieldName={{entity}}
+GET {{endpoint}}/api/meta/patch/config/machines
 
 
 ### 查看meta entity patch配置
@@ -12,6 +13,7 @@ GET {{endpoint}}/api/meta/patch/config/machines/{{entity}}
 
 ### 添加meta entity patch配置
 POST {{endpoint}}/api/meta/patch/config/machines
+Content-Type: application/json
 
 {
   "entity": "device",
@@ -23,6 +25,8 @@ POST {{endpoint}}/api/meta/patch/config/machines
   "numberRangeMin": 1000,
   "permission": null
 }
+
+@id=1
 
 ### 更新实体
 POST {{endpoint}}/api/meta/entity/{{entity}}/entities/{{id}}/action/update
@@ -37,6 +41,7 @@ POST {{endpoint}}/api/meta/entity/{{entity}}/entities/{{id}}/action/update
 
 ### 更新实体（可指定实体ID字段）
 POST {{endpoint}}/api/meta/entity/{{entity}}/entities/{{entityId}}/action/update
+Content-Type: application/json
 
 {
   "value":"test"
