@@ -94,6 +94,8 @@ public class MetaEntityPatchMachineEndpoint {
         return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, entityId, params));
     }
 
+
+
 //    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
 //    @PostMapping("/entity/{entity}/onlyEntity/{id}/action/update")
 //    @ApiOperation(value = "更新实体一个字段")
@@ -103,36 +105,35 @@ public class MetaEntityPatchMachineEndpoint {
 //        return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, fieldBody.getValue(), condition));
 //    }
 
-    @ApiOperation(value = "更新实体一个字段")
-    @PostMapping("/patch/config/whereFiled/{entity}/create")
-    public Tip createWhereFiled(@PathVariable(name = "entity") String entity,
-                                @RequestParam(name = "whereFieldName") String whereFieldName){
-        return SuccessTip.create(metaEntityPatchMachineService.createWhereFiled(entity,whereFieldName));
-    }
-
-    @ApiOperation(value = "更新实体一个字段")
-    @PutMapping("/patch/config/whereFiled/{entity}/update")
-    public Tip updateWhereFiled(@PathVariable(name = "entity") String entity,
-                                @RequestParam(name = "oldWhereFieldName") String oldWhereFieldName,
-                                @RequestParam(name = "newWhereFieldName") String newWhereFieldName,
-                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
-        return SuccessTip.create(metaEntityPatchMachineService.updateWhereFiled(entity,oldWhereFieldName,newWhereFieldName,status));
-    }
-
-    @ApiOperation(value = "更新实体一个字段")
-    @GetMapping("/patch/config/whereFiled/{entity}/select")
-    public Tip selectWhereFiled(@PathVariable(name = "entity") String entity){
-        return SuccessTip.create(metaEntityPatchMachineService.selectWhereFiled(entity));
-    }
-
-    @ApiOperation(value = "更新实体一个字段")
-    @PostMapping("/patch/config/whereFiled/{entity}/delete")
-    public Tip deleteWhereFiled(@PathVariable(name = "entity") String entity,
-                                @RequestParam(name = "whereFieldName") String whereFieldName,
-                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
-        return SuccessTip.create(metaEntityPatchMachineService.deleteWhereFiled(entity,whereFieldName,status));
-    }
-
+//    @ApiOperation(value = "更新实体一个字段")
+//    @PostMapping("/patch/config/whereFiled/{entity}/create")
+//    public Tip createWhereFiled(@PathVariable(name = "entity") String entity,
+//                                @RequestParam(name = "whereFieldName") String whereFieldName){
+//        return SuccessTip.create(metaEntityPatchMachineService.createWhereFiled(entity,whereFieldName));
+//    }
+//
+//    @ApiOperation(value = "更新实体一个字段")
+//    @PutMapping("/patch/config/whereFiled/{entity}/update")
+//    public Tip updateWhereFiled(@PathVariable(name = "entity") String entity,
+//                                @RequestParam(name = "oldWhereFieldName") String oldWhereFieldName,
+//                                @RequestParam(name = "newWhereFieldName") String newWhereFieldName,
+//                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
+//        return SuccessTip.create(metaEntityPatchMachineService.updateWhereFiled(entity,oldWhereFieldName,newWhereFieldName,status));
+//    }
+//
+//    @ApiOperation(value = "更新实体一个字段")
+//    @GetMapping("/patch/config/whereFiled/{entity}/select")
+//    public Tip selectWhereFiled(@PathVariable(name = "entity") String entity){
+//        return SuccessTip.create(metaEntityPatchMachineService.selectWhereFiled(entity));
+//    }
+//
+//    @ApiOperation(value = "更新实体一个字段")
+//    @PostMapping("/patch/config/whereFiled/{entity}/delete")
+//    public Tip deleteWhereFiled(@PathVariable(name = "entity") String entity,
+//                                @RequestParam(name = "whereFieldName") String whereFieldName,
+//                                @RequestParam(name = "status",required = false,defaultValue = "filed") String status){
+//        return SuccessTip.create(metaEntityPatchMachineService.deleteWhereFiled(entity,whereFieldName,status));
+//    }
 
 
 

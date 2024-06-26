@@ -1,5 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.common.base.CaseFormat;
 import com.jfeat.am.module.meta.constant.EntityFieldName;
 import com.jfeat.am.module.meta.constant.EntityFieldType;
@@ -14,7 +15,6 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
 import io.jsonwebtoken.lang.Assert;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -24,6 +24,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * <p>
@@ -144,6 +147,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
             Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
             List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
             List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+
 
             //需要更新的字段
             MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
@@ -380,8 +384,18 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         if (CollectionUtils.isEmpty(entityPatchMachineList)){
             return null;
         }
-        return entityPatchMachineList.stream()
-                .collect(Collectors.partitioningBy(entity -> entity.getWhereFieldName() != null && !entity.getWhereFieldName().isEmpty()));
+
+        var withField = entityPatchMachineList.stream()
+                .collect(Collectors.partitioningBy(entity -> StringUtils.isNotBlank(entity.getEntityFieldName())))
+                .get(true);
+        var withWhere = entityPatchMachineList.stream()
+                .collect(Collectors.partitioningBy(entity -> StringUtils.isNotBlank(entity.getWhereFieldName())))
+                .get(true);
+
+        var boolMap = new HashMap<Boolean, List<MetaEntityPatchMachine>>();
+        boolMap.put(true, withWhere);
+        boolMap.put(false, withField);
+        return boolMap;
     }
 
 
