@@ -13,6 +13,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
+import io.jsonwebtoken.lang.Assert;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +22,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -86,16 +83,15 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
 
 
     @Override
-    public Integer updateEntity(String entityName,String value,String condition) {
+    public Integer updateEntity(String entity, String value, String condition) {
+        Assert.isTrue(StringUtils.isNotBlank(entity), "参数错误: entityName = " + entity);
 
-        if (entityName==null || entityName.isEmpty() || value==null || value.isEmpty()){
-            return null;
-        }
         // 获取meta配置
-        List<MetaEntityPatchMachine> metaList = findMetaList(entityName);
-        if (metaList==null || metaList.size()<=0){
-            throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺少实体配置");
-        } else if (metaList.size()>2) {
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        Assert.isTrue(Objects.nonNull(metaList) && metaList.size()>0, "缺少实体配置");
+
+
+        if (metaList.size()>2) {
             throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
         }
 
@@ -113,30 +109,71 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
         String whereFiledNme = whereField.get(0).getWhereFieldName();
 
-        Map<String,String> updateFieldMp= new HashMap<>();
-        updateFieldMp.put(entityFieldName,value);
-        Map<String,String> conditionMap = new HashMap<>();
-        conditionMap.put(whereFiledNme,condition);
+        Map<String, Object> updateFieldMp= new HashMap<>();
+        updateFieldMp.put(entityFieldName, value);
 
+        Map<String, String> conditionMap = new HashMap<>();
+        conditionMap.put(whereFiledNme, condition);
 
-        return queryMetaEntityPatchMachineDao.updateEntityByConditions(entityTableName,updateFieldMp,conditionMap);
+        return queryMetaEntityPatchMachineDao.updateEntityByConditions(entityTableName, updateFieldMp, conditionMap);
     }
 
 
     @Override
     @Transactional
-    public Integer updateEntity(String entity, Long id, Map<String, String> params) {
+    public Integer updateEntity(String entity, String id,  Map<String, String> params) {
+        Assert.isTrue(StringUtils.isNotBlank(entity), "参数错误: entityName = " + entity);
+
         // 没有参数，不需要更新
         if (CollectionUtils.isEmpty(params)) {
             return 0;
         }
+        final String defaultKey = "value";
+
         // 获取meta配置
         List<MetaEntityPatchMachine> metaList = findMetaList(entity);
-        Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
+        Assert.isTrue(Objects.nonNull(metaList) && metaList.size()>0, "缺少实体配置");
 
-        // 更新实体
-        return update(id, entity, metaList.get(0).getEntityTableName(), params,  metaMap);
+        if(params.size()==1 && params.containsKey(defaultKey)){
+            // means only one field, ensure the config has only one field
+            if (metaList.size()>2) {
+                throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
+            }
+
+            // where字段与 需要update的字段分开
+            Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
+            List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
+            List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+
+            //需要更新的字段
+            MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
+            String entityTableName = metaEntityPatchMachine.getEntityTableName();
+            String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
+            String whereFiledNme = whereField.get(0).getWhereFieldName();
+
+            //获取 {value: 1} 字段段
+            Object value = params.get(defaultKey);
+            Map<String, Object> updateFieldMp= new HashMap<>();
+            updateFieldMp.put(entityFieldName, value);
+
+            // 获取指定记录条件查询字段，必要唯一
+            String condition = id;
+            Map<String, String> conditionMap = new HashMap<>();
+            conditionMap.put(whereFiledNme, condition);
+
+            return queryMetaEntityPatchMachineDao.updateEntityByConditions(entityTableName, updateFieldMp, conditionMap);
+
+        }else {
+
+            //获取所有字段配置
+            Map<String, MetaEntityPatchMachine> metaMap = createMetaMap(metaList);
+
+            // 更新实体
+            Long lid = Long.parseLong(id);
+            return update(lid, entity, metaList.get(0).getEntityTableName(), params, metaMap);
+        }
     }
+
 
     @Override
     public Integer updateEntity(String entity, Map<String, String> params, Map<String, String> conditions) {
@@ -334,7 +371,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     }
 
     /**
-     * 将有wher条件 和没有where 条件分开
+     * 将有where条件和没有where条件分开
      * @param entityPatchMachineList
      * @return
      */
@@ -392,7 +429,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
      */
     private Integer update(String entity, String entityTableName, Map<String, String> params, Map<String, String> conditions, Map<String, MetaEntityPatchMachine> metaMap) {
         // 用于将驼峰命名的参数转换为蛇形命名
-        Map<String, String> updateMap = new HashMap<>();
+        Map<String, Object> updateMap = new HashMap<>();
         // 校验参数
         for (Map.Entry<String, String> param : params.entrySet()) {
             // 获取字段配置

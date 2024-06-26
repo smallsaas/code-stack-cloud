@@ -50,11 +50,11 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     /**
      * 更新实体
      * @param entity 实体模块
-     * @param id 实体id
+     * @param id 实体id, 可以是唯一标识的其他字段
      * @param params 更新参数
      * @return
      */
-    Integer updateEntity(String entity, Long id, Map<String, String> params);
+    Integer updateEntity(String entity, String id, Map<String, String> params);
 
 
     /**
@@ -64,7 +64,7 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      * @param conditions
      * @return
      */
-    Integer updateEntity(String entity, Map<String, String> params,Map<String, String> conditions);
+    Integer updateEntity(String entity, Map<String, String> params, Map<String, String> conditions);
 
 
     /**

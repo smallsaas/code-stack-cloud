@@ -1,43 +1,47 @@
 @endpoint = http://localhost:8088
 
+@entity=message
+
+### 查看所有meta entity patch配置
+GET {{endpoint}}/api/meta/patch/config/machines?whereFieldName={{entity}}
 
 
 ### 查看meta entity patch配置
-GET {{endpoint}}/api/meta/patch/config/machines/{entity}
+GET {{endpoint}}/api/meta/patch/config/machines/{{entity}}
+
 
 ### 添加meta entity patch配置
 POST {{endpoint}}/api/meta/patch/config/machines
 
 {
   "entity": "device",
+  "entityTableName": "nft_player",
   "entityFieldName": "delete_flag",
   "entityFieldType": "NUMBER",
-  "entityTableName": "nft_player",
+  "whereFieldName": "player_id",
   "numberRangeMax": 1,
   "numberRangeMin": 1000,
-  "permission": "null"
+  "permission": null
 }
 
-
-
 ### 更新实体
-POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/update
+POST {{endpoint}}/api/meta/entity/{{entity}}/entities/{{id}}/action/update
 
 {
   "status":"test",
   "device_id":"test_id"
- 
 }
 
 
+@entityId=message_type
 
-### 更新单个实体
-POST {{endpoint}}/api/meta/entity/device/onlyEntity/0b1wAo1w3OFRV230am3w3wtLR14wAo1d/action/update
+### 更新实体（可指定实体ID字段）
+POST {{endpoint}}/api/meta/entity/{{entity}}/entities/{{entityId}}/action/update
 
 {
-  "value":"test",
- 
+  "value":"test"
 }
+
 
 
 ### 逻辑删除实体
@@ -65,26 +69,20 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/logicDelete/reco
   ]
 }
 
-
-
-
-### 以下测试不通过 pending todo
 ### 批量更新实体字段
 POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/update
 
 [
   {
-  "id":4,
-  "status":"test4",
-  "device_id":"test_id"
- 
-},
-{
-  "id":7,
-  "status":"test7",
-  "device_id":"test_id"
- 
-}
+    "id":4,
+    "status":"test4",
+    "device_id":"test_id"
+  },
+  {
+    "id":7,
+    "status":"test7",
+    "device_id":"test_id"
+  }
 
 ]
 
@@ -96,6 +94,9 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/delete
     4,7
   ]
 }
+
+
+
 
 
 ###查询全部条件
@@ -112,7 +113,6 @@ POST {{endpoint}}/api/meta/patch/config/whereFiled/device/create
   "whereFieldName":"device_id"
 }
 
-
 #### 更新条件
 #stusta row 删除整条记录  filed where只设置空
 PUT  {{endpoint}}/api/meta/patch/config/whereFiled/device/update
@@ -122,8 +122,6 @@ PUT  {{endpoint}}/api/meta/patch/config/whereFiled/device/update
   "newWhereFieldName":"device_id_test",
    "stusta":"row"
 }
-
-
 
 ####删除条件
 #stusta row 删除整条记录  filed where只设置空

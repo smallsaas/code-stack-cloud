@@ -27,6 +27,10 @@
         <if test="entityFieldType != null and entityFieldType!= ''">
             AND meta_entity_patch_machine.entity_field_type LIKE CONCAT('%',#{entityFieldType},'%')
         </if>
+
+        <if test="whereFieldName != null and whereFieldName!= ''">
+            AND meta_entity_patch_machine.where_field_name LIKE CONCAT('%',#{whereFieldName},'%')
+        </if>
     </select>
 
     <select id="findSortNumberRecord" resultType="SortNumberRecord">
