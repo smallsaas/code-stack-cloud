@@ -47,6 +47,19 @@
         </foreach>
     </select>
 
+    <select id="selectEntityWithDynamicFields" resultType="map">
+        SELECT
+        <foreach collection="fields" item="field" separator=",">
+            ${field}
+        </foreach>
+        FROM ${entityTableName}
+        WHERE
+        <foreach collection="conditions.keys" item="condKey" separator=" AND ">
+            ${condKey} = #{conditions[${condKey}]}
+        </foreach>
+    </select>
+
+
 
 
     <update id="updateEntity">

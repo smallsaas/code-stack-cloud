@@ -3,6 +3,7 @@ package com.jfeat.am.module.meta.services.domain.service;
 import com.jfeat.am.module.meta.services.gen.crud.service.CRUDMetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.tips.BulkResult;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -128,6 +129,8 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     List<String> selectWhereFiled(String entity);
 
     Integer deleteWhereFiled(String entity,String filedName,String status);
+
+    List<Map<String, Object>>selectEntityWithDynamicFields(String entity,String condition);
 
 
 }

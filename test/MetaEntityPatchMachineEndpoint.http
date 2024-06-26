@@ -39,6 +39,9 @@ POST {{endpoint}}/api/meta/entity/device/onlyEntity/0b1wAo1w3OFRV230am3w3wtLR14w
  
 }
 
+#### 单条件查询
+GET  {{endpoint}}/api/meta/entity/{entity}/onlyEntity/{condition}/action/select
+
 
 ### 逻辑删除实体
 POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/logicDelete

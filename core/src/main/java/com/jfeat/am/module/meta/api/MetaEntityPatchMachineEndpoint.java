@@ -82,6 +82,14 @@ public class MetaEntityPatchMachineEndpoint {
         return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, fieldBody.getValue(),condition));
     }
 
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
+    @GetMapping("/entity/{entity}/onlyEntity/{condition}/action/select")
+    @ApiOperation(value = "单条件查询")
+    public Tip selectOnlyEntity(@PathVariable(name = "condition") String condition,
+                                @PathVariable(name = "entity") String entity) {
+        return SuccessTip.create(metaEntityPatchMachineService.selectEntityWithDynamicFields(entity,condition));
+    }
+
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk update entity")
     @PostMapping("/entity/{entity}/entities/action/bulk/update")
     @ApiOperation(value = "批量更新实体")
