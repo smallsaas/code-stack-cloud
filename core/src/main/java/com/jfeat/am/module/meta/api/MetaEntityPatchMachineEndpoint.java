@@ -1,7 +1,5 @@
 package com.jfeat.am.module.meta.api;
 
-
-import com.jfeat.am.module.meta.services.domain.model.MateFieldBody;
 import com.jfeat.am.module.meta.services.domain.service.MetaEntityPatchMachineService;
 import com.jfeat.am.module.meta.services.gen.persistence.model.MetaEntityPatchMachine;
 import com.jfeat.crud.base.exception.BusinessCode;
@@ -103,14 +101,13 @@ public class MetaEntityPatchMachineEndpoint {
     }
 
 
-
-    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
-    @GetMapping("/entity/{entity}/onlyEntity/{condition}/action/select")
-    @ApiOperation(value = "单条件查询")
-    public Tip selectOnlyEntity(@PathVariable(name = "condition") String condition,
-                                @PathVariable(name = "entity") String entity) {
-        return SuccessTip.create(metaEntityPatchMachineService.selectEntityWithDynamicFields(entity,condition));
-    }
+//    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
+//    @GetMapping("/entity/{entity}/onlyEntity/{condition}/action/select")
+//    @ApiOperation(value = "单条件查询")
+//    public Tip selectOnlyEntity(@PathVariable(name = "condition") String condition,
+//                                @PathVariable(name = "entity") String entity) {
+//        return SuccessTip.create(metaEntityPatchMachineService.selectEntityWithDynamicFields(entity, condition));
+//    }
 
     //@BusinessLog(name = "MetaEntityPatchMachine", value = "bulk update entity")
 

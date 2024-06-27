@@ -1,5 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
+import cn.hutool.core.stream.CollectorUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.common.base.CaseFormat;
@@ -46,6 +47,12 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         return queryMetaEntityPatchMachineDao.findMetaEntityPatchMachines(queryEntity);
     }
 
+    /**
+     * 依据条件查询实体
+     * @param entity
+     * @param conditions
+     * @return
+     */
     @Override
     public List<Map<String, Object>> selectEntity(String entity, Map<String, Object> conditions) {
         // 没有参数，不需要更新
@@ -55,7 +62,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         // 获取meta配置
         List<MetaEntityPatchMachine> metaList = findMetaList(entity);
         String entityTableName = metaList.get(0).getEntityTableName();
-        return queryMetaEntityPatchMachineDao.selectEntity(entityTableName,conditions);
+        return queryMetaEntityPatchMachineDao.selectEntity(entityTableName, conditions);
     }
 
     @Override
@@ -201,7 +208,20 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     @Override
     @Transactional
     public Map<String, Object> queryEntity(String entity, String entityId) {
-        throw new NotImplementedException("TODO");
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+        Assert.isTrue(!metaList.isEmpty(), "没有配置项！");
+        Assert.isTrue(metaList.size()==1, "无效的配置项，配置项过多！");
+        var meta = metaList.get(0);
+
+        String entityTableName = meta.getEntityTableName();
+        var conditions = new HashMap<String, Object>();
+        conditions.put(meta.getWhereFieldName(), entityId);
+
+        var list= queryMetaEntityPatchMachineDao.selectEntity(entityTableName, conditions);
+        Assert.isTrue(!CollectionUtils.isEmpty(list), "没有找到相关项！");
+
+        return list.get(0);
     }
 
         @Override
@@ -415,11 +435,11 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         // 获取meta配置列表
         MetaEntityPatchMachine queryEntity = new MetaEntityPatchMachine();
         queryEntity.setEntity(entity);
-        List<MetaEntityPatchMachine> metaList =
-                queryMetaEntityPatchMachineDao.findMetaEntityPatchMachines(queryEntity);
+
+        var metaList =  queryMetaEntityPatchMachineDao.findMetaEntityPatchMachines(queryEntity);
+
         if (CollectionUtils.isEmpty(metaList)) {
-            throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(),
+            throw new BusinessException(BusinessCode.CodeBase,
                     "获取meta crud patch配置失败，entity="+entity+"。请联系相关人员配置。");
         }
         return metaList;
@@ -509,6 +529,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     private Integer insert(String entity, String entityTableName, Map<String, String> params, Map<String, MetaEntityPatchMachine> metaMap) {
         // 用于将驼峰命名的参数转换为蛇形命名
         Map<String, String> updateMap = new HashMap<>();
+
         // 校验参数
         for (Map.Entry<String, String> param : params.entrySet()) {
             // 获取字段配置

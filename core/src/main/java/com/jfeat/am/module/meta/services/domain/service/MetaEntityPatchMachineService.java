@@ -16,22 +16,13 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     List<MetaEntityPatchMachine> findMetaEntityPatchMachines(MetaEntityPatchMachine queryEntity);
 
     /**
-     * 根据条件查询
-     * @param tableName
-     * @param conditions
-     * @return
-     */
-    List<Map<String, Object>> selectEntity(String tableName, Map<String, Object> conditions);
-
-    /**
      * 新增配置
      * @param meta 配置
      * @return
      */
     Integer createMeta(MetaEntityPatchMachine meta);
-
     /**
-     * 添加新记录
+     * 添加新记录 (一般情况不会自动添加）
      * @param entity 实体模块
      * @param params 添加参数
      * @return
@@ -39,23 +30,15 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
     Integer insertEntity(String entity, Map<String, String> params);
 
 
-    /**
-     * 更新单个实体
-     * @param entityName
-     * @param condition
-     * @param value
-     * @return
-     */
-    Integer updateEntity(String entityName, String value,String condition);
+
 
     /**
-     * 更新实体
-     * @param entity 实体模块
-     * @param id 实体id, 可以是唯一标识的其他字段
-     * @param params 更新参数
+     * 根据条件查询
+     * @param tableName
+     * @param conditions
      * @return
      */
-    Integer updateEntity(String entity, String id, Map<String, String> params);
+    List<Map<String, Object>> selectEntity(String tableName, Map<String, Object> conditions);
 
     /**
      * 查询实体字段
@@ -67,7 +50,26 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
 
 
     /**
-     * 根据条件更新实体字段
+     * 更新单个实体 （已过期）
+     * @param entityName
+     * @param condition
+     * @param value
+     * @return
+     */
+    @Deprecated
+    Integer updateEntity(String entityName, String value, String condition);
+
+    /**
+     * 查询唯一实体并更新更新字段值
+     * @param entity 实体模块
+     * @param id 实体id, 可以是唯一标识的其他字段
+     * @param params 更新参数
+     * @return
+     */
+    Integer updateEntity(String entity, String id, Map<String, String> params);
+
+    /**
+     * 多条件查询过滤并更新实体字段
      * @param entity
      * @param params
      * @param conditions
