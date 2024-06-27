@@ -20,6 +20,10 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
     List<Map<String, Object>> selectEntity(@Param("entityTableName") String entityTableName,
                                            @Param("conditions") Map<String, Object> conditions);
 
+    List<Map<String, Object>> selectEntityWithDynamicFields(@Param("entityTableName") String entityTableName,
+                                                            @Param("fields") List<String> fields,
+                                           @Param("conditions") Map<String, Object> conditions);
+
     Integer updateEntity(@Param("entityTableName") String entityTableName,
                          @Param("params") Map<String, String> params,
                          @Param("id") Long id);

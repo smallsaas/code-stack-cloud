@@ -50,6 +50,9 @@ Content-Type: application/json
   "value": "test"
 }
 
+#### 单条件查询
+GET  {{endpoint}}/api/meta/entity/{entity}/onlyEntity/{condition}/action/select
+
 
 ###  查询设定的实体值, 返回JSON 格式
 @entityId=TASK

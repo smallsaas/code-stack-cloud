@@ -364,6 +364,48 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
 //        return result;
 //    }
 
+    @Override
+    public List<Map<String, Object>> selectEntityWithDynamicFields(String entityName, String condition) {
+        if (entityName==null || entityName.isEmpty() || condition==null || condition.isEmpty()){
+            return null;
+        }
+        // 获取meta配置
+        List<MetaEntityPatchMachine> metaList = findMetaList(entityName);
+        if (metaList==null || metaList.size()<=0){
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "缺少实体配置");
+        }
+
+//        将查询条件和字段分开
+        Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
+        List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
+        List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+
+
+        if (CollectionUtils.isEmpty(whereField) || CollectionUtils.isEmpty(noWhereField)){
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "条件实体配置或者查询实体配置有误");
+        }
+        if (whereField.size()>1){
+            throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个条件实体配置");
+        }
+
+
+//        需要更新的字段
+        MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
+        String entityTableName = metaEntityPatchMachine.getEntityTableName();
+        String whereFiledNme = whereField.get(0).getWhereFieldName();
+
+//        添加查询字段
+        List<String> filedList = new ArrayList<>();
+        for (MetaEntityPatchMachine machine:noWhereField){
+            filedList.add(machine.getEntityFieldName());
+        }
+
+        Map<String,Object> conditionMap = new HashMap<>();
+        conditionMap.put(whereFiledNme,condition);
+        return queryMetaEntityPatchMachineDao.selectEntityWithDynamicFields(entityTableName,filedList,conditionMap);
+
+    }
+
     /**
      * 获取meta Map
      * @param entity 实体
