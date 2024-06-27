@@ -24,6 +24,7 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                          @Param("params") Map<String, String> params,
                          @Param("id") Long id);
 
+    @Deprecated(since = "merged into updateEntity()")
     Integer updateOnlyEntity(@Param("entityTableName") String entityTableName,
                          @Param("entityField") String entityField,
                          @Param("entityValue") String entityValue,
@@ -54,14 +55,14 @@ public interface QueryMetaEntityPatchMachineDao extends BaseMapper<MetaEntityPat
                                                 @Param("entityFieldName") String entityFieldName,
                                                 @Param("ids") List<Long> ids);
 
-    @Delete("DELETE FROM meta_entity_patch_machine WHERE entity=#{entityName} AND entity_field_name=#{entityFieldName}")
-    Integer deleteWhereFiled(@Param("entityName") String entityName,
-                             @Param("entityFieldName") String entityFieldName);
-
-
-    @Update("UPDATE meta_entity_patch_machine SET where_field_name=#{whereFiledName} where entity=#{entityName} AND entity_field_name=#{entityFieldName}")
-    Integer updateWhereFiled(@Param("entityName") String entityName,
-                             @Param("entityFieldName") String entityFieldName,@Param("whereFiledName") String whereFiledName);
-
-    List<String> selectUniqueWhereFieldNames(@Param("entity") String entity);
+//    @Delete("DELETE FROM meta_entity_patch_machine WHERE entity=#{entityName} AND entity_field_name=#{entityFieldName}")
+//    Integer deleteWhereFiled(@Param("entityName") String entityName,
+//                             @Param("entityFieldName") String entityFieldName);
+//
+//
+//    @Update("UPDATE meta_entity_patch_machine SET where_field_name=#{whereFiledName} where entity=#{entityName} AND entity_field_name=#{entityFieldName}")
+//    Integer updateWhereFiled(@Param("entityName") String entityName,
+//                             @Param("entityFieldName") String entityFieldName,@Param("whereFiledName") String whereFiledName);
+//
+//    List<String> selectUniqueWhereFieldNames(@Param("entity") String entity);
 }

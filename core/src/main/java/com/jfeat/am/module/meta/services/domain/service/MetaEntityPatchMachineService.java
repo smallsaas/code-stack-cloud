@@ -56,6 +56,14 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      */
     Integer updateEntity(String entity, String id, Map<String, String> params);
 
+    /**
+     * 查询实体字段
+     * @param entity 实体名称
+     * @param entityId 索引实体记录唯一字段
+     * @return 返回查询的值
+     */
+    Map<String, Object> queryEntity(String entity, String entityId);
+
 
     /**
      * 根据条件更新实体字段
@@ -119,15 +127,13 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      */
     BulkResult handleBulkLogicDelete(String entity, List<Long> ids, boolean isReverse);
 
-
-
-    Integer createWhereFiled(String entity,String filedName);
-
-    Integer updateWhereFiled(String entity,String oldFiledName,String newFiledName,String status);
-
-    List<String> selectWhereFiled(String entity);
-
-    Integer deleteWhereFiled(String entity,String filedName,String status);
-
+//
+//    Integer createWhereFiled(String entity,String filedName);
+//
+//    Integer updateWhereFiled(String entity,String oldFiledName,String newFiledName,String status);
+//
+//    List<String> selectWhereFiled(String entity);
+//
+//    Integer deleteWhereFiled(String entity,String filedName,String status);
 
 }

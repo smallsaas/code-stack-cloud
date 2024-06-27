@@ -94,6 +94,13 @@ public class MetaEntityPatchMachineEndpoint {
         return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, entityId, params));
     }
 
+    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
+    @GetMapping("/entity/{entity}/entities/{entityId}")
+    @ApiOperation(value = "获取实体字段值")
+    public Tip updateEntity(@PathVariable(name = "entityId") String entityId,
+                            @PathVariable(name = "entity") String entity) {
+        return SuccessTip.create(metaEntityPatchMachineService.queryEntity(entity, entityId));
+    }
 
 
 //    @BusinessLog(name = "MetaEntityPatchMachine", value = "update entity")
@@ -105,13 +112,14 @@ public class MetaEntityPatchMachineEndpoint {
 //        return SuccessTip.create(metaEntityPatchMachineService.updateEntity(entity, fieldBody.getValue(), condition));
 //    }
 
-//    @ApiOperation(value = "更新实体一个字段")
+
+//    @ApiOperation(value = "创建一个WHERE条件")
 //    @PostMapping("/patch/config/whereFiled/{entity}/create")
 //    public Tip createWhereFiled(@PathVariable(name = "entity") String entity,
 //                                @RequestParam(name = "whereFieldName") String whereFieldName){
 //        return SuccessTip.create(metaEntityPatchMachineService.createWhereFiled(entity,whereFieldName));
 //    }
-//
+
 //    @ApiOperation(value = "更新实体一个字段")
 //    @PutMapping("/patch/config/whereFiled/{entity}/update")
 //    public Tip updateWhereFiled(@PathVariable(name = "entity") String entity,
@@ -121,13 +129,14 @@ public class MetaEntityPatchMachineEndpoint {
 //        return SuccessTip.create(metaEntityPatchMachineService.updateWhereFiled(entity,oldWhereFieldName,newWhereFieldName,status));
 //    }
 //
-//    @ApiOperation(value = "更新实体一个字段")
+//    @ApiOperation(value = "查询实体一个字段")
 //    @GetMapping("/patch/config/whereFiled/{entity}/select")
 //    public Tip selectWhereFiled(@PathVariable(name = "entity") String entity){
 //        return SuccessTip.create(metaEntityPatchMachineService.selectWhereFiled(entity));
 //    }
 //
-//    @ApiOperation(value = "更新实体一个字段")
+//
+//    @ApiOperation(value = "删除实体一个字段")
 //    @PostMapping("/patch/config/whereFiled/{entity}/delete")
 //    public Tip deleteWhereFiled(@PathVariable(name = "entity") String entity,
 //                                @RequestParam(name = "whereFieldName") String whereFieldName,

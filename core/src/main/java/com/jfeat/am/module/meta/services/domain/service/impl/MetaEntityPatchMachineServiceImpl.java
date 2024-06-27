@@ -1,5 +1,6 @@
 package com.jfeat.am.module.meta.services.domain.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.google.common.base.CaseFormat;
 import com.jfeat.am.module.meta.constant.EntityFieldName;
@@ -15,6 +16,7 @@ import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.BulkMessage;
 import com.jfeat.crud.base.tips.BulkResult;
 import io.jsonwebtoken.lang.Assert;
+import org.apache.commons.lang3.NotImplementedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -24,9 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 /**
  * <p>
@@ -85,6 +84,7 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
     }
 
 
+    @Deprecated(since = "统一至updateEntity(String entity, String id,  Map<String, String> params)")
     @Override
     public Integer updateEntity(String entity, String value, String condition) {
         Assert.isTrue(StringUtils.isNotBlank(entity), "参数错误: entityName = " + entity);
@@ -143,17 +143,22 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                 throw new BusinessException(BusinessCode.BadRequest.getCode(), "存在多个更新实体配置");
             }
 
-            // where字段与 需要update的字段分开
-            Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
-            List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
-            List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+            MetaEntityPatchMachine one = metaList.get(0);
+            String entityTableName = one.getEntityTableName();
+            String entityFieldName = one.getEntityFieldName();
+            String whereFiledNme = one.getWhereFieldName();
 
-
-            //需要更新的字段
-            MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
-            String entityTableName = metaEntityPatchMachine.getEntityTableName();
-            String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
-            String whereFiledNme = whereField.get(0).getWhereFieldName();
+//            // where字段与 需要update的字段分开
+//            Map<Boolean, List<MetaEntityPatchMachine>> booleanListMap = filterWhereField(metaList);
+//            List<MetaEntityPatchMachine> whereField = booleanListMap.get(true);
+//            List<MetaEntityPatchMachine> noWhereField = booleanListMap.get(false);
+//
+//
+//            //需要更新的字段
+//            MetaEntityPatchMachine metaEntityPatchMachine = noWhereField.get(0);
+//            String entityTableName = metaEntityPatchMachine.getEntityTableName();
+//            String entityFieldName = metaEntityPatchMachine.getEntityFieldName();
+//            String whereFiledNme = whereField.get(0).getWhereFieldName();
 
             //获取 {value: 1} 字段段
             Object value = params.get(defaultKey);
@@ -193,8 +198,13 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
         return update(entity, metaList.get(0).getEntityTableName(), params,conditions, metaMap);
     }
 
-
     @Override
+    @Transactional
+    public Map<String, Object> queryEntity(String entity, String entityId) {
+        throw new NotImplementedException("TODO");
+    }
+
+        @Override
     @Transactional
     public BulkResult bulkUpdateEntity(String entity, List<Map<String, String>> paramsList) {
         // 没有参数，不需要更新
@@ -287,73 +297,72 @@ public class MetaEntityPatchMachineServiceImpl extends CRUDMetaEntityPatchMachin
                         : null);
     }
 
-    @Override
-    public Integer createWhereFiled(String entity, String filedName) {
-        Integer result = 0;
+//    @Override
+//    public Integer createWhereFiled(String entity, String filedName) {
+//        Integer result = 0;
+//
+//        if (entity==null || entity.isEmpty()){
+//            throw new BusinessException(
+//                    BusinessCode.CodeBase.getCode(),
+//                    "entity不能为空");
+//        }
+//        if (filedName==null || filedName.isEmpty()){
+//            throw new BusinessException(
+//                    BusinessCode.CodeBase.getCode(),
+//                    "whereFiled不能为空");
+//        }
+//        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
+//        MetaEntityPatchMachine flag = null;
+//        for (MetaEntityPatchMachine metaEntityPatchMachine:metaList){
+//            if (filedName.equals(metaEntityPatchMachine.getEntityFieldName())){
+//                flag=metaEntityPatchMachine;
+//                break;
+//            }
+//        }
+//        if (flag==null){
+//            MetaEntityPatchMachine metaEntityPatchMachine= new MetaEntityPatchMachine();
+//            metaEntityPatchMachine.setEntity(entity);
+//            metaEntityPatchMachine.setEntityFieldName(filedName);
+//            metaEntityPatchMachine.setEntityTableName(metaList.get(0).getEntityTableName());
+//            metaEntityPatchMachine.setWhereFieldName(filedName);
+//            createMeta(metaEntityPatchMachine);
+//            result=1;
+//        }else {
+//            result=queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,filedName);
+//        }
+//        return result;
+//    }
 
-        if (entity==null || entity.isEmpty()){
-            throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(),
-                    "entity不能为空");
-        }
-        if (filedName==null || filedName.isEmpty()){
-            throw new BusinessException(
-                    BusinessCode.CodeBase.getCode(),
-                    "whereFiled不能为空");
-        }
-        List<MetaEntityPatchMachine> metaList = findMetaList(entity);
-        MetaEntityPatchMachine flag = null;
-        for (MetaEntityPatchMachine metaEntityPatchMachine:metaList){
-            if (filedName.equals(metaEntityPatchMachine.getEntityFieldName())){
-                flag=metaEntityPatchMachine;
-                break;
-            }
-        }
-        if (flag==null){
-            MetaEntityPatchMachine metaEntityPatchMachine= new MetaEntityPatchMachine();
-            metaEntityPatchMachine.setEntity(entity);
-            metaEntityPatchMachine.setEntityFieldName(filedName);
-            metaEntityPatchMachine.setEntityTableName(metaList.get(0).getEntityTableName());
-            metaEntityPatchMachine.setWhereFieldName(filedName);
-            createMeta(metaEntityPatchMachine);
-            result=1;
-        }else {
-            result=queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,filedName);
-        }
-        return result;
-    }
-
-    @Override
-    public Integer updateWhereFiled(String entity, String oldFiledName, String newFiledName,String status) {
-        Integer result=0;
-        List<String> conditions = queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
-        if (conditions.contains(oldFiledName)){
-            if ("row".equals(status)){
-                result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,oldFiledName);
-            }else {
-                result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,oldFiledName,null);
-            }
-        }
-        result=createWhereFiled(entity,newFiledName);
-        return result;
-    }
-
-    @Override
-    public List<String> selectWhereFiled(String entity) {
-        return queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
-    }
-
-    @Override
-    public Integer deleteWhereFiled(String entity, String filedName,String status) {
-        Integer result = 0;
-        System.out.println(status);
-        if ("row".equals(status)){
-           result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,filedName);
-        }else {
-            result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,null);
-        }
-        return result;
-    }
+//    @Override
+//    public Integer updateWhereFiled(String entity, String oldFiledName, String newFiledName,String status) {
+//        Integer result=0;
+//        List<String> conditions = queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
+//        if (conditions.contains(oldFiledName)){
+//            if ("row".equals(status)){
+//                result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,oldFiledName);
+//            }else {
+//                result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,oldFiledName,null);
+//            }
+//        }
+//        result=createWhereFiled(entity,newFiledName);
+//        return result;
+//    }
+//
+//    @Override
+//    public List<String> selectWhereFiled(String entity) {
+//        return queryMetaEntityPatchMachineDao.selectUniqueWhereFieldNames(entity);
+//    }
+//
+//    @Override
+//    public Integer deleteWhereFiled(String entity, String filedName, String status) {
+//        Integer result = 0;
+//        if ("row".equals(status)){
+//           result= queryMetaEntityPatchMachineDao.deleteWhereFiled(entity,filedName);
+//        }else {
+//            result =queryMetaEntityPatchMachineDao.updateWhereFiled(entity,filedName,null);
+//        }
+//        return result;
+//    }
 
     /**
      * 获取meta Map

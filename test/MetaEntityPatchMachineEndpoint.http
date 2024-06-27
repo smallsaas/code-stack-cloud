@@ -51,6 +51,12 @@ Content-Type: application/json
 }
 
 
+###  查询设定的实体值, 返回JSON 格式
+@entityId=TASK
+
+GET {{endpoint}}/api/meta/entity/{{entity}}/entities/{{entityId}}
+
+
 
 ### 逻辑删除实体
 POST {{endpoint}}/api/meta/entity/{entity}/entities/{id}/action/logicDelete
@@ -107,15 +113,15 @@ POST {{endpoint}}/api/meta/entity/{entity}/entities/action/bulk/delete
 
 
 
-###查询全部条件
+### 操作 <WHERE> 条件
 
-GET  {{endpoint}}/api/meta/patch/config/whereFiled/device/select
+GET  {{endpoint}}/api/meta/patch/config/whereFiled/{{device}}/select
 
 
 #### 创建条件
 #whereFieldName 需要添加条件字段名
 
-POST {{endpoint}}/api/meta/patch/config/whereFiled/device/create
+POST {{endpoint}}/api/meta/patch/config/whereFiled/{{device}}/create
 
 {
   "whereFieldName":"device_id"
@@ -123,7 +129,7 @@ POST {{endpoint}}/api/meta/patch/config/whereFiled/device/create
 
 #### 更新条件
 #stusta row 删除整条记录  filed where只设置空
-PUT  {{endpoint}}/api/meta/patch/config/whereFiled/device/update
+PUT  {{endpoint}}/api/meta/patch/config/whereFiled/{{device}}/update
 
 {
   "oldWhereFieldName":"device_id",
@@ -133,7 +139,7 @@ PUT  {{endpoint}}/api/meta/patch/config/whereFiled/device/update
 
 ####删除条件
 #stusta row 删除整条记录  filed where只设置空
-POST {{endpoint}}/api/meta/patch/config/whereFiled/device/delete
+POST {{endpoint}}/api/meta/patch/config/whereFiled/{{device}}/delete
 
 {
   "whereFieldName":"device_id",
