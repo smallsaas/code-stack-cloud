@@ -77,6 +77,8 @@ public interface MetaEntityPatchMachineService extends CRUDMetaEntityPatchMachin
      */
     Integer updateEntity(String entity, Map<String, String> params, Map<String, String> conditions);
 
+    List<Map<String, Object>> selectEntityWithDynamicFields(String entityName, String condition);
+
 
     /**
      * 批量更新实体
