@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.domain.dao.QueryLowFieldPropertiesDao">
+                                                                                                                                                                                                                                    <sql id="Base_Column_List">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        lc_low_field_properties.id, lc_low_field_properties.field_item_name AS fieldItemName, lc_low_field_properties.property_name AS propertyName, lc_low_field_properties.property_value AS propertyValue, lc_low_field_properties.scope, lc_low_field_properties.field_id AS fieldId
+    </sql>
+
+    
+    
+
+    <select id="queryMasterModel" resultType="LowFieldPropertiesModel">
+       SELECT lc_low_field_properties.*
+       FROM lc_low_field_properties
+       WHERE lc_low_field_properties.id=#{id}
+       GROUP BY lc_low_field_properties.id
+    </select>
+
+
+                        
+    <select id="findLowFieldPropertiesPage" resultType="LowFieldPropertiesRecord" parameterType="LowFieldPropertiesRecord">
+            SELECT <include refid="Base_Column_List"/>
+
+        
+
+        FROM lc_low_field_properties
+
+        
+        
+        WHERE 1=1
+        
+
+        
+                                                                            <if test="record.id != null and record.id>0 ">
+                                    AND lc_low_field_properties.id LIKE CONCAT('%',#{record.id},'%')
+                            </if>
+                                                                    
+
+                                                                                                        <if test="record.fieldItemName != null and record.fieldItemName!= ''">
+                                    AND lc_low_field_properties.field_item_name LIKE CONCAT('%',#{record.fieldItemName},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.propertyName != null and record.propertyName!= ''">
+                                    AND lc_low_field_properties.property_name LIKE CONCAT('%',#{record.propertyName},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.propertyValue != null and record.propertyValue!= ''">
+                                    AND lc_low_field_properties.property_value LIKE CONCAT('%',#{record.propertyValue},'%')
+                            </if>
+                                                                    <if test="record.scope != null and record.scope!= ''">
+                                    AND lc_low_field_properties.scope LIKE CONCAT('%',#{record.scope},'%')
+                            </if>
+                                                                    
+
+                                                                                        <if test="record.fieldId != null and record.fieldId>0 ">
+                                    AND lc_low_field_properties.field_id LIKE CONCAT('%',#{record.fieldId},'%')
+                            </if>
+        
+        <if test="startTime != null">
+            <![CDATA[AND lc_low_field_properties.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_low_field_properties.end_time <= DATE(#{endTime}]]>
+        </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR lc_low_field_properties.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+                                    </select>
+</mapper>

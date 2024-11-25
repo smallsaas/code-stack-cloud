@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.gen.persistence.dao.LowFieldsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.crudcode.services.gen.persistence.model.LowFields">
+        <id column="id" property="id" />
+        <result column="list_font_weight" property="listFontWeight" />
+        <result column="list_font_size" property="listFontSize" />
+        <result column="list_font_color" property="listFontColor" />
+        <result column="list_column_key" property="listColumnKey" />
+        <result column="list_column_name" property="listColumnName" />
+        <result column="list_column_type" property="listColumnType" />
+        <result column="list_column_layout" property="listColumnLayout" />
+        <result column="list_column_align" property="listColumnAlign" />
+        <result column="list_column_width" property="listColumnWidth" />
+        <result column="list_column_reference" property="listColumnReference" />
+        <result column="list_column_format" property="listColumnFormat" />
+        <result column="list_column_options" property="listColumnOptions" />
+        <result column="list_column_multi_type" property="listColumnMultiType" />
+        <result column="list_column_multi_keys" property="listColumnMultiKeys" />
+        <result column="field_item_name" property="fieldItemName" />
+        <result column="field_binding" property="fieldBinding" />
+        <result column="field_label" property="fieldLabel" />
+        <result column="field_value_options" property="fieldValueOptions" />
+        <result column="field_value_filter" property="fieldValueFilter" />
+        <result column="field_scopes" property="fieldScopes" />
+        <result column="field_scope" property="fieldScope" />
+        <result column="form_field_title" property="formFieldTitle" />
+        <result column="form_field_hint" property="formFieldHint" />
+        <result column="form_field_tips" property="formFieldTips" />
+        <result column="form_input_type" property="formInputType" />
+        <result column="form_input_options" property="formInputOptions" />
+        <result column="form_view_type" property="formViewType" />
+        <result column="form_view_options" property="formViewOptions" />
+        <result column="form_input_required" property="formInputRequired" />
+        <result column="form_field_question" property="formFieldQuestion" />
+        <result column="page_id" property="pageId" />
+        <result column="list_image_width" property="listImageWidth" />
+        <result column="list_image_height" property="listImageHeight" />
+        <result column="input_width" property="inputWidth" />
+        <result column="sort_num" property="sortNum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, list_font_weight, list_font_size, list_font_color, list_column_key, list_column_name, list_column_type, list_column_layout, list_column_align, list_column_width, list_column_reference, list_column_format, list_column_options, list_column_multi_type, list_column_multi_keys, field_item_name, field_binding, field_label, field_value_options, field_value_filter, field_scopes, field_scope, form_field_title, form_field_hint, form_field_tips, form_input_type, form_input_options, form_view_type, form_view_options, form_input_required, form_field_question, page_id, list_image_width, list_image_height, input_width,sort_num
+    </sql>
+
+</mapper>

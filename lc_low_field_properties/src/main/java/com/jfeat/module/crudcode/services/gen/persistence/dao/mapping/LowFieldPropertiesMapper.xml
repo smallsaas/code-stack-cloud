@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.gen.persistence.dao.LowFieldPropertiesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.crudcode.services.gen.persistence.model.LowFieldProperties">
+        <id column="id" property="id" />
+        <result column="field_item_name" property="fieldItemName" />
+        <result column="property_name" property="propertyName" />
+        <result column="property_value" property="propertyValue" />
+        <result column="scope" property="scope" />
+        <result column="field_id" property="fieldId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, field_item_name, property_name, property_value, scope, field_id
+    </sql>
+
+</mapper>

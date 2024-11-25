@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.domain.dao.QueryLowFieldsDao">
+    <sql id="Base_Column_List">
+        lc_low_fields.id, lc_low_fields.list_font_weight AS listFontWeight,
+        lc_low_fields.list_font_size AS listFontSize, lc_low_fields.list_font_color AS listFontColor, lc_low_fields.list_column_key AS listColumnKey,
+        lc_low_fields.list_column_name AS listColumnName,
+        lc_low_fields.list_column_type AS listColumnType,
+        lc_low_fields.list_column_layout AS listColumnLayout,
+        lc_low_fields.list_column_align AS listColumnAlign,
+        lc_low_fields.list_column_width AS listColumnWidth,
+        lc_low_fields.list_column_reference AS listColumnReference,
+        lc_low_fields.list_column_format AS listColumnFormat,
+        lc_low_fields.list_column_options AS listColumnOptions,
+        lc_low_fields.list_column_multi_type AS listColumnMultiType,
+        lc_low_fields.list_column_multi_keys AS listColumnMultiKeys,
+        lc_low_fields.field_item_name AS fieldItemName,
+        lc_low_fields.field_binding AS fieldBinding,
+        lc_low_fields.field_label AS fieldLabel,
+        lc_low_fields.field_value_options AS fieldValueOptions,
+        lc_low_fields.field_value_filter AS fieldValueFilter,
+        lc_low_fields.field_scopes AS fieldScopes, lc_low_fields.field_scope AS fieldScope,
+        lc_low_fields.form_field_title AS formFieldTitle,
+        lc_low_fields.form_field_hint AS formFieldHint,
+        lc_low_fields.form_field_tips AS formFieldTips,
+        lc_low_fields.form_input_type AS formInputType,
+        lc_low_fields.form_input_options AS formInputOptions,
+        lc_low_fields.form_view_type AS formViewType,
+        lc_low_fields.form_view_options AS formViewOptions,
+        lc_low_fields.form_input_required AS formInputRequired,
+        lc_low_fields.form_field_question AS formFieldQuestion,
+        lc_low_fields.page_id AS pageId, lc_low_fields.list_image_width AS listImageWidth,
+        lc_low_fields.list_image_height AS listImageHeight,
+        lc_low_fields.input_width AS inputWidth,
+        lc_low_fields.sort_num AS sortNum,
+        lc_low_fields.field_view_one_many_options AS fieldViewOneManyOptions
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="LowFieldsModel">
+        SELECT lc_low_fields.*
+        FROM lc_low_fields
+        WHERE lc_low_fields.id = #{id}
+        GROUP BY lc_low_fields.id
+    </select>
+
+
+    <select id="findLowFieldsPage" resultType="LowFieldsRecord" parameterType="LowFieldsRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_low_fields
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_low_fields.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.listFontWeight != null and record.listFontWeight!= ''">
+            AND lc_low_fields.list_font_weight LIKE CONCAT('%',#{record.listFontWeight},'%')
+        </if>
+
+
+        <if test="record.listFontSize != null and record.listFontSize>0 ">
+            AND lc_low_fields.list_font_size LIKE CONCAT('%',#{record.listFontSize},'%')
+        </if>
+
+
+        <if test="record.listFontColor != null and record.listFontColor!= ''">
+            AND lc_low_fields.list_font_color LIKE CONCAT('%',#{record.listFontColor},'%')
+        </if>
+
+
+        <if test="record.listColumnKey != null and record.listColumnKey!= ''">
+            AND lc_low_fields.list_column_key LIKE CONCAT('%',#{record.listColumnKey},'%')
+        </if>
+
+
+        <if test="record.listColumnName != null and record.listColumnName!= ''">
+            AND lc_low_fields.list_column_name LIKE CONCAT('%',#{record.listColumnName},'%')
+        </if>
+
+
+        <if test="record.listColumnType != null and record.listColumnType!= ''">
+            AND lc_low_fields.list_column_type LIKE CONCAT('%',#{record.listColumnType},'%')
+        </if>
+
+
+        <if test="record.listColumnLayout != null and record.listColumnLayout!= ''">
+            AND lc_low_fields.list_column_layout LIKE CONCAT('%',#{record.listColumnLayout},'%')
+        </if>
+
+
+        <if test="record.listColumnAlign != null and record.listColumnAlign!= ''">
+            AND lc_low_fields.list_column_align LIKE CONCAT('%',#{record.listColumnAlign},'%')
+        </if>
+
+
+        <if test="record.listColumnWidth != null and record.listColumnWidth>0 ">
+            AND lc_low_fields.list_column_width LIKE CONCAT('%',#{record.listColumnWidth},'%')
+        </if>
+
+
+        <if test="record.listColumnReference != null and record.listColumnReference!= ''">
+            AND lc_low_fields.list_column_reference LIKE CONCAT('%',#{record.listColumnReference},'%')
+        </if>
+
+
+        <if test="record.listColumnFormat != null and record.listColumnFormat!= ''">
+            AND lc_low_fields.list_column_format LIKE CONCAT('%',#{record.listColumnFormat},'%')
+        </if>
+
+
+        <if test="record.listColumnOptions != null and record.listColumnOptions!= ''">
+            AND lc_low_fields.list_column_options LIKE CONCAT('%',#{record.listColumnOptions},'%')
+        </if>
+
+
+        <if test="record.listColumnMultiType != null and record.listColumnMultiType!= ''">
+            AND lc_low_fields.list_column_multi_type LIKE CONCAT('%',#{record.listColumnMultiType},'%')
+        </if>
+
+
+        <if test="record.listColumnMultiKeys != null and record.listColumnMultiKeys!= ''">
+            AND lc_low_fields.list_column_multi_keys LIKE CONCAT('%',#{record.listColumnMultiKeys},'%')
+        </if>
+
+
+        <if test="record.fieldItemName != null and record.fieldItemName!= ''">
+            AND lc_low_fields.field_item_name LIKE CONCAT('%',#{record.fieldItemName},'%')
+        </if>
+
+
+        <if test="record.fieldBinding != null and record.fieldBinding!= ''">
+            AND lc_low_fields.field_binding LIKE CONCAT('%',#{record.fieldBinding},'%')
+        </if>
+
+
+        <if test="record.fieldLabel != null and record.fieldLabel!= ''">
+            AND lc_low_fields.field_label LIKE CONCAT('%',#{record.fieldLabel},'%')
+        </if>
+
+
+        <if test="record.fieldValueOptions != null and record.fieldValueOptions!= ''">
+            AND lc_low_fields.field_value_options LIKE CONCAT('%',#{record.fieldValueOptions},'%')
+        </if>
+
+
+        <if test="record.fieldValueFilter != null and record.fieldValueFilter!= ''">
+            AND lc_low_fields.field_value_filter LIKE CONCAT('%',#{record.fieldValueFilter},'%')
+        </if>
+
+
+        <if test="record.fieldScopes != null and record.fieldScopes!= ''">
+            AND lc_low_fields.field_scopes LIKE CONCAT('%',#{record.fieldScopes},'%')
+        </if>
+
+
+        <if test="record.fieldScope != null and record.fieldScope!= ''">
+            AND lc_low_fields.field_scope LIKE CONCAT('%',#{record.fieldScope},'%')
+        </if>
+
+
+        <if test="record.formFieldTitle != null and record.formFieldTitle!= ''">
+            AND lc_low_fields.form_field_title LIKE CONCAT('%',#{record.formFieldTitle},'%')
+        </if>
+
+
+        <if test="record.formFieldHint != null and record.formFieldHint!= ''">
+            AND lc_low_fields.form_field_hint LIKE CONCAT('%',#{record.formFieldHint},'%')
+        </if>
+
+
+        <if test="record.formFieldTips != null and record.formFieldTips!= ''">
+            AND lc_low_fields.form_field_tips LIKE CONCAT('%',#{record.formFieldTips},'%')
+        </if>
+
+
+        <if test="record.formInputType != null and record.formInputType!= ''">
+            AND lc_low_fields.form_input_type LIKE CONCAT('%',#{record.formInputType},'%')
+        </if>
+
+
+        <if test="record.formInputOptions != null and record.formInputOptions!= ''">
+            AND lc_low_fields.form_input_options LIKE CONCAT('%',#{record.formInputOptions},'%')
+        </if>
+
+
+        <if test="record.formViewType != null and record.formViewType!= ''">
+            AND lc_low_fields.form_view_type LIKE CONCAT('%',#{record.formViewType},'%')
+        </if>
+
+
+        <if test="record.formViewOptions != null and record.formViewOptions!= ''">
+            AND lc_low_fields.form_view_options LIKE CONCAT('%',#{record.formViewOptions},'%')
+        </if>
+
+
+        <if test="record.formInputRequired != null and record.formInputRequired>0 ">
+            AND lc_low_fields.form_input_required LIKE CONCAT('%',#{record.formInputRequired},'%')
+        </if>
+
+
+        <if test="record.formFieldQuestion != null and record.formFieldQuestion!= ''">
+            AND lc_low_fields.form_field_question LIKE CONCAT('%',#{record.formFieldQuestion},'%')
+        </if>
+
+
+        <if test="record.pageId != null and record.pageId>0 ">
+            AND lc_low_fields.page_id = #{record.pageId}
+        </if>
+
+
+        <if test="record.listImageWidth != null and record.listImageWidth>0 ">
+            AND lc_low_fields.list_image_width LIKE CONCAT('%',#{record.listImageWidth},'%')
+        </if>
+
+
+        <if test="record.listImageHeight != null and record.listImageHeight>0 ">
+            AND lc_low_fields.list_image_height LIKE CONCAT('%',#{record.listImageHeight},'%')
+        </if>
+
+
+        <if test="record.inputWidth != null and record.inputWidth>0 ">
+            AND lc_low_fields.input_width LIKE CONCAT('%',#{record.inputWidth},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_low_fields.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_low_fields.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_low_fields.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+        order by sort_num asc
+    </select>
+</mapper>

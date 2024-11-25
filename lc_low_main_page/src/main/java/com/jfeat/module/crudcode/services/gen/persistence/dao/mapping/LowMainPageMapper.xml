@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.gen.persistence.dao.LowMainPageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.crudcode.services.gen.persistence.model.LowMainPage">
+        <id column="id" property="id" />
+        <result column="page_title" property="pageTitle" />
+        <result column="page_name" property="pageName" />
+        <result column="column_align" property="columnAlign" />
+        <result column="api_endpoint" property="apiEndpoint" />
+        <result column="form_add_title" property="formAddTitle" />
+        <result column="form_view_title" property="formViewTitle" />
+        <result column="form_edit_title" property="formEditTitle" />
+        <result column="content_layout" property="contentLayout" />
+        <result column="content_items" property="contentItems" />
+        <result column="content_item_container_style" property="contentItemContainerStyle" />
+        <result column="list_fields" property="listFields" />
+        <result column="list_operation_fields" property="listOperationFields" />
+        <result column="form_add_fields" property="formAddFields" />
+        <result column="form_view_fields" property="formViewFields" />
+        <result column="form_edit_fields" property="formEditFields" />
+        <result column="form_default_content_layout" property="formDefaultContentLayout" />
+        <result column="form_default_width" property="formDefaultWidth" />
+        <result column="page_min_width" property="pageMinWidth" />
+        <result column="searchType" property="searchType" />
+        <result column="searchButtonType" property="searchButtonType" />
+        <result column="front_url" property="frontUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, page_title, page_name, column_align, api_endpoint, form_add_title, form_view_title, form_edit_title, content_layout, content_items, content_item_container_style, list_fields, list_operation_fields, form_add_fields, form_view_fields, form_edit_fields, form_default_content_layout, form_default_width , page_min_width , search_type , search_button_type
+    </sql>
+
+</mapper>

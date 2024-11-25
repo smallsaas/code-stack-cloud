@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.domain.dao.QueryLowMainPageDao">
+    <sql id="Base_Column_List">
+       lc_low_main_page.id, lc_low_main_page.page_title AS pageTitle, lc_low_main_page.page_name AS pageName, lc_low_main_page.column_align AS columnAlign, lc_low_main_page.api_endpoint AS apiEndpoint, lc_low_main_page.form_add_title AS formAddTitle, lc_low_main_page.form_view_title AS formViewTitle, lc_low_main_page.form_edit_title AS formEditTitle, lc_low_main_page.content_layout AS contentLayout, lc_low_main_page.content_items AS contentItems, lc_low_main_page.content_item_container_style AS contentItemContainerStyle, lc_low_main_page.list_fields AS listFields, lc_low_main_page.list_operation_fields AS listOperationFields, lc_low_main_page.form_add_fields AS formAddFields, lc_low_main_page.form_view_fields AS formViewFields, lc_low_main_page.form_edit_fields AS formEditFields, lc_low_main_page.form_default_content_layout AS formDefaultContentLayout, lc_low_main_page.form_default_width AS formDefaultWidth ,lc_low_main_page.page_min_width AS pageMinWidth ,lc_low_main_page.search_type AS searchType
+        ,lc_low_main_page.search_button_type AS searchButtonType ,lc_low_main_page.front_url
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="LowMainPageModel">
+       SELECT lc_low_main_page.*
+       FROM lc_low_main_page
+       WHERE lc_low_main_page.id=#{id}
+       GROUP BY lc_low_main_page.id
+    </select>
+
+
+    <select id="findLowMainPagePage" resultType="LowMainPageRecord" parameterType="LowMainPageRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_low_main_page
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_low_main_page.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.pageTitle != null and record.pageTitle!= ''">
+            AND lc_low_main_page.page_title LIKE CONCAT('%',#{record.pageTitle},'%')
+        </if>
+
+
+        <if test="record.pageName != null and record.pageName!= ''">
+            AND lc_low_main_page.page_name LIKE CONCAT('%',#{record.pageName},'%')
+        </if>
+
+
+        <if test="record.columnAlign != null and record.columnAlign!= ''">
+            AND lc_low_main_page.column_align LIKE CONCAT('%',#{record.columnAlign},'%')
+        </if>
+
+
+        <if test="record.apiEndpoint != null and record.apiEndpoint!= ''">
+            AND lc_low_main_page.api_endpoint LIKE CONCAT('%',#{record.apiEndpoint},'%')
+        </if>
+
+
+        <if test="record.formAddTitle != null and record.formAddTitle!= ''">
+            AND lc_low_main_page.form_add_title LIKE CONCAT('%',#{record.formAddTitle},'%')
+        </if>
+
+
+        <if test="record.formViewTitle != null and record.formViewTitle!= ''">
+            AND lc_low_main_page.form_view_title LIKE CONCAT('%',#{record.formViewTitle},'%')
+        </if>
+
+
+        <if test="record.formEditTitle != null and record.formEditTitle!= ''">
+            AND lc_low_main_page.form_edit_title LIKE CONCAT('%',#{record.formEditTitle},'%')
+        </if>
+
+
+        <if test="record.contentLayout != null and record.contentLayout!= ''">
+            AND lc_low_main_page.content_layout LIKE CONCAT('%',#{record.contentLayout},'%')
+        </if>
+
+
+        <if test="record.contentItems != null and record.contentItems!= ''">
+            AND lc_low_main_page.content_items LIKE CONCAT('%',#{record.contentItems},'%')
+        </if>
+
+
+        <if test="record.contentItemContainerStyle != null and record.contentItemContainerStyle!= ''">
+            AND lc_low_main_page.content_item_container_style LIKE CONCAT('%',#{record.contentItemContainerStyle},'%')
+        </if>
+
+
+        <if test="record.listFields != null and record.listFields!= ''">
+            AND lc_low_main_page.list_fields LIKE CONCAT('%',#{record.listFields},'%')
+        </if>
+
+
+        <if test="record.listOperationFields != null and record.listOperationFields!= ''">
+            AND lc_low_main_page.list_operation_fields LIKE CONCAT('%',#{record.listOperationFields},'%')
+        </if>
+
+
+        <if test="record.formAddFields != null and record.formAddFields!= ''">
+            AND lc_low_main_page.form_add_fields LIKE CONCAT('%',#{record.formAddFields},'%')
+        </if>
+
+
+        <if test="record.formViewFields != null and record.formViewFields!= ''">
+            AND lc_low_main_page.form_view_fields LIKE CONCAT('%',#{record.formViewFields},'%')
+        </if>
+
+
+        <if test="record.formEditFields != null and record.formEditFields!= ''">
+            AND lc_low_main_page.form_edit_fields LIKE CONCAT('%',#{record.formEditFields},'%')
+        </if>
+
+
+        <if test="record.formDefaultContentLayout != null and record.formDefaultContentLayout!= ''">
+            AND lc_low_main_page.form_default_content_layout LIKE CONCAT('%',#{record.formDefaultContentLayout},'%')
+        </if>
+
+        <if test="record.formDefaultContentLayout != null and record.formDefaultContentLayout!= ''">
+            AND lc_low_main_page.page_min_width LIKE CONCAT('%',#{record.page_min_width},'%')
+        </if>
+
+
+        <if test="record.formDefaultWidth != null and record.formDefaultWidth>0 ">
+            AND lc_low_main_page.form_default_width LIKE CONCAT('%',#{record.formDefaultWidth},'%')
+        </if>
+
+        <if test="record.formDefaultWidth != null and record.formDefaultWidth>0 ">
+            AND lc_low_main_page.search_type LIKE CONCAT('%',#{record.searchType},'%')
+        </if>
+
+        <if test="record.formDefaultWidth != null and record.formDefaultWidth>0 ">
+            AND lc_low_main_page.search_button_type LIKE CONCAT('%',#{record.searchButtonType},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_low_main_page.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_low_main_page.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_low_main_page.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+    <select id="findLowMainPagePageTwo" resultType="LowMainPageRecordTwo" parameterType="LowMainPageRecordTwo">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_low_main_page
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_low_main_page.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.pageTitle != null and record.pageTitle!= ''">
+            AND lc_low_main_page.page_title LIKE CONCAT('%',#{record.pageTitle},'%')
+        </if>
+
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_low_main_page.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_low_main_page.end_time <= DATE(#{endTime}]]>
+        </if>
+
+    </select>
+</mapper>

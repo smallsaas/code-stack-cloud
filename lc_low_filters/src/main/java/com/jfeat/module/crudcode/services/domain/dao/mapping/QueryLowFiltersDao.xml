@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.crudcode.services.domain.dao.QueryLowFiltersDao">
+    <sql id="Base_Column_List">
+        lc_low_filters
+        .
+        id
+        , lc_low_filters.content_layout AS contentLayout, lc_low_filters.search_fields AS searchFields, lc_low_filters.default_search_hint AS defaultSearchHint, lc_low_filters.page_id AS pageId, lc_low_filters.field_name AS fieldName, lc_low_filters.field_type AS fieldType, lc_low_filters.field_title AS fieldTitle
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="LowFiltersModel">
+        SELECT lc_low_filters.*
+        FROM lc_low_filters
+        WHERE lc_low_filters.id = #{id}
+        GROUP BY lc_low_filters.id
+    </select>
+
+
+    <select id="findLowFiltersPage" resultType="LowFiltersRecord" parameterType="LowFiltersRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_low_filters
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_low_filters.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.contentLayout != null and record.contentLayout!= ''">
+            AND lc_low_filters.content_layout LIKE CONCAT('%',#{record.contentLayout},'%')
+        </if>
+
+
+        <if test="record.searchFields != null and record.searchFields!= ''">
+            AND lc_low_filters.search_fields LIKE CONCAT('%',#{record.searchFields},'%')
+        </if>
+
+
+        <if test="record.defaultSearchHint != null and record.defaultSearchHint!= ''">
+            AND lc_low_filters.default_search_hint LIKE CONCAT('%',#{record.defaultSearchHint},'%')
+        </if>
+
+
+        <if test="record.pageId != null and record.pageId>0 ">
+            AND lc_low_filters.page_id = #{record.pageId}
+        </if>
+
+
+        <if test="record.fieldName != null and record.fieldName!= ''">
+            AND lc_low_filters.field_name LIKE CONCAT('%',#{record.fieldName},'%')
+        </if>
+
+
+        <if test="record.fieldType != null and record.fieldType!= ''">
+            AND lc_low_filters.field_type LIKE CONCAT('%',#{record.fieldType},'%')
+        </if>
+
+
+        <if test="record.fieldTitle != null and record.fieldTitle!= ''">
+            AND lc_low_filters.field_title LIKE CONCAT('%',#{record.fieldTitle},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_low_filters.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_low_filters.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_low_filters.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+</mapper>
