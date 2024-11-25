@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiSubTableModelDao">
+    <sql id="Base_Column_List">
+        lc_api_sub_table_model.id,
+        lc_api_sub_table_model.table_model_id AS tableModelId,
+        lc_api_sub_table_model.sub_table_model_name AS subTableModelName,
+        lc_api_sub_table_model.sub_table_name AS subTableName,
+        lc_api_sub_table_model.sub_table_id AS subTableId
+    </sql>
+
+
+    <sql id="queryImage">
+        LEFT JOIN(	SELECT concat('[',GROUP_CONCAT('{\"id\":',t_stock_tag.id,',\"tagName\":\"',t_stock_tag.tag_name,'\"}'),']') as `tagName`, t_stock_tag_relation.stock_id as id
+    					from t_stock_tag_relation
+    					left join t_stock_tag on t_stock_tag_relation.tag_id = t_stock_tag.id
+    					WHERE t_stock_tag_relation.stock_type = #{tag}
+        GROUP BY id )
+        tag on tag . id = lc_api_sub_table_model . id
+    </sql>
+
+    <select id="queryMasterModel" resultType="ApiSubTableModelModel">
+        SELECT lc_api_sub_table_model.*,
+               lc_api_table_model.`name` AS tableName, lc_api_table_model.model_name AS tableModelName
+        FROM lc_api_sub_table_model
+        JOIN lc_api_table_model
+        WHERE lc_api_table_model.id = lc_api_sub_table_model.table_model_id AND  lc_api_sub_table_model.id = #{id}
+        GROUP BY lc_api_sub_table_model.id
+    </select>
+
+
+    <select id="findApiSubTableModelPage" resultType="ApiSubTableModelRecord" parameterType="ApiSubTableModelRecord">
+        SELECT
+        <include refid="Base_Column_List"/>,
+        lc_api_table_model.`name` AS tableName, lc_api_table_model.model_name AS tableModelName
+
+        FROM lc_api_sub_table_model
+        JOIN lc_api_table_model
+
+        <where>
+
+            lc_api_table_model.id = lc_api_sub_table_model.table_model_id
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_api_sub_table_model.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.tableModelId != null and record.tableModelId>0 ">
+            AND lc_api_sub_table_model.table_model_id LIKE CONCAT('%',#{record.tableModelId},'%')
+        </if>
+
+
+        <if test="record.subTableId != null and record.subTableId>0">
+            AND lc_api_sub_table_model.sub_table_id LIKE CONCAT('%',#{record.subTableId},'%')
+        </if>
+
+        <if test="record.subTableModelName != null and record.subTableModelName!= ''">
+            AND lc_api_sub_table_model.sub_table_model_name LIKE CONCAT('%',#{record.subTableModelName},'%')
+        </if>
+
+        <if test="record.subTableName != null and record.subTableName!= ''">
+            AND lc_api_sub_table_model.sub_table_name LIKE CONCAT('%',#{record.subTableName},'%')
+        </if>
+
+        <if test="search != null and search != ''">
+         AND (
+            lc_api_table_model.name LIKE CONCAT('%',#{search},'%')
+            OR lc_api_table_model.model_name LIKE CONCAT('%',#{search},'%')
+            OR lc_api_sub_table_model.sub_table_model_name LIKE CONCAT('%',#{search},'%')
+            OR lc_api_sub_table_model.sub_table_name LIKE CONCAT('%',#{search},'%')
+         )
+        </if>
+
+        </where>
+    </select>
+</mapper>

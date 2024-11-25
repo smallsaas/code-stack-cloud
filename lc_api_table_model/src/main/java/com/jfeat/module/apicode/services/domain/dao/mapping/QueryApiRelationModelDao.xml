@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiRelationModelDao">
+
+  <sql id="BASE_FIELD_LIST">
+    `lc_api_relation_model`.`id`,
+    `lc_api_relation_model`.`model_name`,
+    `lc_api_relation_model`.`name`,
+    `lc_api_relation_model`.`relationship`,
+    `lc_api_relation_model`.`notes`
+  </sql>
+
+  <resultMap id="DTOMap" type="ApiRelationModelDTO">
+    <id column="id" property="id"/>
+    <result column="model_name" property="modelName"/>
+    <result column="name" property="name"/>
+    <result column="relationship" property="relationship"/>
+    <result column="notes" property="notes"/>
+    <collection property="relationTables" column="id" ofType="ApiRelationModelTables" select="com.jfeat.module.apicode.services.domain.dao.QueryApiRelationModelTablesDao.listByRelationModelId"/>
+  </resultMap>
+  <select id="getDTO" resultMap="DTOMap">
+    SELECT
+        <include refid="BASE_FIELD_LIST"/>
+    FROM
+        `lc_api_relation_model`
+    WHERE
+        id = #{id}
+  </select>
+
+</mapper>

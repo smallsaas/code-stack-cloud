@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiTableModelFieldDao">
+    <sql id="Base_Column_List">
+        lc_api_table_model_field.id,
+        lc_api_table_model_field.table_model_id AS tableModelId,
+        lc_api_table_model_field.field_model_id AS fieldModelId, lc_api_table_model_field.field_name AS fieldName,
+        lc_api_table_model_field.default_value AS defaultValue, lc_api_table_model_field.is_not_null AS isNotNull,
+        lc_api_table_model_field.is_unique AS isUnique, lc_api_table_model_field.data_type AS dataType,
+        lc_api_table_model_field.field_length AS fieldLength, lc_api_table_model_field.field_float_length AS
+        fieldFloatLength, lc_api_table_model_field.comments,
+        lc_api_table_model_field.default_field_name AS defaultFieldName
+    </sql>
+
+
+    <sql id="queryImage">
+        LEFT JOIN( SELECT
+        concat('[',GROUP_CONCAT('{\"id\":',t_stock_tag.id,',\"tagName\":\"',t_stock_tag.tag_name,'\"}'),']') as
+        `tagName`, t_stock_tag_relation.stock_id as id
+        from t_stock_tag_relation
+        left join t_stock_tag on t_stock_tag_relation.tag_id = t_stock_tag.id
+        WHERE t_stock_tag_relation.stock_type =
+        #{tag}
+        GROUP
+        BY
+        id
+        )
+        tag
+        on
+        tag
+        .
+        id
+        =
+        lc_api_table_model_field
+        .
+        id
+    </sql>
+
+    <select id="queryMasterModel" resultType="ApiTableModelFieldModel">
+        SELECT lc_api_table_model_field.*, lc_api_table_model.`name` AS tableModelName
+        FROM lc_api_table_model_field
+                 JOIN lc_api_table_model
+        WHERE lc_api_table_model_field.table_model_id = lc_api_table_model.id
+          AND lc_api_table_model_field.id = #{id}
+        GROUP BY lc_api_table_model_field.id
+    </select>
+
+
+    <select id="findApiTableModelFieldPage" resultType="ApiTableModelFieldRecord"
+            parameterType="ApiTableModelFieldRecord">
+        SELECT
+        <include refid="Base_Column_List"/>,
+
+        lc_api_table_model.`name` AS tableModelName
+
+        FROM lc_api_table_model_field
+
+        JOIN lc_api_table_model
+
+        <where>
+            lc_api_table_model_field.table_model_id = lc_api_table_model.id
+
+            <if test="record.id != null and record.id>0 ">
+                AND lc_api_table_model_field.id LIKE CONCAT('%',#{record.id},'%')
+            </if>
+
+
+            <if test="record.tableModelId != null and record.tableModelId>0 ">
+                AND lc_api_table_model_field.table_model_id LIKE CONCAT('%',#{record.tableModelId},'%')
+            </if>
+
+
+            <if test="record.fieldModelId != null and record.fieldModelId>0 ">
+                AND lc_api_table_model_field.field_model_id LIKE CONCAT('%',#{record.fieldModelId},'%')
+            </if>
+
+
+            <if test="record.fieldName != null and record.fieldName!= ''">
+                AND lc_api_table_model_field.field_name LIKE CONCAT('%',#{record.fieldName},'%')
+            </if>
+
+
+            <if test="record.defaultValue != null and record.defaultValue!= ''">
+                AND lc_api_table_model_field.default_value LIKE CONCAT('%',#{record.defaultValue},'%')
+            </if>
+
+
+            <if test="record.isNotNull != null and record.isNotNull>0 ">
+                AND lc_api_table_model_field.is_not_null LIKE CONCAT('%',#{record.isNotNull},'%')
+            </if>
+
+
+            <if test="record.isUnique != null and record.isUnique>0 ">
+                AND lc_api_table_model_field.is_unique LIKE CONCAT('%',#{record.isUnique},'%')
+            </if>
+
+
+            <if test="record.dataType != null and record.dataType!= ''">
+                AND lc_api_table_model_field.data_type LIKE CONCAT('%',#{record.dataType},'%')
+            </if>
+
+
+            <if test="record.fieldLength != null and record.fieldLength>0 ">
+                AND lc_api_table_model_field.field_length LIKE CONCAT('%',#{record.fieldLength},'%')
+            </if>
+
+
+            <if test="record.fieldFloatLength != null and record.fieldFloatLength>0 ">
+                AND lc_api_table_model_field.field_float_length LIKE CONCAT('%',#{record.fieldFloatLength},'%')
+            </if>
+            <if test="record.comments != null and record.comments!= ''">
+                AND lc_api_table_model_field.comments LIKE CONCAT('%',#{record.comments},'%')
+            </if>
+
+            <if test="startTime != null">
+                <![CDATA[AND lc_api_table_model_field.start_time >= DATE(#{startTime})]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[AND lc_api_table_model_field.end_time <= DATE(#{endTime}]]>
+            </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR lc_api_table_model_field.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+        </where>
+    </select>
+
+    <select id="findFieldModeDetail" resultType="FieldModelRecord" parameterType="ApiTableModelFieldRecord">
+        SELECT *
+        FROM `lc_field_model`
+        WHERE model_name = #{defaultFieldName}
+    </select>
+
+    <select id="listByTableModeLId" resultType="ApiTableModelField">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            `lc_api_table_model_field`
+        WHERE
+            table_model_id = #{tableModelId}
+    </select>
+</mapper>

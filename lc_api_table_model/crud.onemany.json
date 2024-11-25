@@ -1,0 +1,20 @@
+{
+  "project": "lc_api_table_model",
+  "module": "apicode",
+  "submodule": null,
+  "tableName": "lc_api_table_model",
+  "sql": "/Users/kequandian/worksapce/lowcode/code-stack-cloud/lc_api_table_model/src/main/resources/sql/tablemodel-schema.sql",
+  "outputPath": "/Users/kequandian/worksapce/lowcode/code-stack-cloud",
+  "slaves": [
+    {
+      "tableName": "lc_api_table_model_field",
+      "masterId": "table_model_id:id",
+      "itemsKey": "fields"
+    },
+    {
+      "tableName": "lc_api_sub_table_model",
+      "masterId": "table_model_id:id",
+      "itemsKey": "tables"
+    }
+  ]
+}

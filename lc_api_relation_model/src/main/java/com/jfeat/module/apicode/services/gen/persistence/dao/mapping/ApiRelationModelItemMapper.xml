@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.gen.persistence.dao.ApiRelationModelItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.apicode.services.gen.persistence.model.ApiRelationModelItem">
+        <id column="id" property="id" />
+        <result column="relation_model_id" property="relationModelId" />
+        <result column="table_model_id" property="tableModelId" />
+        <result column="data_key" property="dataKey" />
+        <result column="relation_type" property="relationType" />
+        <result column="relation_data" property="relationData" />
+        <result column="multi_relation_data_json" property="multiRelationDataJson" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, relation_model_id, table_model_id, data_key, relation_type, relation_data, multi_relation_data_json
+    </sql>
+
+</mapper>

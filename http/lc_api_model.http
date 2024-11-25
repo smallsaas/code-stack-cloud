@@ -1,0 +1,148 @@
+@endpoint = http://localhost:8000
+
+### GET
+GET {{endpoint}}/api/cg/generate
+
+### POST
+POST {{endpoint}}/api/cg/generate/code
+Content-Type: application/json
+
+{
+    "module": "apicode",
+    "tableName":"lc_api_model",
+    "fields": [
+        {
+            "fieldName": "model_type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "业务类型",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "model_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模型名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "master_table_model_id",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "业务模型主表ID",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "master_table_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "主表名",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "model_desc",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模型描述",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "model_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模板标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        }
+    ],
+    "slaves":
+    [
+        {
+            "tableName": "lc_api_model_item",
+            "masterId": "api_model_id",
+            "fields":
+            [
+                {
+                    "fieldName": "api_model_id",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "主表关联字段ID",
+                    "fieldType": "smallint",
+                    "fieldLength":6,
+                    "fieldFloatLength":0
+                },
+                {
+                    "fieldName": "table_model_id",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "从关联表ID",
+                    "fieldType": "smallint",
+                    "fieldLength":6,
+                    "fieldFloatLength":0
+                },
+                {
+                    "fieldName": "table_name",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "最后决定从表表名",
+                    "fieldType": "varchar",
+                    "fieldLength":26,
+                    "fieldFloatLength":0
+                },
+                {
+                    "fieldName": "relation_table_name",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "关联表名",
+                    "fieldType": "varchar",
+                    "fieldLength":26,
+                    "fieldFloatLength":0
+                },
+                {
+                    "fieldName": "relation_master_table_id_field",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "一对多关联ID字段",
+                    "fieldType": "varchar",
+                    "fieldLength":26,
+                    "fieldFloatLength":0
+                },
+                {
+                    "fieldName": "relation_master_peer_table_id_field",
+                    "defaultValue":"",
+                    "isNotNull": 1,
+                    "isUnique": 0,
+                    "comments": "多对多关联ID字段",
+                    "fieldType": "varchar",
+                    "fieldLength":26,
+                    "fieldFloatLength":0
+                }
+            ]
+        }
+    ]
+}
+
+### DELETE
+DELETE {{endpoint}}/api/apicode/masterResourceItem/masterResourceItems/7

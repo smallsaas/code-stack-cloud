@@ -1,0 +1,114 @@
+@endpoint=http://localhost:8080
+
+
+### 实体模型 lc_api_table_model
+
+### 查看实体模型列表信息
+### pageNum = 第几页,默认第 1 页
+### pageSize = 每页显示数，默认每页显示 10 
+### taq = 标签特征
+### search = 结束标签
+### modelName = 模型标识名称
+### name = 模型显示名称
+### pid = 父实体模型ID
+### orderBy = 分组
+### sort = desc（降序）/ dsc（升序）
+GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+
+
+### 新建实体模型 selling
+### "modelNamae" : 实体模型标识名称
+### "name" : 实体模型显示名称
+### "pid" : 一对多表关联id
+### "items" : 数据模型中的参数
+POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+
+{
+  "modelName": "selling",
+  "name": "selling-test",
+  "notes": "selling businss testing"
+}
+
+### 新建实体模型 vendor
+POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+
+{
+  "modelName": "vendor",
+  "name": "供应商",
+  "notes": "vendor business"
+}
+
+### 新建实体模型 warehouse
+POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+
+{
+  "modelName": "warehouse",
+  "name": "仓库",
+  "notes": "warehouse business"
+}
+
+
+
+
+### 向实体增加字段
+
+PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/2
+
+{
+  "modelName": "warehouse",
+  "name": "仓库",
+  "notes": "warehouse business",
+  "fields": [
+    {
+        "defaultFieldName": "NAME",
+        "fieldName": "location"
+    },
+    {
+        "defaultFieldName": "COUNT",
+        "fieldName": "storage"
+    }
+  ]
+}
+
+
+### 查看实体模型详情
+### /api/apicode/api_model/apiTableModel/apiTableModels/{id}
+### {id} : 实体模型id
+GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+
+
+
+### 增加子表 
+PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+
+{
+  "modelName": "selling",
+  "name": "selling-test",
+  "notes": "selling businss testing",
+  "subtables": [
+    {
+        "subTableId": 2
+    }
+  ]
+}
+
+
+### 向实体增加字段
+PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+
+{
+  "modelName": "selling",
+  "name": "selling-test",
+  "notes": "selling businss testing",
+  "fields": [
+    {
+        "defaultFieldName": "NAME",
+        "fieldName": "name"
+    }
+  ]
+}
+
+
+### 查看实体模型详情
+### 包括子表所有字段
+GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels/2

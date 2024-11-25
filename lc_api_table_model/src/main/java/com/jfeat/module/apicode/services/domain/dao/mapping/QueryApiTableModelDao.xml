@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiTableModelDao">
+    <sql id="Base_Column_List">
+        lc_api_table_model.id,
+        lc_api_table_model.model_name AS modelName,
+        lc_api_table_model.name,
+        lc_api_table_model.notes
+    </sql>
+
+
+    <sql id="queryImage">
+        LEFT JOIN( SELECT
+        concat('[',GROUP_CONCAT('{\"id\":',t_stock_tag.id,',\"tagName\":\"',t_stock_tag.tag_name,'\"}'),']') as
+        `tagName`, t_stock_tag_relation.stock_id as id
+        from t_stock_tag_relation
+        left join t_stock_tag on t_stock_tag_relation.tag_id = t_stock_tag.id
+        WHERE t_stock_tag_relation.stock_type = #{tag}
+        GROUP BY id) tag on tag.id=lc_api_table_model.id
+    </sql>
+
+    <select id="queryMasterModel" resultType="ApiTableModelModel">
+        SELECT lc_api_table_model.*
+        FROM lc_api_table_model
+        WHERE lc_api_table_model.id=#{id}
+        GROUP BY lc_api_table_model.id
+    </select>
+
+
+    <select id="findApiTableModelPage" resultType="ApiTableModelRecord" parameterType="ApiTableModelRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_api_table_model
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_api_table_model.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.modelName != null and record.modelName!= ''">
+            AND lc_api_table_model.model_name LIKE CONCAT('%',#{record.modelName},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND lc_api_table_model.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+        <if test="record.notes != null and record.notes!= ''">
+            AND lc_api_table_model.notes LIKE CONCAT('%',#{record.notes},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_api_table_model.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_api_table_model.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_api_table_model.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+
+    <resultMap id="TableWithSubtableMap" type="ApiTableModelRecord" >
+        <id property="id" column="id"/>
+        <result property="modelName" column="model_name"/>
+        <result property="name" column="name"/>
+        <result property="notes" column="notes"/>
+        <collection property="subtables" ofType="ApiTableModelRecord">
+            <id property="id" column="subId"/>
+            <result property="modelName" column="subModelName"/>
+            <result property="name" column="subName"/>
+            <result property="notes" column="subNotes"/>
+        </collection>
+    </resultMap>
+    <select id="getTableWithSubtables" resultMap="TableWithSubtableMap">
+        SELECT
+            master.id,
+            master.model_name,
+            master.`name`,
+            master.notes,
+            subtable.id AS subId,
+            subtable.model_name AS subModelName,
+            subtable.name AS subName,
+            subtable.notes AS subNotes
+        FROM
+            lc_api_table_model AS master
+        LEFT JOIN lc_api_sub_table_model AS relation ON master.id = relation.table_model_id
+        LEFT JOIN lc_api_table_model AS subtable ON relation.sub_table_id = subtable.id
+        WHERE
+            master.id = #{id}
+    </select>
+
+    <!--  查询DTO  -->
+    <resultMap id="DTOMap" type="ApiTableModelDTO">
+        <id column="id" property="id"/>
+        <result column="modelName" property="modelName"/>
+        <result column="name" property="name"/>
+        <result column="notes" property="notes"/>
+        <collection property="fields" column="id" ofType="ApiTableModelField" select="com.jfeat.module.apicode.services.domain.dao.QueryApiTableModelFieldDao.listByTableModeLId"/>
+        <collection property="subModels" column="id" ofType="ApiTableModelDTO" select="com.jfeat.module.apicode.services.domain.dao.QueryApiTableModelDao.listSubModel"/>
+    </resultMap>
+    <select id="getDTO" resultMap="DTOMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            `lc_api_table_model`
+        WHERE
+            `id` = #{id}
+    </select>
+    <!-- 获取子模型列表 -->
+    <resultMap id="listSubModelMap" type="ApiTableModelDTO">
+        <id column="id" property="id"/>
+        <result column="modelName" property="modelName"/>
+        <result column="name" property="name"/>
+        <result column="notes" property="notes"/>
+        <collection property="fields" column="id" ofType="ApiTableModelField" select="com.jfeat.module.apicode.services.domain.dao.QueryApiTableModelFieldDao.listByTableModeLId"/>
+    </resultMap>
+    <select id="listSubModel" resultMap="listSubModelMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM
+            `lc_api_sub_table_model`
+        LEFT JOIN `lc_api_table_model`ON `lc_api_sub_table_model`.`sub_table_id` = `lc_api_table_model`.`id`
+        WHERE
+            `lc_api_sub_table_model`.`table_model_id` = #{id}
+    </select>
+</mapper>

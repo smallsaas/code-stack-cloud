@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiRelationModelItemDao">
+    <sql id="Base_Column_List">
+        lc_api_relation_model_item.id, lc_api_relation_model_item.relation_model_id AS relationModelId,
+        lc_api_relation_model_item.table_model_id AS tableModelId, lc_api_relation_model_item.data_key AS dataKey,
+        lc_api_relation_model_item.relation_type AS relationType, lc_api_relation_model_item.relation_data AS
+        relationData, lc_api_relation_model_item.multi_relation_data_json AS multiRelationDataJson
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="ApiRelationModelItemModel">
+        SELECT lc_api_relation_model_item.*
+        FROM lc_api_relation_model_item
+        WHERE lc_api_relation_model_item.id=#{id}
+        GROUP BY lc_api_relation_model_item.id
+    </select>
+
+    <select id="queryMasterModelList" resultType="ApiRelationModelItemModel">
+        SELECT lc_api_relation_model_item.*, "1" as version
+        FROM lc_api_relation_model_item
+        WHERE relation_model_id=#{masterId}
+        GROUP BY lc_api_relation_model_item.id
+    </select>
+
+    <select id="findApiRelationModelItemPage" resultType="ApiRelationModelItemRecord"
+            parameterType="ApiRelationModelItemRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_api_relation_model_item
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_api_relation_model_item.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+
+
+        <if test="record.relationModelId != null and record.relationModelId>0 ">
+            AND lc_api_relation_model_item.relation_model_id LIKE CONCAT('%',#{record.relationModelId},'%')
+        </if>
+
+
+        <if test="record.tableModelId != null and record.tableModelId>0 ">
+            AND lc_api_relation_model_item.table_model_id LIKE CONCAT('%',#{record.tableModelId},'%')
+        </if>
+
+
+        <if test="record.dataKey != null and record.dataKey!= ''">
+            AND lc_api_relation_model_item.data_key LIKE CONCAT('%',#{record.dataKey},'%')
+        </if>
+
+
+        <if test="record.relationType != null and record.relationType!= ''">
+            AND lc_api_relation_model_item.relation_type LIKE CONCAT('%',#{record.relationType},'%')
+        </if>
+
+
+        <if test="record.relationData != null and record.relationData!= ''">
+            AND lc_api_relation_model_item.relation_data LIKE CONCAT('%',#{record.relationData},'%')
+        </if>
+
+
+        <if test="record.multiRelationDataJson != null and record.multiRelationDataJson!= ''">
+            AND lc_api_relation_model_item.multi_relation_data_json LIKE CONCAT('%',#{record.multiRelationDataJson},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_api_relation_model_item.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_api_relation_model_item.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_api_relation_model_item.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+</mapper>

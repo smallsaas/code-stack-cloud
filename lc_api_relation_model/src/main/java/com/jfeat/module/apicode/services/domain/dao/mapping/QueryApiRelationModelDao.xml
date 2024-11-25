@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiRelationModelDao">
+    <sql id="Base_Column_List">
+        lc_api_relation_model.id, lc_api_relation_model.relationship, lc_api_relation_model.model_name AS modelName,
+        lc_api_relation_model.name, lc_api_relation_model.notes
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="ApiRelationModelModel">
+        SELECT lc_api_relation_model.*
+        FROM lc_api_relation_model
+        WHERE lc_api_relation_model.id=#{id}
+        GROUP BY lc_api_relation_model.id
+    </select>
+
+    <select id="findApiRelationModelPage" resultType="ApiRelationModelRecord" parameterType="ApiRelationModelRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+
+        FROM lc_api_relation_model
+
+
+        WHERE 1=1
+
+
+        <if test="record.id != null and record.id>0 ">
+            AND lc_api_relation_model.id LIKE CONCAT('%',#{record.id},'%')
+        </if>
+        <if test="record.relationship != null and record.relationship!= ''">
+            AND lc_api_relation_model.relationship LIKE CONCAT('%',#{record.relationship},'%')
+        </if>
+
+
+        <if test="record.modelName != null and record.modelName!= ''">
+            AND lc_api_relation_model.model_name LIKE CONCAT('%',#{record.modelName},'%')
+        </if>
+        <if test="record.name != null and record.name!= ''">
+            AND lc_api_relation_model.name LIKE CONCAT('%',#{record.name},'%')
+        </if>
+        <if test="record.notes != null and record.notes!= ''">
+            AND lc_api_relation_model.notes LIKE CONCAT('%',#{record.notes},'%')
+        </if>
+
+        <if test="startTime != null">
+            <![CDATA[AND lc_api_relation_model.start_time >= DATE(#{startTime})]]>
+        </if>
+        <if test="endTime != null">
+            <![CDATA[AND lc_api_relation_model.end_time <= DATE(#{endTime}]]>
+        </if>
+        <!--
+    <if test="search != null and search != ''">
+        OR lc_api_relation_model.name LIKE CONCAT('%',#{search},'%')
+    </if>
+    -->
+    </select>
+</mapper>

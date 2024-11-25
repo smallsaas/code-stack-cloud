@@ -1,0 +1,177 @@
+@endpoint=http://localhost:8000
+
+
+### 查询字段模板列表
+GET {{endpoint}}/api/apicode/fieldModel/fieldModels/1
+
+
+### 查询字段列表
+GET {{endpoint}}/api/apicode/fieldItem/fieldItems
+
+
+### 查询子表
+GET {{endpoint}}/api/apicode/subTableModel/subTableModels/27
+
+### 更新子表
+PUT {{endpoint}}/api/apicode/subTableModel/subTableModels/27
+Content-Type: application/json
+
+{
+    "templateName": "cs",
+    "templateLabel": "CS",
+    "items": [
+      {
+        "fieldName": "",
+        "fieldComment": "",
+        "fieldIsNotNull": 0,
+        "fieldModelId": 1,
+        "fieldTemplateId": 123,
+        "fieldDefaultValue": "123",
+        "table_template_id":"1"
+      },
+      {
+        "fieldName": "",
+        "fieldComment": "",
+        "fieldIsNotNull": 0,
+        "fieldModelId": 2,
+        "fieldTemplateId": 123,
+        "fieldDefaultValue": "123",
+        "table_template_id":"1"
+      }
+    ]
+  }
+
+### 新建子表
+POST {{endpoint}}/api/apicode/subTableModel/subTableModels
+Content-Type: application/json
+
+{
+    "templateLabel": "2542",
+    "templateName": "45245",
+
+    "items": [
+    {
+      "fieldComment": "ckw",
+      "fieldDefaultValue": "123",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 1,
+      "fieldName": "",
+      "fieldTemplateId": 252,
+      "tableTemplateId": 452
+    }
+  ]
+}
+
+### 查询子表详情
+GET {{endpoint}}/api/apicode/subTableModel/subTableModels/35
+
+### 更新子表
+PUT {{endpoint}}/api/apicode/subTableModel/subTableModels/35
+Content-Type: application/json
+
+
+{
+    "templateName": "44",
+    "templateLabel": "45",
+    "items": [
+      {
+        "fieldName": "",
+        "fieldComment": "ckw",
+        "fieldIsNotNull": 0,
+        "tableTemplateId": 654,
+        "fieldModelId": 1,
+        "fieldTemplateId": 123,
+        "fieldDefaultValue": "123"
+      }
+    ]
+  }
+
+
+### 删除子表
+DELETE  {{endpoint}}/api/apicode/subTableModel/subTableModels/11
+
+
+#### lc_field_items
+
+### 字段查询
+GET {{endpoint}}/api/apicode/fieldItem/fieldItems
+
+
+### 增加字段
+POST {{endpoint}}/api/apicode/fieldItem/fieldItems
+Content-Type: application/json
+
+{
+  "fieldModelId": 1,
+  "fieldName": "NAME",
+  "fieldIsNotNull": 0,
+  "tableTemplateId":0,
+  "fieldTemplateId":0
+}
+
+
+
+##### lc_table_model
+
+### 增加字段
+POST {{endpoint}}/api/apicode/tableModel/tableModels
+
+{
+  "templateDesc": "string",
+  "templateKey": "string",
+  "templateName": "string",
+  "templateTitle": "string",
+  "fieldItems": 
+  [
+    {
+      "fieldComment": "adf",
+      "fieldDefaultValue": "sad",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 0,
+      "id":"",
+      "fieldName": "da",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels":
+   [
+    {
+      "templateLabel": "string",
+      "templateName": "string"
+    }
+  ]
+}
+
+### 查询字段
+GET {{endpoint}}/api/apicode/tableModel/tableModels
+
+### table_model新增字段
+POST {{endpoint}}/api/apicode/tableModel/tableModels
+
+{
+  "fieldItems": [
+    {
+      "fieldComment": "12321",
+      "fieldDefaultValue": "12312",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 1,
+      "fieldName": "",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels": [
+    {
+      "templateLabel": "36443",
+      "templateName": "45645"
+    }
+  ],
+  "templateDesc": "123",
+  "templateKey": "string",
+  "templateName": "12312",
+  "templateTitle": "string"
+}
+
+### 查询table_model数据
+GET {{endpoint}}/api/apicode/tableModel/tableModels/8

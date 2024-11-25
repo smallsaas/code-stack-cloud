@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryApiRelationModelTablesDao">
+
+    <sql id="BASE_FIELD_LIST">
+        `lc_api_relation_model_tables`.`id`,
+        `lc_api_relation_model_tables`.`relation_model_id`,
+        `lc_api_relation_model_tables`.`table_model_id`,
+        `lc_api_relation_model_tables`.`table_model_create_sql`,
+        `lc_api_relation_model_tables`.`relation_type`,
+        `lc_api_relation_model_tables`.`data_key`,
+        `lc_api_relation_model_tables`.`relation_data`,
+        `lc_api_relation_model_tables`.`relation_master_field`,
+        `lc_api_relation_model_tables`.`multi_relation_data_json`,
+        `lc_api_relation_model_tables`.`relation_master_id`
+    </sql>
+
+    <resultMap id="DTOMap" type="ApiRelationModelTablesDTO">
+        <id column="id" property="id"/>
+        <result column="relation_model_id" property="relationModelId"/>
+        <result column="table_model_id" property="tableModelId"/>
+        <result column="relation_type" property="relationType"/>
+        <result column="relation_data" property="relationData"/>
+        <result column="tableModelName" property="tableModelName"/>
+        <result column="tableModelNotes" property="tableModelNotes"/>
+    </resultMap>
+
+    <select id="pageDTO" resultMap="DTOMap">
+        SELECT
+        `t_relationModelTables`.`id`,
+        `t_relationModelTables`.`relation_model_id`,
+        `t_relationModelTables`.`table_model_id`,
+        `t_relationModelTables`.`relation_type`,
+        `t_relationModelTables`.`relation_data`,
+        `t_tableModel`.`name` AS `tableModelName`,
+        `t_tableModel`.`notes` AS `tableModelNotes`
+        FROM lc_api_relation_model_tables AS t_relationModelTables
+        LEFT JOIN lc_api_table_model AS t_tableModel ON t_relationModelTables.table_model_id = t_tableModel.id
+        <where>
+            <if test="model.relationModelId != null">
+                AND `t_relationModelTables`.`relation_model_id` = #{model.relationModelId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDTO" resultMap="DTOMap">
+        SELECT
+        `t_relationModelTables`.`id`,
+        `t_relationModelTables`.`relation_model_id`,
+        `t_relationModelTables`.`table_model_id`,
+        `t_relationModelTables`.`relation_type`,
+        `t_relationModelTables`.`relation_data`,
+        `t_tableModel`.`name` AS `tableModelName`,
+        `t_tableModel`.`notes` AS `tableModelNotes`
+        FROM lc_api_relation_model_tables AS t_relationModelTables
+        LEFT JOIN lc_api_table_model AS t_tableModel ON t_relationModelTables.table_model_id = t_tableModel.id
+        WHERE `t_relationModelTables`.`id` = #{id}
+    </select>
+
+    <select id="get" resultType="ApiRelationModelTables">
+        SELECT
+            <include refid="BASE_FIELD_LIST"/>
+        FROM
+            `lc_api_relation_model_tables`
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="listByRelationModelId" resultType="ApiRelationModelTables">
+        SELECT
+            <include refid="BASE_FIELD_LIST"/>
+        FROM
+            `lc_api_relation_model_tables`
+        WHERE
+            `relation_model_id` = #{relationModelId}
+    </select>
+
+</mapper>

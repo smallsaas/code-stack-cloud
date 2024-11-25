@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.domain.dao.QueryFieldModelDao">
+    <sql id="Base_Column_List">
+        lc_field_model.id, lc_field_model.model_name AS modelName, lc_field_model.name AS name, lc_field_model.default_value AS defaultValue, lc_field_model.is_not_null AS isNotNull, lc_field_model.is_unique AS isUnique, lc_field_model.optional_field_name AS optionalFieldName, lc_field_model.data_type AS dataType, lc_field_model.field_length AS fieldLength, lc_field_model.field_float_length AS fieldFloatLength, lc_field_model.comments
+    </sql>
+
+
+    <select id="queryMasterModel" resultType="FieldModelModel">
+       SELECT lc_field_model.*
+       FROM lc_field_model
+       WHERE lc_field_model.id=#{id}
+       GROUP BY lc_field_model.id
+    </select>
+
+
+    <select id="findFieldModelPage" resultType="FieldModelRecord" parameterType="FieldModelRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+
+        FROM lc_field_model
+
+        <where>
+            <if test="record.id != null and record.id>0 ">
+                AND lc_field_model.id LIKE CONCAT('%',#{record.id},'%')
+            </if>
+
+
+            <if test="record.modelName != null and record.modelName!= ''">
+                AND lc_field_model.model_name LIKE CONCAT('%',#{record.modelName},'%')
+            </if>
+
+
+            <if test="record.name != null and record.name!= ''">
+                AND lc_field_model.name LIKE CONCAT('%',#{record.name},'%')
+            </if>
+
+
+            <if test="record.defaultValue != null and record.defaultValue!= ''">
+                AND lc_field_model.default_value LIKE CONCAT('%',#{record.defaultValue},'%')
+            </if>
+
+
+            <if test="record.isNotNull != null and record.isNotNull>0 ">
+                AND lc_field_model.is_not_null LIKE CONCAT('%',#{record.isNotNull},'%')
+            </if>
+
+
+            <if test="record.isUnique != null and record.isUnique>0 ">
+                AND lc_field_model.is_unique LIKE CONCAT('%',#{record.isUnique},'%')
+            </if>
+
+
+    <!--        <if test="record.defaultFieldName != null and record.defaultFieldName!= ''">-->
+    <!--            AND lc_field_model.default_field_name LIKE CONCAT('%',#{record.defaultFieldName},'%')-->
+    <!--        </if>-->
+
+
+            <if test="record.optionalFieldName != null and record.optionalFieldName!= ''">
+                AND lc_field_model.optional_field_name LIKE CONCAT('%',#{record.optionalFieldName},'%')
+            </if>
+
+
+            <if test="record.dataType != null and record.dataType!= ''">
+                AND lc_field_model.data_type LIKE CONCAT('%',#{dataType},'%')
+            </if>
+
+
+            <if test="record.fieldLength != null and record.fieldLength>0 ">
+                AND lc_field_model.field_length LIKE CONCAT('%',#{record.fieldLength},'%')
+            </if>
+
+
+            <if test="record.fieldFloatLength != null and record.fieldFloatLength>0 ">
+                AND lc_field_model.field_float_length LIKE CONCAT('%',#{record.fieldFloatLength},'%')
+            </if>
+            <if test="record.comments != null and record.comments!= ''">
+                AND lc_field_model.comments LIKE CONCAT('%',#{record.comments},'%')
+            </if>
+
+            <if test="startTime != null">
+                <![CDATA[AND lc_field_model.start_time >= DATE(#{startTime})]]>
+            </if>
+            <if test="endTime != null">
+                <![CDATA[AND lc_field_model.end_time <= DATE(#{endTime}]]>
+            </if>
+            <!--
+        <if test="search != null and search != ''">
+            OR lc_field_model.name LIKE CONCAT('%',#{search},'%')
+        </if>
+        -->
+        </where>
+    </select>
+</mapper>

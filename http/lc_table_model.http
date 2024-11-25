@@ -1,0 +1,72 @@
+@endpoint=http://localhost:8000
+
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "apicode",
+    "tableName":"lc_table_model",
+    "fields": [
+        {
+            "fieldName": "template_key",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "uuid",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "template_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模板标识名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "template_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模板标题",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "template_desc",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "业务模板说明",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        }
+    ],
+    "slaves":
+    [
+        {
+            "tableName": "lc_sub_table_model",
+            "peer": 
+            {
+                "tableName": "lc_api_table_model_item",
+                "masterId": "table_model_id",
+                "masterPeerId":"sub_table_model_id",
+            }
+        },
+        {
+            "tableName": "lc_field_item",
+            "peer": 
+            {
+                "tableName": "lc_api_table_model_field_item",
+                "masterId": "table_model_id",
+                "masterPeerId":"field_item_id",
+            }
+        }
+    ]
+}

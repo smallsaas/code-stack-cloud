@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.gen.persistence.dao.FieldModelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.apicode.services.gen.persistence.model.FieldModel">
+        <id column="id" property="id" />
+        <result column="model_name" property="modelName" />
+        <result column="name" property="name" />
+        <result column="default_value" property="defaultValue" />
+        <result column="is_not_null" property="isNotNull" />
+        <result column="is_unique" property="isUnique" />
+        <result column="optional_field_name" property="optionalFieldName" />
+        <result column="data_type" property="dataType" />
+        <result column="field_length" property="fieldLength" />
+        <result column="field_float_length" property="fieldFloatLength" />
+        <result column="comments" property="comments" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, model_name, name, default_value, is_not_null, is_unique, optional_field_name, data_type, field_length, field_float_length, comments
+    </sql>
+
+</mapper>

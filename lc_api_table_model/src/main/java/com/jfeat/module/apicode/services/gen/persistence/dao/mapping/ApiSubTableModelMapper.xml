@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jfeat.module.apicode.services.gen.persistence.dao.ApiSubTableModelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jfeat.module.apicode.services.gen.persistence.model.DO.ApiSubTableModel">
+        <id column="id" property="id" />
+        <result column="table_model_id" property="tableModelId" />
+        <result column="sub_table_id" property="subTableId" />
+        <result column="sub_table_model_name" property="subTableModelName" />
+        <result column="sub_table_name" property="subTableName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, table_model_id, sub_table_id, sub_table_model_name, sub_table_name
+    </sql>
+
+</mapper>

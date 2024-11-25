@@ -1,0 +1,94 @@
+@endpoint=http://demo.smallsaas.cn:8001
+@endpoint=http://localhost:8080
+
+@token=Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJvcmdJZCI6IjEiLCJ1c2VySWQiOiIxIiwidGVuYW50T3JnSWQiOjEsImFjY291bnQiOiJhZG1pbiIsInVzZXJUeXBlIjoxMDAsImRldlVzZXJUeXBlIjowLCJiVXNlclR5cGUiOiJTWVNURU0iLCJpYXQiOjE2NTI2ODc4NTEsImp0aSI6IjEiLCJzdWIiOiJhZG1pbiIsImV4cCI6MTY1Mjk0NzA1MX0.FlSIphIUscRyoQtZT9bDSj_OQJmxHcWDg4gY9tctVpQs9gBtAziUhDui8rez4ZECCWHf1MOVdEKB_foNyQLv4Q
+@token=Bearer not-used
+
+### 数据模型 lc_field_model
+
+### 查看数据模型列表信息
+### pageNum = 第几页,默认第 1 页
+### pageSize = 每页显示数，默认每页显示 10 
+### search = 
+### id = 数据模型id
+### modelName = 模型标识名称
+### modelLabel = 模型显示名
+### defaultValue = 默认值
+### isNotNull = 是否非空
+### isUnique = 是否唯一
+### defaultFieldName = 推荐字段名称
+### optionalFieldName = 可选的字段名称
+### fieldType = 字段类型
+### fieldLength = 字段大小
+### fieldFloatLength = 字段小数大小
+### comments = 注释
+### orderBy = 
+### sort = 
+GET {{endpoint}}/api/apicode/fieldModel/fieldModels?modelName=USER
+Authorization: {{token}}
+
+### Get all fields
+GET {{endpoint}}/api/apicode/fieldModel/fieldModels
+Authorization: {{token}}
+
+### 新建数据模型
+### id采用自增长，新建后请去查看id是多少，以便更好的测试下面的样例
+POST {{endpoint}}/api/apicode/fieldModel/fieldModels
+Authorization: {{token}}
+
+{
+    "modelName": "TEST",
+    "modelLabel": "名称",
+    "defaultValue": "",
+    "isNotNull": 1,
+    "isUnique": 1,
+    "defaultFieldName": "NAME",
+    "optionalFieldName": "",
+    "fieldType": "varchar",
+    "fieldLength": 50,
+    "fieldFloatLength": 0,
+    "comments": ""
+}
+
+### 新建数据模型
+### id采用自增长，新建后请去查看id是多少，以便更好的测试下面的样例
+POST {{endpoint}}/api/apicode/fieldModel/fieldModels
+Authorization: {{token}}
+
+{
+    "defaultFieldName": "NAME",
+    "comments": "std name"
+}
+
+
+### 根据id查看数据模型详情
+### /api/apicode/fieldModel/fieldModels/{id}
+### {id}:数据模型id
+GET {{endpoint}}/api/apicode/fieldModel/fieldModels/19
+Authorization: {{token}}
+
+### 根据id修改数据模型
+### /api/apicode/fieldModel/fieldModels/{id}
+### {id}：数据模型id
+PUT {{endpoint}}/api/apicode/fieldModel/fieldModels/38
+Authorization: {{token}}
+
+{
+    "modelName": "TEST",
+    "modelLabel": "名称",
+    "defaultValue": "",
+    "isNotNull": 1,
+    "isUnique": 1,
+    "defaultFieldName": "name",
+    "optionalFieldName": "",
+    "fieldType": "varchar",
+    "fieldLength": 50,
+    "fieldFloatLength": 0,
+    "comments": ""
+}
+
+### 根据id删除数据模型
+### /api/apicode/fieldModel/fieldModels/{id}
+### {id}: 数据模型id
+DELETE {{endpoint}}/api/apicode/fieldModel/fieldModels/38
+Authorization: {{token}}

@@ -1,0 +1,352 @@
+@endpoint=http://localhost:8000
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "crudcode",
+    "tableName":"lc_low_fields",
+    "fields": [
+        {
+            "fieldName": "list_font_weight",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表字体加粗",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_font_size",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表字体大小",
+            "fieldType": "int",
+            "fieldLength":11,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_font_color",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表字体颜色",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_key",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "生成列表项组合",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表项名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表项组件类型",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_align",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表对齐",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表项宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_reference",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表项指引路由",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_format",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表项显示格式",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_options",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "组件附加属性",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_multi_type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "复合列表",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_column_multi_keys",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "复合列表项",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_item_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段组件唯一名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_binding",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "绑定字段名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_label",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_value_options",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段值下拉框选项",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_value_filter",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "数据转换",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_scopes",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段范围",
+            "fieldType": "varchar",
+            "fieldLength":64,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_scope",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段范围（唯一范围）",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_field_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段表单标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_field_hint",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段表单提示",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_field_tips",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段表单输入错误提示",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_input_type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单输入组件类型",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_input_options",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单输入组件属性",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_view_type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单显示属性",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_view_options",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单输入组件属性",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_input_required",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "表单是否必填",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_field_question",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "对输入选项进行说明",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "page_id",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "所属页面id",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_image_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表图片宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_image_height",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表图片高度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "input_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "输入框宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        }
+    ]
+}
