@@ -1,0 +1,137 @@
+     1	[WARNING] 
+     2	[WARNING] Some problems were encountered while building the effective settings
+     3	[WARNING] Unrecognised tag: 'blocked' (position: START_TAG seen ...</url>\n      <blocked>... @161:16)  @ /Users/kequandian/.m2/settings.xml, line 161, column 16
+     4	[WARNING] 
+     5	[INFO] Scanning for projects...
+     6	[INFO] 
+     7	[INFO] -------------------------< com.jfeat:apicode >--------------------------
+     8	[INFO] Building apicode 1.0.0
+     9	[INFO] --------------------------------[ jar ]---------------------------------
+    10	[WARNING] The POM for com.alibaba:druid:jar:1.1.22 is invalid, transitive dependencies (if any) will not be available, enable debug logging for more details
+    11	[INFO] 
+    12	[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ apicode ---
+    13	[INFO] com.jfeat:apicode:jar:1.0.0
+    14	[INFO] +- com.jfeat:lc_api_field_model:jar:1.0-SNAPSHOT:compile
+    15	[INFO] +- com.jfeat:lc_api_table_model:jar:1.0-SNAPSHOT:compile
+    16	[INFO] +- com.jfeat:lc_api_service_model:jar:1.0-SNAPSHOT:compile
+    17	[INFO] |  \- com.jfeat:lc_api_entity_model:jar:1.0.0:compile
+    18	[INFO] +- org.projectlombok:lombok:jar:1.18.4:compile
+    19	[INFO] +- com.jfeat:crud-plus:jar:0.1.0:compile
+    20	[INFO] |  +- cn.hutool:hutool-all:jar:5.7.2:compile
+    21	[INFO] |  +- com.alibaba:druid:jar:1.1.22:compile
+    22	[INFO] |  +- com.jfeat:crud-base:jar:0.0.1:compile
+    23	[INFO] |  |  \- org.apache.shiro:shiro-crypto-hash:jar:1.8.0:compile
+    24	[INFO] |  |     +- org.apache.shiro:shiro-lang:jar:1.8.0:compile
+    25	[INFO] |  |     \- org.apache.shiro:shiro-crypto-core:jar:1.8.0:compile
+    26	[INFO] |  +- org.springframework.boot:spring-boot-starter-cache:jar:1.5.6.RELEASE:compile
+    27	[INFO] |  |  +- org.springframework:spring-context:jar:4.3.10.RELEASE:compile
+    28	[INFO] |  |  \- org.springframework:spring-context-support:jar:4.3.10.RELEASE:compile
+    29	[INFO] |  +- com.baomidou:mybatis-plus:jar:3.3.2:compile
+    30	[INFO] |  |  \- com.baomidou:mybatis-plus-extension:jar:3.3.2:compile
+    31	[INFO] |  |     +- com.baomidou:mybatis-plus-core:jar:3.3.2:compile
+    32	[INFO] |  |     |  +- com.baomidou:mybatis-plus-annotation:jar:3.3.2:compile
+    33	[INFO] |  |     |  +- com.github.jsqlparser:jsqlparser:jar:3.1:compile
+    34	[INFO] |  |     |  \- org.mybatis:mybatis:jar:3.5.4:compile
+    35	[INFO] |  |     \- org.mybatis:mybatis-spring:jar:2.0.4:compile
+    36	[INFO] |  +- com.baomidou:mybatis-plus-boot-starter:jar:3.3.2:compile
+    37	[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:1.5.6.RELEASE:compile
+    38	[INFO] |  |  \- org.springframework.boot:spring-boot-starter-jdbc:jar:1.5.6.RELEASE:compile
+    39	[INFO] |  |     +- org.apache.tomcat:tomcat-jdbc:jar:8.5.16:compile
+    40	[INFO] |  |     |  \- org.apache.tomcat:tomcat-juli:jar:8.5.16:compile
+    41	[INFO] |  |     \- org.springframework:spring-jdbc:jar:4.3.10.RELEASE:compile
+    42	[INFO] |  \- com.google.guava:guava:jar:20.0:compile
+    43	[INFO] +- com.jfeat:crud-core:jar:0.0.5:compile
+    44	[INFO] |  +- org.springframework.boot:spring-boot-starter-data-redis:jar:1.5.6.RELEASE:compile
+    45	[INFO] |  |  +- org.springframework.data:spring-data-redis:jar:1.8.6.RELEASE:compile
+    46	[INFO] |  |  |  +- org.springframework.data:spring-data-keyvalue:jar:1.2.6.RELEASE:compile
+    47	[INFO] |  |  |  |  \- org.springframework.data:spring-data-commons:jar:1.13.6.RELEASE:compile
+    48	[INFO] |  |  |  +- org.springframework:spring-tx:jar:4.3.10.RELEASE:compile
+    49	[INFO] |  |  |  +- org.springframework:spring-oxm:jar:4.3.10.RELEASE:compile
+    50	[INFO] |  |  |  \- org.slf4j:jcl-over-slf4j:jar:1.7.25:compile
+    51	[INFO] |  |  \- redis.clients:jedis:jar:2.9.0:compile
+    52	[INFO] |  |     \- org.apache.commons:commons-pool2:jar:2.4.2:compile
+    53	[INFO] |  +- com.alibaba:druid-spring-boot-starter:jar:1.1.22:compile
+    54	[INFO] |  \- org.springframework.boot:spring-boot-starter-aop:jar:1.5.6.RELEASE:compile
+    55	[INFO] |     \- org.springframework:spring-aop:jar:4.3.10.RELEASE:compile
+    56	[INFO] +- com.jfeat:jwt-core:jar:0.1.2:compile
+    57	[INFO] |  \- io.jsonwebtoken:jjwt:jar:0.7.0:compile
+    58	[INFO] +- io.springfox:springfox-swagger2:jar:2.9.2:compile
+    59	[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.20:compile
+    60	[INFO] |  +- io.swagger:swagger-models:jar:1.5.20:compile
+    61	[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.8.0:compile
+    62	[INFO] |  +- io.springfox:springfox-spi:jar:2.9.2:compile
+    63	[INFO] |  |  \- io.springfox:springfox-core:jar:2.9.2:compile
+    64	[INFO] |  |     \- net.bytebuddy:byte-buddy:jar:1.8.12:compile
+    65	[INFO] |  +- io.springfox:springfox-schema:jar:2.9.2:compile
+    66	[INFO] |  +- io.springfox:springfox-swagger-common:jar:2.9.2:compile
+    67	[INFO] |  +- io.springfox:springfox-spring-web:jar:2.9.2:compile
+    68	[INFO] |  +- com.fasterxml:classmate:jar:1.3.3:compile
+    69	[INFO] |  +- org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile
+    70	[INFO] |  |  \- org.springframework:spring-beans:jar:4.3.10.RELEASE:compile
+    71	[INFO] |  +- org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile
+    72	[INFO] |  \- org.mapstruct:mapstruct:jar:1.2.0.Final:compile
+    73	[INFO] +- io.springfox:springfox-swagger-ui:jar:2.9.2:compile
+    74	[INFO] +- org.apache.commons:commons-lang3:jar:3.9:compile
+    75	[INFO] +- commons-io:commons-io:jar:2.5:compile
+    76	[INFO] +- com.alibaba:fastjson:jar:1.2.52:compile
+    77	[INFO] +- mysql:mysql-connector-java:jar:8.0.27:runtime
+    78	[INFO] |  \- com.google.protobuf:protobuf-java:jar:3.11.4:runtime
+    79	[INFO] +- org.slf4j:slf4j-api:jar:1.7.29:compile
+    80	[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:1.5.6.RELEASE:compile
+    81	[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:1.5.6.RELEASE:compile
+    82	[INFO] |  |  +- org.springframework.boot:spring-boot:jar:1.5.6.RELEASE:compile
+    83	[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:1.5.6.RELEASE:compile
+    84	[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.1.11:compile
+    85	[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.1.11:compile
+    86	[INFO] |  |  |  +- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+    87	[INFO] |  |  |  \- org.slf4j:log4j-over-slf4j:jar:1.7.25:compile
+    88	[INFO] |  |  \- org.yaml:snakeyaml:jar:1.17:runtime
+    89	[INFO] |  +- org.hibernate:hibernate-validator:jar:5.3.5.Final:compile
+    90	[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.1.Final:compile
+    91	[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.8.9:compile
+    92	[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.8.9:compile
+    93	[INFO] |  +- org.springframework:spring-web:jar:4.3.10.RELEASE:compile
+    94	[INFO] |  \- org.springframework:spring-webmvc:jar:4.3.10.RELEASE:compile
+    95	[INFO] |     \- org.springframework:spring-expression:jar:4.3.10.RELEASE:compile
+    96	[INFO] +- org.springframework.boot:spring-boot-starter-undertow:jar:1.5.6.RELEASE:compile
+    97	[INFO] |  +- io.undertow:undertow-core:jar:1.4.18.Final:compile
+    98	[INFO] |  |  +- org.jboss.xnio:xnio-api:jar:3.3.8.Final:compile
+    99	[INFO] |  |  \- org.jboss.xnio:xnio-nio:jar:3.3.8.Final:runtime
+   100	[INFO] |  +- io.undertow:undertow-servlet:jar:1.4.18.Final:compile
+   101	[INFO] |  |  \- org.jboss.spec.javax.annotation:jboss-annotations-api_1.2_spec:jar:1.0.0.Final:compile
+   102	[INFO] |  +- io.undertow:undertow-websockets-jsr:jar:1.4.18.Final:compile
+   103	[INFO] |  |  \- org.jboss.spec.javax.websocket:jboss-websocket-api_1.1_spec:jar:1.1.0.Final:compile
+   104	[INFO] |  +- javax.servlet:javax.servlet-api:jar:3.1.0:compile
+   105	[INFO] |  \- org.glassfish:javax.el:jar:3.0.0:compile
+   106	[INFO] +- net.sf.ehcache:ehcache-core:jar:2.6.11:compile
+   107	[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:1.5.6.RELEASE:test
+   108	[INFO] |  +- org.springframework.boot:spring-boot-test:jar:1.5.6.RELEASE:test
+   109	[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:1.5.6.RELEASE:test
+   110	[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.2.0:test
+   111	[INFO] |  |  \- net.minidev:json-smart:jar:2.2.1:test
+   112	[INFO] |  |     \- net.minidev:accessors-smart:jar:1.1:test
+   113	[INFO] |  |        \- org.ow2.asm:asm:jar:5.0.3:test
+   114	[INFO] |  +- junit:junit:jar:4.12:test
+   115	[INFO] |  +- org.assertj:assertj-core:jar:2.6.0:test
+   116	[INFO] |  +- org.mockito:mockito-core:jar:1.10.19:test
+   117	[INFO] |  |  \- org.objenesis:objenesis:jar:2.1:test
+   118	[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.3:test
+   119	[INFO] |  +- org.hamcrest:hamcrest-library:jar:1.3:test
+   120	[INFO] |  +- org.skyscreamer:jsonassert:jar:1.4.0:test
+   121	[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+   122	[INFO] |  +- org.springframework:spring-core:jar:4.3.10.RELEASE:compile
+   123	[INFO] |  \- org.springframework:spring-test:jar:4.3.10.RELEASE:test
+   124	[INFO] +- com.h2database:h2:jar:1.4.200:test
+   125	[INFO] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+   126	[INFO] +- javax.xml.bind:jaxb-api:jar:2.3.1:compile
+   127	[INFO] |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+   128	[INFO] +- com.sun.xml.bind:jaxb-core:jar:2.3.0:compile
+   129	[INFO] +- com.sun.xml.bind:jaxb-impl:jar:2.3.1:compile
+   130	[INFO] +- javax.activation:activation:jar:1.1.1:compile
+   131	[INFO] \- org.aspectj:aspectjweaver:jar:1.9.4:compile
+   132	[INFO] ------------------------------------------------------------------------
+   133	[INFO] BUILD SUCCESS
+   134	[INFO] ------------------------------------------------------------------------
+   135	[INFO] Total time:  1.874 s
+   136	[INFO] Finished at: 2023-11-14T17:08:55+08:00
+   137	[INFO] ------------------------------------------------------------------------

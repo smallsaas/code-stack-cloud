@@ -1,0 +1,62 @@
+@endpoint=http://localhost:8080
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "crudcode",
+    "tableName":"lc_low_field_properties",
+    "fields": [
+        {
+            "fieldName": "field_item_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "组件标识名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "property_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "属性名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "property_value",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "属性值",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "scope",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "组件属性作用域",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_id",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "所属字段组件ID",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        }
+    ]
+}

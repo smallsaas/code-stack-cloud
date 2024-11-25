@@ -1,0 +1,82 @@
+@endpoint=http://localhost:8000
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "apicode",
+    "tableName":"lc_field_item",
+    "fields": [
+        {
+            "fieldName": "field_model_id",
+            "defaultValue":"0",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "字段模板ID",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "table_template_id",
+            "defaultValue":"0",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "数据表模板ID",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_template_id",
+            "defaultValue":"0",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "字段模板项外键ID",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段名称",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_comment",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段注释",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_default_value",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "字段默认值",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "field_is_not_null",
+            "defaultValue":"0",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "字段是否非空",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        }
+    ]
+}

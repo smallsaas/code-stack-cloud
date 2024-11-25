@@ -1,0 +1,82 @@
+@endpoint=http://localhost:8000
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "crudcode",
+    "tableName":"lc_modal_item_basic_o",
+    "fields": [
+        {
+            "fieldName": "modal_items_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框子项布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_items_comp",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框使用组件",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_content_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框内容布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_content_get_api",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框getApi",
+            "fieldType": "varchar",
+            "fieldLength":200,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_content_update_api",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框updateApi",
+            "fieldType": "varchar",
+            "fieldLength":200,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_Id",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "模态框的id，一对多",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_content_create_api",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框创建Api",
+            "fieldType": "varchar",
+            "fieldLength":200,
+            "fieldFloatLength":0
+        }
+    ]
+}

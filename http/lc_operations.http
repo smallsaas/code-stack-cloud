@@ -1,0 +1,169 @@
+@endpoint=http://localhost:8000
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "crudcode",
+    "tableName":"lc_low_operations",
+    "fields": [
+        {
+            "fieldName": "title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "type",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "操作类型",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "path",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "操作路由路径",
+            "fieldType": "varchar",
+            "fieldLength":255,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "outside",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "是否显示在列表中",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "request_api",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "请求API",
+            "fieldType": "varchar",
+            "fieldLength":200,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "request_refresh_api",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "请求结果API",
+            "fieldType": "varchar",
+            "fieldLength":200,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "request_method",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "请求方法",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "request_body",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "请求数据",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "request_options",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "请求参数",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "page_id",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "所属页面ID",
+            "fieldType": "bigint",
+            "fieldLength":20,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "expect_field",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "过滤字段",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "expect_value",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "过滤值",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框标题",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "modal_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "模态框外部布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        }
+    ],
+    "slaves":
+    [
+        {
+            "tableName": "lc_modal_item_basic",
+            "masterId": "modal_id"
+        }
+    ]
+}

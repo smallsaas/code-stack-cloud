@@ -1,0 +1,231 @@
+@endpoint=http://localhost:8000
+
+### Generator Code within Path 生成单表代码并返回代码路径
+POST {{endpoint}}/api/cg/generate/code HTTP/1.1
+content-type: application/json
+
+{
+    "module": "crudcode",
+    "tableName":"lc_low_main_page",
+    "fields": [
+        {
+            "fieldName": "page_title",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "页面标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "page_name",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "页面名称",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "column_align",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "行对齐",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "api_endpoint",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "数据接口",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_add_title",
+            "defaultValue":"",
+            "isNotNull": 1,
+            "isUnique": 0,
+            "comments": "新建页面标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_view_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "页面视图标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_edit_title",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "页面编辑标题",
+            "fieldType": "varchar",
+            "fieldLength":50,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "content_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "页面内容布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "content_items",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "组件列表排序",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "content_item_container_style",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "组件容器属性",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_fields",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表字段",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "list_operation_fields",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表操作排列",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_add_fields",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单新建字段排列",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_view_fields",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表视图字段排列",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_edit_fields",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "列表编辑字段排列",
+            "fieldType": "varchar",
+            "fieldLength":1024,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_default_content_layout",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单默认内容布局",
+            "fieldType": "varchar",
+            "fieldLength":26,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_default_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单模态框默认宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+        {
+            "fieldName": "form_default_width",
+            "defaultValue":"",
+            "isNotNull": 0,
+            "isUnique": 0,
+            "comments": "表单模态框默认宽度",
+            "fieldType": "smallint",
+            "fieldLength":6,
+            "fieldFloatLength":0
+        },
+      {
+        "fieldName": "search_type",
+        "defaultValue":"",
+        "isNotNull": 0,
+        "isUnique": 0,
+        "comments": "表单模态框默认宽度",
+        "fieldType": "varchar",
+        "fieldLength":26,
+        "fieldFloatLength":0
+      },
+      {
+        "fieldName": "search_button_type",
+        "defaultValue":"",
+        "isNotNull": 0,
+        "isUnique": 0,
+        "comments": "表单模态框默认宽度",
+        "fieldType": "varchar",
+        "fieldLength":26,
+        "fieldFloatLength":0
+      }
+    ],
+    "slaves":
+    [
+        {
+            "tableName": "lc_low_actions",
+            "masterId": "page_id"
+        },
+        {
+            "tableName": "lc_low_operations",
+            "masterId": "page_id"
+        },
+        {
+            "tableName": "lc_low_filters",
+            "masterId": "page_id"
+        },
+        {
+            "tableName": "lc_low_fields",
+            "masterId": "page_id"
+        }
+    ]  
+}
