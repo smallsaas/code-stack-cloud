@@ -2,18 +2,18 @@
 
 
 ### 查询字段模板列表
-GET {{endpoint}}/api/apicode/fieldModel/fieldModels/1
+GET {{endpoint}}/api/lc/fieldModel/fieldModels/1
 
 
 ### 查询字段列表
-GET {{endpoint}}/api/apicode/fieldItem/fieldItems
+GET {{endpoint}}/api/lc/fieldItem/fieldItems
 
 
 ### 查询子表
-GET {{endpoint}}/api/apicode/subTableModel/subTableModels/27
+GET {{endpoint}}/api/lc/subTableModel/subTableModels/27
 
 ### 更新子表
-PUT {{endpoint}}/api/apicode/subTableModel/subTableModels/27
+PUT {{endpoint}}/api/lc/subTableModel/subTableModels/27
 Content-Type: application/json
 
 {
@@ -42,7 +42,7 @@ Content-Type: application/json
   }
 
 ### 新建子表
-POST {{endpoint}}/api/apicode/subTableModel/subTableModels
+POST {{endpoint}}/api/lc/subTableModel/subTableModels
 Content-Type: application/json
 
 {
@@ -63,10 +63,10 @@ Content-Type: application/json
 }
 
 ### 查询子表详情
-GET {{endpoint}}/api/apicode/subTableModel/subTableModels/35
+GET {{endpoint}}/api/lc/subTableModel/subTableModels/35
 
 ### 更新子表
-PUT {{endpoint}}/api/apicode/subTableModel/subTableModels/35
+PUT {{endpoint}}/api/lc/subTableModel/subTableModels/35
 Content-Type: application/json
 
 
@@ -88,17 +88,17 @@ Content-Type: application/json
 
 
 ### 删除子表
-DELETE  {{endpoint}}/api/apicode/subTableModel/subTableModels/11
+DELETE  {{endpoint}}/api/lc/subTableModel/subTableModels/11
 
 
 #### lc_field_items
 
 ### 字段查询
-GET {{endpoint}}/api/apicode/fieldItem/fieldItems
+GET {{endpoint}}/api/lc/fieldItem/fieldItems
 
 
 ### 增加字段
-POST {{endpoint}}/api/apicode/fieldItem/fieldItems
+POST {{endpoint}}/api/lc/fieldItem/fieldItems
 Content-Type: application/json
 
 {
@@ -114,7 +114,7 @@ Content-Type: application/json
 ##### lc_table_model
 
 ### 增加字段
-POST {{endpoint}}/api/apicode/tableModel/tableModels
+POST {{endpoint}}/api/lc/tableModel/tableModels
 
 {
   "templateDesc": "string",
@@ -144,10 +144,10 @@ POST {{endpoint}}/api/apicode/tableModel/tableModels
 }
 
 ### 查询字段
-GET {{endpoint}}/api/apicode/tableModel/tableModels
+GET {{endpoint}}/api/lc/tableModel/tableModels
 
 ### table_model新增字段
-POST {{endpoint}}/api/apicode/tableModel/tableModels
+POST {{endpoint}}/api/lc/tableModel/tableModels
 
 {
   "fieldItems": [
@@ -174,4 +174,4 @@ POST {{endpoint}}/api/apicode/tableModel/tableModels
 }
 
 ### 查询table_model数据
-GET {{endpoint}}/api/apicode/tableModel/tableModels/8
+GET {{endpoint}}/api/lc/tableModel/tableModels/8
