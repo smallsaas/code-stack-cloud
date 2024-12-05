@@ -13,7 +13,7 @@
 ### pid = 父实体模型ID
 ### orderBy = 分组
 ### sort = desc（降序）/ dsc（升序）
-GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+GET {{endpoint}}/api/lc/apiTableModel/apiTableModels
 
 
 ### 新建实体模型 selling
@@ -21,7 +21,7 @@ GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels
 ### "name" : 实体模型显示名称
 ### "pid" : 一对多表关联id
 ### "items" : 数据模型中的参数
-POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+POST {{endpoint}}/api/lc/apiTableModel/apiTableModels
 
 {
   "modelName": "selling",
@@ -30,7 +30,7 @@ POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
 }
 
 ### 新建实体模型 vendor
-POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+POST {{endpoint}}/api/lc/apiTableModel/apiTableModels
 
 {
   "modelName": "vendor",
@@ -39,7 +39,7 @@ POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
 }
 
 ### 新建实体模型 warehouse
-POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
+POST {{endpoint}}/api/lc/apiTableModel/apiTableModels
 
 {
   "modelName": "warehouse",
@@ -52,7 +52,7 @@ POST {{endpoint}}/api/apicode/apiTableModel/apiTableModels
 
 ### 向实体增加字段
 
-PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/2
+PUT {{endpoint}}/api/lc/apiTableModel/apiTableModels/2
 
 {
   "modelName": "warehouse",
@@ -72,14 +72,14 @@ PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/2
 
 
 ### 查看实体模型详情
-### /api/apicode/api_model/apiTableModel/apiTableModels/{id}
+### /api/lc/api_model/apiTableModel/apiTableModels/{id}
 ### {id} : 实体模型id
-GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+GET {{endpoint}}/api/lc/apiTableModel/apiTableModels/3
 
 
 
 ### 增加子表 
-PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+PUT {{endpoint}}/api/lc/apiTableModel/apiTableModels/3
 
 {
   "modelName": "selling",
@@ -94,7 +94,7 @@ PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
 
 
 ### 向实体增加字段
-PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
+PUT {{endpoint}}/api/lc/apiTableModel/apiTableModels/3
 
 {
   "modelName": "selling",
@@ -111,4 +111,4 @@ PUT {{endpoint}}/api/apicode/apiTableModel/apiTableModels/3
 
 ### 查看实体模型详情
 ### 包括子表所有字段
-GET {{endpoint}}/api/apicode/apiTableModel/apiTableModels/2
+GET {{endpoint}}/api/lc/apiTableModel/apiTableModels/2

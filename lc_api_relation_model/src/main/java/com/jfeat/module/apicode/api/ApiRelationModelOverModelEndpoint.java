@@ -64,7 +64,7 @@ import java.util.Objects;
  */
 @RestController
 @Api("ApiRelationModel")
-@RequestMapping("/api/apicode/apiRelationModel/apiRelationModels")
+@RequestMapping("/api/lc/apiRelationModel/apiRelationModels")
 public class ApiRelationModelOverModelEndpoint {
 
     @Resource

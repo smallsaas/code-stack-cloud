@@ -46,7 +46,7 @@ import java.util.List;
  */
 @RestController
 @Api("FieldModel")
-@RequestMapping("/api/apicode/fieldModel/fieldModels")
+@RequestMapping("/api/lc/fieldModel/fieldModels")
 public class FieldModelEndpoint {
 
     @Resource

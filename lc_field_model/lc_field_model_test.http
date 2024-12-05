@@ -24,16 +24,16 @@
 ### comments = 注释
 ### orderBy = 
 ### sort = 
-GET {{endpoint}}/api/apicode/fieldModel/fieldModels?modelName=USER
+GET {{endpoint}}/api/lc/fieldModel/fieldModels?modelName=USER
 Authorization: {{token}}
 
 ### Get all fields
-GET {{endpoint}}/api/apicode/fieldModel/fieldModels
+GET {{endpoint}}/api/lc/fieldModel/fieldModels
 Authorization: {{token}}
 
 ### 新建数据模型
 ### id采用自增长，新建后请去查看id是多少，以便更好的测试下面的样例
-POST {{endpoint}}/api/apicode/fieldModel/fieldModels
+POST {{endpoint}}/api/lc/fieldModel/fieldModels
 Authorization: {{token}}
 
 {
@@ -52,7 +52,7 @@ Authorization: {{token}}
 
 ### 新建数据模型
 ### id采用自增长，新建后请去查看id是多少，以便更好的测试下面的样例
-POST {{endpoint}}/api/apicode/fieldModel/fieldModels
+POST {{endpoint}}/api/lc/fieldModel/fieldModels
 Authorization: {{token}}
 
 {
@@ -62,15 +62,15 @@ Authorization: {{token}}
 
 
 ### 根据id查看数据模型详情
-### /api/apicode/fieldModel/fieldModels/{id}
+### /api/lc/fieldModel/fieldModels/{id}
 ### {id}:数据模型id
-GET {{endpoint}}/api/apicode/fieldModel/fieldModels/19
+GET {{endpoint}}/api/lc/fieldModel/fieldModels/19
 Authorization: {{token}}
 
 ### 根据id修改数据模型
-### /api/apicode/fieldModel/fieldModels/{id}
+### /api/lc/fieldModel/fieldModels/{id}
 ### {id}：数据模型id
-PUT {{endpoint}}/api/apicode/fieldModel/fieldModels/38
+PUT {{endpoint}}/api/lc/fieldModel/fieldModels/38
 Authorization: {{token}}
 
 {
@@ -88,7 +88,7 @@ Authorization: {{token}}
 }
 
 ### 根据id删除数据模型
-### /api/apicode/fieldModel/fieldModels/{id}
+### /api/lc/fieldModel/fieldModels/{id}
 ### {id}: 数据模型id
-DELETE {{endpoint}}/api/apicode/fieldModel/fieldModels/38
+DELETE {{endpoint}}/api/lc/fieldModel/fieldModels/38
 Authorization: {{token}}

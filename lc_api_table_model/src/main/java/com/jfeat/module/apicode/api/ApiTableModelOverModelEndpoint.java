@@ -59,7 +59,7 @@ import java.util.List;
  */
 @RestController
 @Api("ApiTableModel")
-@RequestMapping("/api/apicode/apiTableModel/apiTableModels")
+@RequestMapping("/api/lc/apiTableModel/apiTableModels")
 public class ApiTableModelOverModelEndpoint {
 
     @Resource

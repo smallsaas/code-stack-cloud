@@ -45,7 +45,7 @@ import java.util.List;
  */
 @RestController
 @Api("ApiSubTableModel")
-@RequestMapping("/api/apicode/apiSubTableModel/apiSubTableModels")
+@RequestMapping("/api/lc/apiSubTableModel/apiSubTableModels")
 public class ApiSubTableModelEndpoint {
 
     @Resource

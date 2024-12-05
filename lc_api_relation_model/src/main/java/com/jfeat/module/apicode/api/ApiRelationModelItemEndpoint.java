@@ -53,7 +53,7 @@ import java.util.List;
  */
     @RestController
     @Api("ApiRelationModelItem")
-            @RequestMapping("/api/apicode/apiRelationModelItem/apiRelationModelItems")
+            @RequestMapping("/api/lc/apiRelationModelItem/apiRelationModelItems")
     public class ApiRelationModelItemEndpoint {
 
     @Resource

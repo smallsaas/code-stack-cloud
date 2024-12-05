@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  */
 @Api("apiRelationModelTables")
 @RestController
-@RequestMapping("/api/apicode/apiRelationModelTables/apiRelationModelTables")
+@RequestMapping("/api/lc/apiRelationModelTables/apiRelationModelTables")
 public class ApiRelationModelTablesEndpoint {
 
     @Resource

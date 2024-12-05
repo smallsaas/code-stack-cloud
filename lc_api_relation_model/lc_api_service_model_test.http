@@ -17,11 +17,11 @@
 ### modelNote = 模型说明
 ### orderBy = 分组项
 ### sort = desc（降序）/ dsc（升序）
-GET {{endpoint}}/api/apicode/serviceModels
+GET {{endpoint}}/api/lc/serviceModels
 Authorization: {{token}}
 
 ### 新建业务模型
-POST {{endpoint}}/api/apicode/serviceModels
+POST {{endpoint}}/api/lc/serviceModels
 Authorization: {{token}}
 
 {
@@ -50,15 +50,15 @@ Authorization: {{token}}
 }
 
 ### 根据id查看业务模型详情
-### /api/apicode/serviceModels/{id}
+### /api/lc/serviceModels/{id}
 ### {id} : 业务模型id
-GET {{endpoint}}/api/apicode/serviceModels/17
+GET {{endpoint}}/api/lc/serviceModels/17
 Authorization: {{token}}
 
 ### 根据id修改业务模型
-### /api/apicode/serviceModels/{id}
+### /api/lc/serviceModels/{id}
 ### {id} : 业务模型id
-PUT {{endpoint}}/api/apicode/serviceModels/13
+PUT {{endpoint}}/api/lc/serviceModels/13
 Authorization: {{token}}
 
 {
@@ -89,9 +89,9 @@ Authorization: {{token}}
 }
 
 ### 根据id删除业务模型
-### /api/apicode/serviceModels/{id}
+### /api/lc/serviceModels/{id}
 ### {id} : 业务模型id
-DELETE {{endpoint}}/api/apicode/serviceModels/15
+DELETE {{endpoint}}/api/lc/serviceModels/15
 Authorization: {{token}}
 
 ### 获取生成代码的参数
@@ -99,5 +99,5 @@ Authorization: {{token}}
 ### module = 自定义模块名
 ### modelTableName = 业务模型表名 lc_api_service_model
 ### itemTableName = 业务item表名 lc_api_service_item
-GET {{endpoint}}/api/apicode/serviceModels/switch?id=17&module=测试&modelTableName=lc_api_service_model&itemTableName=lc_api_service_item
+GET {{endpoint}}/api/lc/serviceModels/switch?id=17&module=测试&modelTableName=lc_api_service_model&itemTableName=lc_api_service_item
 Authorization: {{token}}

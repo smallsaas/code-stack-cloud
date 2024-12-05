@@ -145,4 +145,4 @@ Content-Type: application/json
 }
 
 ### DELETE
-DELETE {{endpoint}}/api/apicode/masterResourceItem/masterResourceItems/7
+DELETE {{endpoint}}/api/lc/masterResourceItem/masterResourceItems/7

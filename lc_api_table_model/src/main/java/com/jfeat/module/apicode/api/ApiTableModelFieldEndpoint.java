@@ -50,7 +50,7 @@ import java.util.List;
  */
 @RestController
 @Api("ApiTableModelField")
-@RequestMapping("/api/apicode/apiTableModelField/apiTableModelFields")
+@RequestMapping("/api/lc/apiTableModelField/apiTableModelFields")
 public class ApiTableModelFieldEndpoint {
 
     @Resource
