@@ -64,7 +64,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api("LowMainPage")
-@RequestMapping("/api/lc/lowMainPage/lowMainPages")
+@RequestMapping("/api/pageconfig/lowMainPage/lowMainPages")
 public class LowMainPageOverModelEndpoint {
 
     @Resource

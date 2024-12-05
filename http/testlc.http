@@ -1,13 +1,13 @@
 @endpoint = http://localhost:7000
 
 ###
-GET {{endpoint}}/api/lc/lowMainPage/lowMainPages/2
+GET {{endpoint}}/api/pageconfig/lowMainPage/lowMainPages/2
 
 
 ###
-GET {{endpoint}}/api/lc/lowActions/lowActionses/1
+GET {{endpoint}}/api/pageconfig/lowActions/lowActionses/1
 
 
 ### 生成前端配置文件并下载
-### /api/lc/lowMainPage/pageConfig/{name}
-POST {{endpoint}}/api/lc/lowMainPage/pageConfig/configGroups
+### /api/pageconfig/lowMainPage/pageConfig/{name}
+POST {{endpoint}}/api/pageconfig/lowMainPage/pageConfig/configGroups

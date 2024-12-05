@@ -17,7 +17,7 @@ import java.util.zip.ZipOutputStream;
  */
 @RestController
 @Api("LowMainPage")
-@RequestMapping("/api/lc/lowMainPage/pageConfig")
+@RequestMapping("/api/pageconfig/lowMainPage/pageConfig")
 public class PageConfig {
 
     @PostMapping("/{name}")

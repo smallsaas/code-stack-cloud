@@ -43,7 +43,7 @@ import java.util.List;
 @RestController
 
 @Api("LowFieldProperties")
-@RequestMapping("/api/lc/lowFieldProperties/lowFieldPropertieses")
+@RequestMapping("/api/pageconfig/lowFieldProperties/lowFieldPropertieses")
 public class LowFieldPropertiesEndpoint {
 
     @Resource

@@ -48,7 +48,7 @@ import java.util.List;
  */
 @RestController
 @Api("LowOperations")
-@RequestMapping("/api/lc/lowOperations/lowOperationses")
+@RequestMapping("/api/pageconfig/lowOperations/lowOperationses")
 public class LowOperationsOverModelEndpoint {
 
     @Resource

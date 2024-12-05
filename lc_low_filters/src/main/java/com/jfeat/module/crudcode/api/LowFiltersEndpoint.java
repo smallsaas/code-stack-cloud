@@ -46,7 +46,7 @@ import java.util.List;
 @RestController
 
 @Api("LowFilters")
-@RequestMapping("/api/lc/lowFilters/lowFilterses")
+@RequestMapping("/api/pageconfig/lowFilters/lowFilterses")
 public class LowFiltersEndpoint {
 
     @Resource

@@ -44,7 +44,7 @@ import java.util.List;
  */
 @RestController
 @Api("LowFields")
-@RequestMapping("/api/lc/lowFields/lowFieldses")
+@RequestMapping("/api/pageconfig/lowFields/lowFieldses")
 public class LowFieldsEndpoint {
 
     @Resource
