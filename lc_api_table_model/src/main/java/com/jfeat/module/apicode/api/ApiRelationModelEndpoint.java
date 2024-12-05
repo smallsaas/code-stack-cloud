@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @date: 2024/4/16 14:20
  * @author: hhhhhtao
  */
-@Api("apiRelationModel")
+@Api("ApiRelationModel")
 @RestController
 @RequestMapping("/api/lc/apiRelationModel/apiRelationModels")
 public class ApiRelationModelEndpoint {
@@ -35,7 +35,7 @@ public class ApiRelationModelEndpoint {
 
     @ApiOperation("新建")
     @PostMapping()
-    public Tip insert(@ApiParam(name = "apiRelationModel", value = "api关系模型对象") @RequestBody ApiRelationModel apiRelationModel) {
+    public Tip insert(@ApiParam(name = "ApiRelationModel", value = "api关系模型对象") @RequestBody ApiRelationModel apiRelationModel) {
         return SuccessTip.create(apiRelationModelService.insert(apiRelationModel));
     }
 
@@ -43,7 +43,7 @@ public class ApiRelationModelEndpoint {
     @PutMapping("/{id}")
     public Tip update(
             @ApiParam(name = "id", value = "api关系模型对象id") @PathVariable("id") Long id,
-            @ApiParam(name = "apiRelationModel", value = "api关系模型对象") @RequestBody ApiRelationModel apiRelationModel) {
+            @ApiParam(name = "ApiRelationModel", value = "api关系模型对象") @RequestBody ApiRelationModel apiRelationModel) {
         apiRelationModel.setId(id);
         return SuccessTip.create(apiRelationModelService.update(apiRelationModel));
     }
