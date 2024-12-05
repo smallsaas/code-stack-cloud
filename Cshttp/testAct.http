@@ -1,4 +1,0 @@
-@endpoint = http://localhost:7000
-
-###
-GET {{endpoint}}/api/lc/modalItemBasic/modalItemBasics

@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @date: 2024/4/16 14:22
  * @author: hhhhhtao
  */
-@Api("apiRelationModelTables")
+@Api("ApiRelationModelTables")
 @RestController
 @RequestMapping("/api/lc/apiRelationModelTables/apiRelationModelTables")
 public class ApiRelationModelTablesEndpoint {
