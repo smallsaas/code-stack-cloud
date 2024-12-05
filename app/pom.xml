@@ -29,11 +29,14 @@
             <artifactId>lc_api_table_model</artifactId>
             <version>1.0.0</version>
         </dependency>
+        
+        <!-- 未测试通过
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>lc_api_relation_model</artifactId>
             <version>1.0.0</version>
         </dependency>
+        -->
 
         <!--pageconfig-->
         <dependency>
