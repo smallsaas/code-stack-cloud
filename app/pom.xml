@@ -17,6 +17,14 @@
     <properties>
         <skipStandalone>false</skipStandalone>
     </properties>
+        <!--mbcs-->
+        <dependencies>
+            <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>mbcs</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
         <!--apicode-->
         <dependencies>
             <dependency>
@@ -30,7 +38,7 @@
             <version>1.0.0</version>
         </dependency>
         
-        <!-- 未测试通过
+        <!-- 未测试通过, 逻辑已在 lc_api_table_model上实现
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>lc_api_relation_model</artifactId>
