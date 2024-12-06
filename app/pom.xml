@@ -19,7 +19,20 @@
     </properties>
 
     <dependencies>
-         <!--mbcs-->
+        <!--statement-->
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>statement</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+        <!--statistic-->
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>statistic</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+        <!--mbcs-->
         <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>dosql</artifactId>
