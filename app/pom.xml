@@ -17,17 +17,17 @@
     <properties>
         <skipStandalone>false</skipStandalone>
     </properties>
+
+    <dependencies>
         <!--mbcs-->
-        <dependencies>
-            <dependency>
+        <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>mbcs</artifactId>
             <version>1.2.0</version>
         </dependency>
 
         <!--apicode-->
-        <dependencies>
-            <dependency>
+        <dependency>
             <groupId>com.jfeat</groupId>
             <artifactId>lc_field_model</artifactId>
             <version>1.0.0</version>
