@@ -19,6 +19,13 @@
     </properties>
 
     <dependencies>
+         <!--mbcs-->
+        <dependency>
+            <groupId>com.jfeat</groupId>
+            <artifactId>dosql</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
         <!--mbcs-->
         <dependency>
             <groupId>com.jfeat</groupId>
