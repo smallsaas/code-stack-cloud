@@ -1,5 +1,5 @@
-###
 @Endpoint = http://localhost:8088
+@endpoint = http://192.168.3.210:8089
 
 
 ### 获取meta配置列表

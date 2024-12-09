@@ -1,6 +1,7 @@
 @endpoint = http://localhost:8088
+@endpoint = http://192.168.3.210:8089
 
-@entity=message
+@entity=device
 
 ### 查看所有meta entity patch配置
 # GET {{endpoint}}/api/meta/patch/config/machines?whereFieldName={{entity}}
@@ -148,3 +149,4 @@ POST {{endpoint}}/api/meta/patch/config/whereFiled/{{device}}/delete
   "whereFieldName":"device_id",
   "stusta":"row"
 }
+
