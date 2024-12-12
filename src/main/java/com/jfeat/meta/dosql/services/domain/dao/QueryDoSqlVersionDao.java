@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * Created by Code generator on 2022-09-16
  */
+@Deprecated
 public interface QueryDoSqlVersionDao extends QueryMasterDao<DoSqlVersion> {
     /*
      * Query entity list by page

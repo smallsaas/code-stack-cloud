@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author Code generator
  * @since 2022-09-16
  */
+@Deprecated
 @TableName("t_dev_version")
 @ApiModel(value = "DoSqlVersion", description = "")
 public class DoSqlVersion extends Model<DoSqlVersion> {

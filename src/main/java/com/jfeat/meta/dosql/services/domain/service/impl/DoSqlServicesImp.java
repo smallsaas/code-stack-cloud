@@ -18,16 +18,14 @@ import java.util.Map;
 @Service
 public class DoSqlServicesImp implements DoSqlServices {
 
+    protected final Log logger = LogFactory.getLog(getClass());
+
+
     @Resource
     ParseRequestArgument parseRequestArgument;
 
     @Resource
     ParseSql parseSql;
-
-    protected final Log logger = LogFactory.getLog(getClass());
-
-
-
 
     @Override
     public JSONArray querySql(HttpServletRequest request, String sqlFile) {

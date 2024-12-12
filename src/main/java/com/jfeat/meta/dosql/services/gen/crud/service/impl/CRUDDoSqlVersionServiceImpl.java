@@ -20,6 +20,7 @@ import javax.annotation.Resource;
  * @since 2022-09-16
  */
 
+ @Deprecated
 @Service
 public class CRUDDoSqlVersionServiceImpl extends CRUDServiceOnlyImpl<DoSqlVersion> implements CRUDDoSqlVersionService {
 

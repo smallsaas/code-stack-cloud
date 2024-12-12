@@ -12,6 +12,7 @@ import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlVersion;
  * Master: serviceOnly
   * Slave : t_dev_version
   */
+  @Deprecated
 public interface CRUDDoSqlVersionService extends CRUDServiceOnly<DoSqlVersion> {
 
 }

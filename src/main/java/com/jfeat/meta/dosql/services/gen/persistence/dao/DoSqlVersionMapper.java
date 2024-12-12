@@ -11,6 +11,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author Code generator
  * @since 2022-09-16
  */
+@Deprecated
 public interface DoSqlVersionMapper extends BaseMapper<DoSqlVersion> {
 
 }

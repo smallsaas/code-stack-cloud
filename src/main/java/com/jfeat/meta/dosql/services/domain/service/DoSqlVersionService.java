@@ -5,5 +5,6 @@ import com.jfeat.meta.dosql.services.gen.crud.service.CRUDDoSqlVersionService;
 /**
  * Created by vincent on 2017/10/19.
  */
+@Deprecated
 public interface DoSqlVersionService extends CRUDDoSqlVersionService {
     }
