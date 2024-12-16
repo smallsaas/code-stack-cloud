@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author Code generator
  * @since 2022-09-16
  */
-@TableName("t_dev_develop")
+@TableName("lc_do_sql")
 @ApiModel(value = "DoSqlField对象", description = "")
 public class DoSqlField extends Model<DoSqlField> {
 

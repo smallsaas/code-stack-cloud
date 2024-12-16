@@ -10,7 +10,7 @@ import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlField;
  * @author Code generator
  * @since 2022-09-16
  * Master: serviceOnly
-  * Slave : t_dev_develop
+  * Slave : lc_do_sql
   */
 public interface CRUDDoSqlFieldService extends CRUDServiceOnly<DoSqlField> {
 
