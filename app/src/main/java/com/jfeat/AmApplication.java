@@ -24,7 +24,7 @@ public class AmApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
         SpringApplication.run(AmApplication.class, args);
-        logger.info("Apicode service run success!");
+        logger.info("pageconfig.api service run success!");
     }
 
 }
