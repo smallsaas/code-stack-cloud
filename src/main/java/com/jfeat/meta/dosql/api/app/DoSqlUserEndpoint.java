@@ -7,9 +7,7 @@ import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
-import com.jfeat.meta.dosql.services.domain.dao.QueryDoSqlVersionDao;
 import com.jfeat.meta.dosql.services.domain.service.DoSqlServices;
-import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -26,9 +24,6 @@ public class DoSqlUserEndpoint {
 
     @Resource
     DoSqlServices devopsServices;
-
-    @Resource
-    QueryDoSqlVersionDao queryDevVersionDao;
 
     @Resource
     StringRedisTemplate stringRedisTemplate;
@@ -48,22 +43,6 @@ public class DoSqlUserEndpoint {
     public Tip executeSql(@PathVariable("sqlFile") String sqlFile, HttpServletRequest request) {
         return SuccessTip.create(devopsServices.executeSql(request, sqlFile));
     }
-
-    //    获取当前app数据 运维操作
-    @ApiOperation(value = "获取app 操作列表")
-    @GetMapping("/appidOperationList")
-    public Tip getAppidOperationList(@RequestParam("appid") String appid) {
-
-        DoSqlVersion record = new DoSqlVersion();
-        record.setAppid(appid);
-        List<DoSqlVersion> devVersionRecordList = queryDevVersionDao.queryVersionDetail(null,record,null);
-//        System.out.println(devVersionRecordList);
-        if (devVersionRecordList!=null && devVersionRecordList.size()==1){
-            return SuccessTip.create(devVersionRecordList.get(0));
-        }
-        return SuccessTip.create();
-    }
-
 
     @ApiOperation(value = "获取当前用户")
     @GetMapping("/users/current")
