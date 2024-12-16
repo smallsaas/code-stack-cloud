@@ -1,10 +1,16 @@
-@endpoint = http://localhost:7000
-
-###
-GET {{endpoint}}/api/pageconfig/lowMainPage/lowMainPages/2
+@endpoint = http://gitlab2.cdnline.cn:8000
+# @endpoint = http://192.168.3.210:8089
 
 
-###
+### 获取所有 lowMainPage
+GET {{endpoint}}/api/pageconfig/lowMainPage/lowMainPages
+
+
+### 获取指定的 lowMainPages
+GET {{endpoint}}/api/pageconfig/lowMainPage/lowMainPages/3
+
+
+### 获取指定的 lowActionses
 GET {{endpoint}}/api/pageconfig/lowActions/lowActionses/1
 
 
