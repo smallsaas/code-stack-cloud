@@ -11,14 +11,13 @@
 ```
     <groupId>com.jfeat</groupId>
     <artifactId>mbcs</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 ```
 
 #### 2. 初始化数据库
 
 ```SQL
 DROP TABLE IF EXISTS `meta_enable_machine`;
-
 CREATE TABLE `meta_enable_machine` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `entity` varchar(64) NOT NULL COMMENT '实体',
@@ -34,7 +33,6 @@ CREATE TABLE `meta_enable_machine` (
 
 
 DROP TABLE IF EXISTS `meta_entity_patch_machine`;
-
 CREATE TABLE `meta_entity_patch_machine` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `entity` varchar(64) NOT NULL COMMENT '实体名称',
@@ -51,7 +49,6 @@ CREATE TABLE `meta_entity_patch_machine` (
 
 
 DROP TABLE IF EXISTS `meta_status_machine`;
-
 CREATE TABLE `meta_status_machine` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `entity` varchar(64) NOT NULL COMMENT '实体',

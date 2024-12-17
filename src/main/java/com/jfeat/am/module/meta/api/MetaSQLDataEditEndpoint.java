@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+@Deprecated(since = "不支持配置文件配置")
 @RestController
 @Api("MetaSQLDataEditEndpoint")
 @RequestMapping("/api/meta/change")

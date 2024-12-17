@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 
+@Deprecated(since = "不支持配置文件配置")
 @Component
 @Configuration
 @ConfigurationProperties(prefix = "mbcs")
