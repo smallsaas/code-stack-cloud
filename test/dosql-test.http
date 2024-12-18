@@ -1,15 +1,52 @@
 @endpoint=http://localhost:8080
+@fileName=testget
 
 ### 查询sql语句
 # sqlFileName 不带.sql后缀文件名
 #GET {{endpoint}}/api/dev/devops/{fieldName}?key1=value&key2=value2
 # 示例
-GET {{endpoint}}/api/adm/lc/dosql/testget?name1=张三&name2=王五
-
+GET {{endpoint}}/api/lc/dosql/{{fileName}}
 
 ### 执行sql语句
 # sqlFileName 不带.sql后缀文件名
 #Post {{endpoint}}/api/dev/devops/{fieldName}?key1=value&key2=value2
 # 示例
-POST {{endpoint}}/api/adm/lc/dosql/testpost?addName=李华&deleteName=王五
+POST {{endpoint}}/api/lc/dosql/{{fileName}}
+
+
+
+### dosql crud 仅限平台用户使用
+### body: {
+### title 标题
+### description 描述
+### queryFileName 查询文件名
+### executionFileName 执行文件名
+### status 是否上架 默认上架 0-不上架 -1上架
+### sortNumber 排序
+### paramStatus 是否需要参数 0-不需要 1-需要 默认0
+### sqlVersion 数据库版本
+### note 备注
+### }
+
+### 查
+### /api/adm/lc/dosql/{id}
+GET {{endpoint}}/api/adm/lc/dosql/1
+
+### 增
+### /api/adm/lc/dosql
+POST {{endpoint}}/api/adm/lc/dosql
+
+### 删
+### /api/adm/lc/dosql/{id}
+DELETE {{endpoint}}/api/adm/lc/dosql/1
+
+### 改
+### /api/adm/lc/dosql/{id}
+PUT {{endpoint}}/api/adm/lc/dosql/1
+
+### 分页查询
+### /api/adm/lc/dosql
+GET {{endpoint}}/api/adm/lc/dosql?pageNum=1&pageSize=10
+
+
 

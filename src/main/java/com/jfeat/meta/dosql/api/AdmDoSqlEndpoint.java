@@ -2,9 +2,7 @@
 package com.jfeat.meta.dosql.api;
 
 
-import com.jfeat.meta.dosql.services.domain.dao.QueryDoSqlFieldDao;
 import com.jfeat.meta.dosql.services.domain.service.DoSqlFieldService;
-import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlField;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,11 +18,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.dao.DuplicateKeyException;
+import com.jfeat.meta.dosql.services.domain.dao.QueryDoSqlFieldDao;
 import com.jfeat.crud.base.tips.SuccessTip;
 import com.jfeat.crud.base.tips.Tip;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
+
+import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlField;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,11 +43,11 @@ import java.util.List;
  */
 @RestController
 @Api("DoSqlField")
-@RequestMapping("/api/adm/lc/dosql/fields")
-public class DoSqlFieldEndpoint {
+@RequestMapping("/api/adm/lc/dosql")
+public class AdmDoSqlEndpoint {
 
     @Resource
-    DoSqlFieldService doSqlFieldService;
+    DoSqlFieldService DoSqlFieldService;
 
     @Resource
     QueryDoSqlFieldDao queryDoSqlFieldDao;
@@ -58,7 +59,7 @@ public class DoSqlFieldEndpoint {
     public Tip createDoSqlField(@RequestBody DoSqlField entity) {
         Integer affected = 0;
         try {
-            affected = doSqlFieldService.createMaster(entity);
+            affected = DoSqlFieldService.createMaster(entity);
         } catch (DuplicateKeyException e) {
             throw new BusinessException(BusinessCode.DuplicateKey);
         }
@@ -69,7 +70,7 @@ public class DoSqlFieldEndpoint {
     @GetMapping("/{id}")
     @ApiOperation(value = "查看 DoSqlField", response = DoSqlField.class)
     public Tip getDoSqlField(@PathVariable Long id) {
-        return SuccessTip.create(doSqlFieldService.queryMasterModel(queryDoSqlFieldDao, id));
+        return SuccessTip.create(DoSqlFieldService.queryMasterModel(queryDoSqlFieldDao, id));
     }
 
     @BusinessLog(name = "DoSqlField", value = "update DoSqlField")
@@ -77,14 +78,14 @@ public class DoSqlFieldEndpoint {
     @ApiOperation(value = "修改 DoSqlField", response = DoSqlField.class)
     public Tip updateDoSqlField(@PathVariable Long id, @RequestBody DoSqlField entity) {
         entity.setId(id);
-        return SuccessTip.create(doSqlFieldService.updateMaster(entity));
+        return SuccessTip.create(DoSqlFieldService.updateMaster(entity));
     }
 
     @BusinessLog(name = "DoSqlField", value = "delete DoSqlField")
     @DeleteMapping("/{id}")
     @ApiOperation("删除 DoSqlField")
     public Tip deleteDoSqlField(@PathVariable Long id) {
-        return SuccessTip.create(doSqlFieldService.deleteMaster(id));
+        return SuccessTip.create(DoSqlFieldService.deleteMaster(id));
     }
 
     @ApiOperation(value = "DoSqlField 列表信息", response = DoSqlField.class)

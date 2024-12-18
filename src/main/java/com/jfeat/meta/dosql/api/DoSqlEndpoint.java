@@ -1,174 +1,95 @@
-
 package com.jfeat.meta.dosql.api;
 
-
-import com.jfeat.meta.dosql.services.domain.service.DoSqlFieldService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.dao.DuplicateKeyException;
-import com.jfeat.meta.dosql.services.domain.dao.QueryDoSqlFieldDao;
-import com.jfeat.crud.base.tips.SuccessTip;
-import com.jfeat.crud.base.tips.Tip;
+import com.alibaba.fastjson.JSONObject;
+import com.jfeat.am.core.jwt.JWTKit;
 import com.jfeat.crud.base.annotation.BusinessLog;
 import com.jfeat.crud.base.exception.BusinessCode;
 import com.jfeat.crud.base.exception.BusinessException;
-
-import com.jfeat.meta.dosql.services.gen.persistence.model.DoSqlField;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.jfeat.crud.base.tips.SuccessTip;
+import com.jfeat.crud.base.tips.Tip;
+import com.jfeat.meta.dosql.services.domain.service.DoSqlServices;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
-/**
- * <p>
- * api
- * </p>
- *
- * @author Code generator
- * @since 2022-09-16
- */
 @RestController
-@Api("DoSqlField")
-@RequestMapping("/api/adm/lc/dosql")
+@Api("Devops")
+@RequestMapping("/api/lc/dosql")
 public class DoSqlEndpoint {
 
     @Resource
-    DoSqlFieldService DoSqlFieldService;
+    DoSqlServices devopsServices;
 
     @Resource
-    QueryDoSqlFieldDao queryDoSqlFieldDao;
+    StringRedisTemplate stringRedisTemplate;
+
+//    存储当前用户选择的 用户条件key  dev:userId:id
+    private static final String redisKeyPrefix = "dev:userId:";
+
+
+    @ApiOperation(value = "查询sql语句", response = HttpServletRequest.class)
+    @GetMapping("/{sqlFile}")
+    public Tip getResultList(@PathVariable("sqlFile") String sqlFile, HttpServletRequest request) {
+        return SuccessTip.create(devopsServices.querySql(request, sqlFile));
+    }
+
+    @ApiOperation(value = "执行sql 语句", response = HttpServletRequest.class)
+    @PostMapping("/{sqlFile}")
+    public Tip executeSql(@PathVariable("sqlFile") String sqlFile, HttpServletRequest request) {
+        return SuccessTip.create(devopsServices.executeSql(request, sqlFile));
+    }
+
+    @ApiOperation(value = "获取当前用户")
+    @GetMapping("/users/current")
+    public Tip getCurrentUser(){
+        Long userId = JWTKit.getUserId();
+        String redisKey = redisKeyPrefix+String.valueOf(userId);
+        if (userId==null){
+            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+        }
+        if (stringRedisTemplate.hasKey(redisKey)){
+            Long targetUser = Long.parseLong(stringRedisTemplate.opsForValue().get(redisKey)==null?"0":stringRedisTemplate.opsForValue().get(redisKey));
+            if (targetUser!=null && targetUser>0){
+                //return SuccessTip.create(userAccountMapper.selectById(targetUser));
+                return SuccessTip.create(targetUser);
+            }
+        }
+
+        return SuccessTip.create();
+    }
 
 
     @BusinessLog(name = "DoSqlField", value = "create DoSqlField")
-    @PostMapping
-    @ApiOperation(value = "新建 DoSqlField", response = DoSqlField.class)
-    public Tip createDoSqlField(@RequestBody DoSqlField entity) {
-        Integer affected = 0;
-        try {
-            affected = DoSqlFieldService.createMaster(entity);
-        } catch (DuplicateKeyException e) {
-            throw new BusinessException(BusinessCode.DuplicateKey);
+    @ApiOperation(value = "设置当前用户", response = JSONObject.class)
+    @PutMapping("/users/current")
+    public Tip setCurrentUser(@RequestBody JSONObject jsonObject){
+        Long userId = JWTKit.getUserId();
+        String redisKey = redisKeyPrefix+String.valueOf(userId);
+        if (userId==null){
+            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
         }
 
-        return SuccessTip.create(affected);
-    }
-
-    @GetMapping("/{id}")
-    @ApiOperation(value = "查看 DoSqlField", response = DoSqlField.class)
-    public Tip getDoSqlField(@PathVariable Long id) {
-        return SuccessTip.create(DoSqlFieldService.queryMasterModel(queryDoSqlFieldDao, id));
-    }
-
-    @BusinessLog(name = "DoSqlField", value = "update DoSqlField")
-    @PutMapping("/{id}")
-    @ApiOperation(value = "修改 DoSqlField", response = DoSqlField.class)
-    public Tip updateDoSqlField(@PathVariable Long id, @RequestBody DoSqlField entity) {
-        entity.setId(id);
-        return SuccessTip.create(DoSqlFieldService.updateMaster(entity));
-    }
-
-    @BusinessLog(name = "DoSqlField", value = "delete DoSqlField")
-    @DeleteMapping("/{id}")
-    @ApiOperation("删除 DoSqlField")
-    public Tip deleteDoSqlField(@PathVariable Long id) {
-        return SuccessTip.create(DoSqlFieldService.deleteMaster(id));
-    }
-
-    @ApiOperation(value = "DoSqlField 列表信息", response = DoSqlField.class)
-    @GetMapping
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "pageNum", dataType = "Integer"),
-            @ApiImplicitParam(name = "pageSize", dataType = "Integer"),
-            @ApiImplicitParam(name = "search", dataType = "String"),
-            @ApiImplicitParam(name = "id", dataType = "Long"),
-            @ApiImplicitParam(name = "title", dataType = "String"),
-            @ApiImplicitParam(name = "description", dataType = "String"),
-            @ApiImplicitParam(name = "queryFileName", dataType = "String"),
-            @ApiImplicitParam(name = "executionFileName", dataType = "String"),
-            @ApiImplicitParam(name = "paramStatus", dataType = "Integer"),
-            @ApiImplicitParam(name = "sqlVersion", dataType = "String"),
-            @ApiImplicitParam(name = "note", dataType = "String"),
-            @ApiImplicitParam(name = "createTime", dataType = "Date"),
-            @ApiImplicitParam(name = "updateTime", dataType = "Date"),
-            @ApiImplicitParam(name = "orderBy", dataType = "String"),
-            @ApiImplicitParam(name = "sort", dataType = "String")
-    })
-    public Tip queryDoSqlFieldPage(Page<DoSqlField> page,
-                                   @RequestParam(name = "pageNum", required = false, defaultValue = "1") Integer pageNum,
-                                   @RequestParam(name = "pageSize", required = false, defaultValue = "10") Integer pageSize,
-                                   // for tag feature query
-                                   @RequestParam(name = "tag", required = false) String tag,
-                                   // end tag
-                                   @RequestParam(name = "search", required = false) String search,
-
-                                   @RequestParam(name = "title", required = false) String title,
-
-                                   @RequestParam(name = "description", required = false) String description,
-
-                                   @RequestParam(name = "queryFileName", required = false) String queryFileName,
-
-                                   @RequestParam(name = "executionFileName", required = false) String executionFileName,
-
-                                   @RequestParam(name = "paramStatus", required = false) Integer paramStatus,
-
-                                   @RequestParam(name = "sqlVersion", required = false) String sqlVersion,
-
-                                   @RequestParam(name = "note", required = false) String note,
-
-                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                   @RequestParam(name = "createTime", required = false) Date createTime,
-
-                                   @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-                                   @RequestParam(name = "updateTime", required = false) Date updateTime,
-                                   @RequestParam(name = "orderBy", required = false) String orderBy,
-                                   @RequestParam(name = "sort", required = false) String sort) {
-
-        if (orderBy != null && orderBy.length() > 0) {
-            if (sort != null && sort.length() > 0) {
-                String sortPattern = "(ASC|DESC|asc|desc)";
-                if (!sort.matches(sortPattern)) {
-                    throw new BusinessException(BusinessCode.BadRequest.getCode(), "sort must be ASC or DESC");//此处异常类型根据实际情况而定
-                }
-            } else {
-                sort = "ASC";
-            }
-            orderBy = "`" + orderBy + "`" + " " + sort;
+        if (jsonObject==null || jsonObject.get("id")==null){
+           throw new BusinessException(BusinessCode.BadRequest,"id必填项");
         }
-        page.setCurrent(pageNum);
-        page.setSize(pageSize);
-
-        DoSqlField record = new DoSqlField();
-        record.setTitle(title);
-        record.setDescription(description);
-        record.setQueryFileName(queryFileName);
-        record.setExecutionFileName(executionFileName);
-        record.setParamStatus(paramStatus);
-        record.setSqlVersion(sqlVersion);
-        record.setNote(note);
-        record.setCreateTime(createTime);
-        record.setUpdateTime(updateTime);
-
-
-        List<DoSqlField> devDevelopPage = queryDoSqlFieldDao.findDoSqlFieldPage(page, record, tag, search, orderBy, null, null);
-
-
-        page.setRecords(devDevelopPage);
-
-        return SuccessTip.create(page);
+        stringRedisTemplate.opsForValue().set(redisKey, jsonObject.get("id").toString());
+        return SuccessTip.create(1);
     }
+
+    @ApiOperation(value = "删除当前用户")
+    @DeleteMapping("/users/current")
+    public Tip deleteCurrentUser(){
+        Long userId = JWTKit.getUserId();
+        String redisKey = redisKeyPrefix+String.valueOf(userId);
+        if (userId==null){
+            throw new BusinessException(BusinessCode.NoPermission,"没有登录");
+        }
+        stringRedisTemplate.delete(redisKey);
+        return SuccessTip.create(1);
+    }
+
 }
-

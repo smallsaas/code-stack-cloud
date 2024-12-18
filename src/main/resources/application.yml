@@ -51,9 +51,9 @@ mybatis-plus:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://db.webtools.io:3306/smallsaas_dev?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://sh-cynosdbmysql-grp-mlyunquo.sql.tencentcdb.com:25133/lc?autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
-    password: Nhy6%tgb
+    password: zb2014@8888
     #    password: zb2014@888
     driver-class-name: com.mysql.jdbc.Driver
     filters: log4j,wall,mergeStat
