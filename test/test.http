@@ -1,12 +1,100 @@
 @endpoint=http://localhost:8000
+@endpoint=http://192.168.3.230:8080
+
+### 查询字段列表
+GET {{endpoint}}/api/lc/fieldModel/fieldModels
 
 
 ### 查询字段模板列表
 GET {{endpoint}}/api/lc/fieldModel/fieldModels/1
 
+### 更新字段 
+PUT {{endpoint}}/api/lc/fieldModel/fieldModels/1
+Content-Type: application/json
 
-### 查询字段列表
-GET {{endpoint}}/api/lc/fieldItem/fieldItems
+{
+    "comments": "",
+    "dataType": "varchar",
+    "defaultValue": null,
+    "fieldFloatLength": null,
+    "fieldLength": 50,
+    "id": "1",
+    "isNotNull": 1,
+    "isUnique": 1,
+    "modelName": "NAME",
+    "name": "名称",
+    "optionalFieldName": "name"
+}
+
+### 删除字段 
+# DELETE {{endpoint}}/api/lc/fieldModel/fieldModels/1
+
+
+##### lc_table_model
+
+### 增加字段
+POST {{endpoint}}/api/lc/tableModel/tableModels
+
+{
+  "templateDesc": "string",
+  "templateKey": "string",
+  "templateName": "string",
+  "templateTitle": "string",
+  "fieldItems": 
+  [
+    {
+      "fieldComment": "adf",
+      "fieldDefaultValue": "sad",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 0,
+      "id":"",
+      "fieldName": "da",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels":
+   [
+    {
+      "templateLabel": "string",
+      "templateName": "string"
+    }
+  ]
+}
+
+### 查询字段
+GET {{endpoint}}/api/lc/tableModel/tableModels
+
+### table_model新增字段
+POST {{endpoint}}/api/lc/tableModel/tableModels
+
+{
+  "fieldItems": [
+    {
+      "fieldComment": "12321",
+      "fieldDefaultValue": "12312",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 1,
+      "fieldName": "",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels": [
+    {
+      "templateLabel": "36443",
+      "templateName": "45645"
+    }
+  ],
+  "templateDesc": "123",
+  "templateKey": "string",
+  "templateName": "12312",
+  "templateTitle": "string"
+}
+
+### 查询table_model数据
+GET {{endpoint}}/api/lc/tableModel/tableModels/8
+
 
 
 ### 查询子表
@@ -90,88 +178,3 @@ Content-Type: application/json
 ### 删除子表
 DELETE  {{endpoint}}/api/lc/subTableModel/subTableModels/11
 
-
-#### lc_field_items
-
-### 字段查询
-GET {{endpoint}}/api/lc/fieldItem/fieldItems
-
-
-### 增加字段
-POST {{endpoint}}/api/lc/fieldItem/fieldItems
-Content-Type: application/json
-
-{
-  "fieldModelId": 1,
-  "fieldName": "NAME",
-  "fieldIsNotNull": 0,
-  "tableTemplateId":0,
-  "fieldTemplateId":0
-}
-
-
-
-##### lc_table_model
-
-### 增加字段
-POST {{endpoint}}/api/lc/tableModel/tableModels
-
-{
-  "templateDesc": "string",
-  "templateKey": "string",
-  "templateName": "string",
-  "templateTitle": "string",
-  "fieldItems": 
-  [
-    {
-      "fieldComment": "adf",
-      "fieldDefaultValue": "sad",
-      "fieldIsNotNull": 0,
-      "fieldModelId": 0,
-      "id":"",
-      "fieldName": "da",
-      "fieldTemplateId": 0,
-      "tableTemplateId": 0
-    }
-  ],
-  "subTableModels":
-   [
-    {
-      "templateLabel": "string",
-      "templateName": "string"
-    }
-  ]
-}
-
-### 查询字段
-GET {{endpoint}}/api/lc/tableModel/tableModels
-
-### table_model新增字段
-POST {{endpoint}}/api/lc/tableModel/tableModels
-
-{
-  "fieldItems": [
-    {
-      "fieldComment": "12321",
-      "fieldDefaultValue": "12312",
-      "fieldIsNotNull": 0,
-      "fieldModelId": 1,
-      "fieldName": "",
-      "fieldTemplateId": 0,
-      "tableTemplateId": 0
-    }
-  ],
-  "subTableModels": [
-    {
-      "templateLabel": "36443",
-      "templateName": "45645"
-    }
-  ],
-  "templateDesc": "123",
-  "templateKey": "string",
-  "templateName": "12312",
-  "templateTitle": "string"
-}
-
-### 查询table_model数据
-GET {{endpoint}}/api/lc/tableModel/tableModels/8
