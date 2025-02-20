@@ -1,6 +1,5 @@
 @endpoint=http://localhost:8000
-@endpoint=http://192.168.3.210:8089
-
+@endpoint=http://192.168.3.230:8080
 
 ##################################
 ##### lc_field_model
@@ -13,6 +12,92 @@ GET {{endpoint}}/api/lc/fieldModel/fieldModels
 ### 查询标准字段
 GET {{endpoint}}/api/lc/fieldModel/fieldModels/1
 
+### 更新字段 
+PUT {{endpoint}}/api/lc/fieldModel/fieldModels/1
+Content-Type: application/json
+
+{
+    "comments": "",
+    "dataType": "varchar",
+    "defaultValue": null,
+    "fieldFloatLength": null,
+    "fieldLength": 50,
+    "id": "1",
+    "isNotNull": 1,
+    "isUnique": 1,
+    "modelName": "NAME",
+    "name": "名称",
+    "optionalFieldName": "name"
+}
+
+### 删除字段 
+# DELETE {{endpoint}}/api/lc/fieldModel/fieldModels/1
+
+
+##### lc_table_model
+
+### 增加字段
+POST {{endpoint}}/api/lc/tableModel/tableModels
+
+{
+  "templateDesc": "string",
+  "templateKey": "string",
+  "templateName": "string",
+  "templateTitle": "string",
+  "fieldItems": 
+  [
+    {
+      "fieldComment": "adf",
+      "fieldDefaultValue": "sad",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 0,
+      "id":"",
+      "fieldName": "da",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels":
+   [
+    {
+      "templateLabel": "string",
+      "templateName": "string"
+    }
+  ]
+}
+
+### 查询字段
+GET {{endpoint}}/api/lc/tableModel/tableModels
+
+### table_model新增字段
+POST {{endpoint}}/api/lc/tableModel/tableModels
+
+{
+  "fieldItems": [
+    {
+      "fieldComment": "12321",
+      "fieldDefaultValue": "12312",
+      "fieldIsNotNull": 0,
+      "fieldModelId": 1,
+      "fieldName": "",
+      "fieldTemplateId": 0,
+      "tableTemplateId": 0
+    }
+  ],
+  "subTableModels": [
+    {
+      "templateLabel": "36443",
+      "templateName": "45645"
+    }
+  ],
+  "templateDesc": "123",
+  "templateKey": "string",
+  "templateName": "12312",
+  "templateTitle": "string"
+}
+
+### 查询table_model数据
+GET {{endpoint}}/api/lc/tableModel/tableModels/8
 
 
 ##################################
@@ -100,6 +185,7 @@ Content-Type: application/json
 ### 删除子表
 DELETE  {{endpoint}}/api/lc/subTableModel/subTableModels/11
 
+<<<<<<< HEAD
 
 
 
@@ -169,3 +255,5 @@ POST {{endpoint}}/api/lc/tableModel/tableModels
 
 ### 查询table_model数据
 GET {{endpoint}}/api/lc/tableModel/tableModels/8
+=======
+>>>>>>> 5257893ac6d7492736b8552dab6ebac932787b42
