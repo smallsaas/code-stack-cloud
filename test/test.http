@@ -1,13 +1,23 @@
 @endpoint=http://localhost:8000
+@endpoint=http://192.168.3.210:8089
 
 
-### 查询字段模板列表
+##################################
+##### lc_field_model
+##################################
+
+### 查询标准字段列表
+GET {{endpoint}}/api/lc/fieldModel/fieldModels
+
+
+### 查询标准字段
 GET {{endpoint}}/api/lc/fieldModel/fieldModels/1
 
 
-### 查询字段列表
-GET {{endpoint}}/api/lc/fieldItem/fieldItems
 
+##################################
+##### lc_sub_table_model
+##################################
 
 ### 查询子表
 GET {{endpoint}}/api/lc/subTableModel/subTableModels/27
@@ -91,27 +101,11 @@ Content-Type: application/json
 DELETE  {{endpoint}}/api/lc/subTableModel/subTableModels/11
 
 
-#### lc_field_items
-
-### 字段查询
-GET {{endpoint}}/api/lc/fieldItem/fieldItems
 
 
-### 增加字段
-POST {{endpoint}}/api/lc/fieldItem/fieldItems
-Content-Type: application/json
-
-{
-  "fieldModelId": 1,
-  "fieldName": "NAME",
-  "fieldIsNotNull": 0,
-  "tableTemplateId":0,
-  "fieldTemplateId":0
-}
-
-
-
+##################################
 ##### lc_table_model
+##################################
 
 ### 增加字段
 POST {{endpoint}}/api/lc/tableModel/tableModels

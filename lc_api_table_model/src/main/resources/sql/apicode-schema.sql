@@ -1,5 +1,3 @@
-SET FOREIGN_KEY_CHECKS=0;
-
 DROP TABLE IF EXISTS `lc_api_table_model`; 
 CREATE TABLE `lc_api_table_model` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
